@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>東北雪國行程・查詢站</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --indigo: #16233d;
+    --indigo-deep: #0b1220;
+    --snow: #f3f4f7;
+    --paper: #ffffff;
+    --ember: #c8632c;
+    --ember-soft: #e8a15c;
+    --ink: #24272c;
+    --mist: #8b95a3;
+    --line: #e2e5ea;
+    --food: #a9762f;
+    --food-bg: #fbf3e6;
+    --tip-bg: #fdece2;
+    --tip-line: #eec3a8;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--snow);
+    color:var(--ink);
+    font-family:'Noto Sans TC', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'JetBrains Mono','Noto Sans TC',monospace;}
+
+  /* ---------- HEADER BOARD ---------- */
+  header.board{
+    background: linear-gradient(180deg, var(--indigo) 0%, var(--indigo-deep) 100%);
+    color:#f2f4f8;
+    padding:34px 20px 26px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.board::after{
+    content:"";
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:4px;
+    background:repeating-linear-gradient(90deg, var(--ember) 0 18px, transparent 18px 30px);
+    opacity:.85;
+  }
+  .board-inner{
+    max-width:1040px;
+    margin:0 auto;
+  }
+  .board-eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:.16em;
+    color:var(--ember-soft);
+    text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  h1.board-title{
+    font-family:'Noto Serif TC', serif;
+    font-weight:900;
+    font-size:clamp(28px, 4.6vw, 42px);
+    margin:0 0 8px;
+    letter-spacing:.01em;
+  }
+  .board-sub{
+    color:#aeb8c9;
+    font-size:14px;
+    max-width:560px;
+  }
+  .board-stats{
+    display:flex;
+    gap:22px;
+    margin-top:22px;
+    flex-wrap:wrap;
+  }
+  .stat{
+    border-left:2px solid rgba(232,161,92,.45);
+    padding-left:12px;
+  }
+  .stat .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:20px;
+    font-weight:700;
+    color:#fff;
+  }
+  .stat .lbl{
+    font-size:11px;
+    color:var(--mist);
+    letter-spacing:.04em;
+  }
+
+  /* ---------- CONTROL BAR ---------- */
+  .control-bar{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding:14px 20px;
+  }
+  .control-inner{
+    max-width:1040px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .search-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--paper);
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    padding:9px 14px;
+    transition:border-color .15s ease;
+  }
+  .search-row:focus-within{
+    border-color:var(--ember);
+  }
+  .search-row svg{flex:none; color:var(--mist);}
+  .search-row input{
+    border:none;
+    outline:none;
+    font-size:15px;
+    width:100%;
+    background:transparent;
+    color:var(--ink);
+    font-family:'Noto Sans TC', sans-serif;
+  }
+  .search-row input::placeholder{color:#b3bac5;}
+  .clear-btn{
+    border:none; background:var(--snow); color:var(--mist);
+    font-size:12px; padding:4px 9px; border-radius:6px; cursor:pointer;
+    font-family:'Noto Sans TC', sans-serif;
+  }
+  .clear-btn:hover{background:var(--line);}
+
+  .chip-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .chip{
+    border:1px solid var(--line);
+    background:var(--paper);
+    color:var(--ink);
+    font-size:12.5px;
+    padding:6px 12px;
+    border-radius:999px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-family:'Noto Sans TC', sans-serif;
+    transition:all .12s ease;
+  }
+  .chip svg{width:13px; height:13px;}
+  .chip.active{
+    background:var(--indigo);
+    border-color:var(--indigo);
+    color:#fff;
+  }
+  .chip.active.ember{background:var(--ember); border-color:var(--ember);}
+
+  .day-tabs{
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    padding-bottom:2px;
+  }
+  .day-tab{
+    flex:none;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    border:1px solid var(--indigo);
+    color:var(--indigo);
+    background:var(--paper);
+    padding:6px 10px;
+    border-radius:6px;
+    cursor:pointer;
+    text-align:center;
+    min-width:52px;
+  }
+  .day-tab .d{font-weight:700; font-size:13px;}
+  .day-tab .m{display:block; font-size:9.5px; color:var(--mist); margin-top:1px;}
+  .day-tab.active{background:var(--indigo); color:#fff;}
+  .day-tab.active .m{color:var(--ember-soft);}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{
+    max-width:1040px;
+    margin:0 auto;
+    padding:26px 20px 80px;
+    display:grid;
+    grid-template-columns:1fr 300px;
+    gap:26px;
+  }
+  @media (max-width:820px){
+    .layout{grid-template-columns:1fr;}
+    .side{order:2;}
+  }
+
+  .empty-state{
+    text-align:center;
+    padding:60px 20px;
+    color:var(--mist);
+  }
+  .empty-state .big{font-size:32px; margin-bottom:10px;}
+
+  /* ---------- DAY CARD ---------- */
+  .day-section{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:12px;
+    margin-bottom:18px;
+    overflow:hidden;
+  }
+  .day-head{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:14px 18px;
+    border-bottom:1px solid var(--line);
+    border-left:4px solid var(--ember);
+  }
+  .day-badge{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700;
+    font-size:13px;
+    color:var(--indigo);
+    background:var(--snow);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:5px 9px;
+    white-space:nowrap;
+  }
+  .day-head-text{flex:1; min-width:0;}
+  .day-head-title{
+    font-family:'Noto Serif TC', serif;
+    font-weight:700;
+    font-size:16px;
+    color:var(--ink);
+  }
+  .day-head-route{
+    font-size:12px;
+    color:var(--mist);
+    margin-top:1px;
+  }
+
+  .item-row{
+    display:flex;
+    gap:12px;
+    padding:11px 18px;
+    border-bottom:1px solid #f0f1f4;
+    align-items:flex-start;
+  }
+  .item-row:last-child{border-bottom:none;}
+  .item-icon{
+    flex:none;
+    width:26px; height:26px;
+    border-radius:7px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--snow);
+    color:var(--indigo);
+    margin-top:1px;
+  }
+  .item-row.food .item-icon{background:var(--food-bg); color:var(--food);}
+  .item-row.tip{background:var(--tip-bg);}
+  .item-row.tip .item-icon{background:#fff; color:var(--ember);}
+  .item-row.hotel .item-icon, .item-row.transport .item-icon{background:#eef1f6; color:var(--indigo);}
+
+  .item-body{flex:1; min-width:0;}
+  .item-time{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    font-weight:700;
+    color:var(--ember);
+    letter-spacing:.02em;
+    margin-bottom:2px;
+    display:block;
+  }
+  .item-text{font-size:13.5px; color:var(--ink);}
+  mark{
+    background:#ffe4b8;
+    color:inherit;
+    border-radius:2px;
+    padding:0 1px;
+  }
+
+  /* ---------- SIDE PANEL ---------- */
+  .side{display:flex; flex-direction:column; gap:16px;}
+  .panel{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  .panel-head{
+    font-family:'Noto Serif TC', serif;
+    font-weight:700;
+    font-size:14px;
+    padding:12px 16px;
+    background:var(--indigo);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .panel-body{padding:14px 16px;}
+  .budget-row{
+    display:flex; justify-content:space-between;
+    font-size:12.5px;
+    padding:7px 0;
+    border-bottom:1px dashed var(--line);
+  }
+  .budget-row:last-child{border-bottom:none;}
+  .budget-row .v{font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--indigo);}
+  .budget-total{
+    display:flex; justify-content:space-between;
+    margin-top:8px; padding-top:10px;
+    border-top:2px solid var(--indigo);
+    font-size:13px; font-weight:700;
+  }
+  .budget-total .v{font-family:'JetBrains Mono', monospace; color:var(--ember);}
+
+  .tip-list{list-style:none; margin:0; padding:0; font-size:12.5px;}
+  .tip-list li{
+    padding:9px 0;
+    border-bottom:1px solid var(--line);
+    display:flex; gap:8px;
+  }
+  .tip-list li:last-child{border-bottom:none;}
+  .tip-list li svg{flex:none; margin-top:2px; color:var(--ember);}
+
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:var(--mist);
+    padding:20px;
+    font-family:'JetBrains Mono', monospace;
+    letter-spacing:.05em;
+  }
+</style>
+</head>
+<body>
+
+<header class="board">
+  <div class="board-inner">
+    <div class="board-eyebrow">DEPARTURE BOARD ／ 7-DAY ITINERARY QUERY</div>
+    <h1 class="board-title">東北雪國行程・查詢站</h1>
+    <div class="board-sub">大內宿・銀山溫泉・藏王樹冰・仙台｜輸入關鍵字或選擇天數，快速找到當天的交通、美食與住宿資訊。</div>
+    <div class="board-stats">
+      <div class="stat"><div class="num" id="statDays">7</div><div class="lbl">天行程</div></div>
+      <div class="stat"><div class="num" id="statItems">--</div><div class="lbl">筆資訊</div></div>
+      <div class="stat"><div class="num" id="statMatched">--</div><div class="lbl">符合條件</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="control-bar">
+  <div class="control-inner">
+    <div class="search-row">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="searchInput" type="text" placeholder="搜尋景點、美食、交通、住宿、提醒⋯（例如：牛舌、纜車、只見線）">
+      <button class="clear-btn" id="clearBtn">清除</button>
+    </div>
+    <div class="chip-row" id="chipRow"></div>
+    <div class="day-tabs" id="dayTabs"></div>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="main" id="mainCol"></div>
+  <div class="side">
+    <div class="panel">
+      <div class="panel-head">預算統計</div>
+      <div class="panel-body">
+        <div class="budget-row"><span>1/09–10 宇都宮</span><span class="v">2,793 TWD</span></div>
+        <div class="budget-row"><span>1/10–11 會津若松</span><span class="v">2,760 TWD</span></div>
+        <div class="budget-row"><span>1/11–13 山形（2晚）</span><span class="v">6,281 TWD</span></div>
+        <div class="budget-row"><span>1/13–14 仙台</span><span class="v">4,359 TWD</span></div>
+        <div class="budget-row"><span>1/14–15 羽田機場</span><span class="v">3,480 TWD</span></div>
+        <div class="budget-total"><span>住宿總計</span><span class="v">19,673 TWD</span></div>
+        <div class="budget-total"><span>交通總計（預估）</span><span class="v">約 32,200 JPY</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head">旅行重要提醒</div>
+      <div class="panel-body">
+        <ul class="tip-list" id="tipListSide"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>終點站 ─ HANEDA AIRPORT ／ 1.15 返台</footer>
+
+<script>
+const ICONS = {
+  activity: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+  food: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 2v7a4 4 0 004 4v9M3 2v7M7 2v7M11 2v20M16 2a5 5 0 015 5v0c0 2-2 3-2 3v12"/></svg>',
+  hotel: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18V6a1 1 0 011-1h2a1 1 0 011 1v12M3 18h18M7 11h4a2 2 0 012 2v5M15 8h3a2 2 0 012 2v8"/></svg>',
+  transport: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="13" rx="2"/><path d="M4 11h16M8 19l-2 2M16 19l2 2M8 16v0M16 16v0"/></svg>',
+  tip: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>'
+};
+const CAT_LABEL = {all:'全部', activity:'景點行程', food:'美食', hotel:'住宿', transport:'交通', tip:'提醒'};
+
+const days = [
+  {
+    day:1, date:"1/9（六）", route:"羽田 → 宇都宮", title:"抵達日本，前進餃子之都",
+    items:[
+      {cat:'transport', time:'交通', text:'京急線 → JR 新幹線，約 5,500 JPY／人'},
+      {cat:'hotel', time:'住宿', text:'Smile Hotel Utsunomiya'},
+      {cat:'activity', time:'上午', text:'抵達羽田機場，入境、領行李、購買 Suica/Pasmo 或加入手機錢包'},
+      {cat:'activity', time:'中午', text:'京急線接東京／上野轉新幹線（Yamabiko／Nasuno 系列）前往宇都宮，車程約 1.5–2 小時'},
+      {cat:'activity', time:'下午', text:'抵達宇都宮，飯店寄放行李後步行探索車站周邊商店街'},
+      {cat:'activity', time:'傍晚', text:'前往二荒山神社走走，感受地方氛圍，接著享用晚餐'},
+      {cat:'activity', time:'晚上', text:'入住 Smile Hotel Utsunomiya，早點休息以應對隔日長途移動'},
+      {cat:'food', time:'美食', text:'正嗣餃子（宇都宮車站東口本店）— 平價煎餃、湯餃，在地人氣第一'},
+      {cat:'food', time:'美食', text:'餃子通り沿線店家 — 一次比較多間店的餃子風味'},
+      {cat:'food', time:'美食', text:'來らっせ本店（餃子會館）— 集合多家名店的餃子廣場'}
+    ]
+  },
+  {
+    day:2, date:"1/10（日）", route:"宇都宮 → 大內宿 → 會津若松", title:"走進江戶時代的雪國合掌聚落",
+    items:[
+      {cat:'transport', time:'交通', text:'JR 新幹線 → JR 磐越西線，約 4,500 JPY／人'},
+      {cat:'hotel', time:'住宿', text:'Toyoko Inn Aizu-Wakamatsu'},
+      {cat:'activity', time:'上午', text:'宇都宮搭新幹線轉磐越西線前往會津若松方向，銜接接駁巴士／計程車前往大內宿'},
+      {cat:'activity', time:'上午～中午', text:'漫遊大內宿茅草屋聚落，欣賞雪景中的江戶宿場町風貌，登高台俯瞰全景拍照'},
+      {cat:'activity', time:'中午', text:'在聚落內茅草屋餐廳享用午餐（建議提早用餐避開人潮）'},
+      {cat:'activity', time:'下午', text:'返回會津若松，安頓行李後前往鶴之城（若時間充裕可入內參觀，冬季雪景城郭別具風情）'},
+      {cat:'activity', time:'傍晚', text:'漫步七日町通老街，感受會津漆器與老屋氛圍'},
+      {cat:'activity', time:'晚上', text:'市區內享用會津鄉土料理晚餐，入住 Toyoko Inn Aizu-Wakamatsu'},
+      {cat:'food', time:'美食', text:'大內宿「ねぎそば」大蔥蕎麥麵 — 用整根大蔥代替筷子的名物料理（推薦「三澤屋」）'},
+      {cat:'food', time:'美食', text:'會津「醬汁豬排丼（ソースカツ丼）」— 老字號「なかじま」或「若松食堂」皆為在地推薦'},
+      {cat:'food', time:'美食', text:'七日町通內咖啡老屋，適合下午茶小憩'},
+      {cat:'tip', time:'提醒', text:'只見線（第一只見川橋梁絕景）若想順遊，建議提早出發或於隔日安排半天彈性時間，並事先確認冬季列車班次'}
+    ]
+  },
+  {
+    day:3, date:"1/11（一）", route:"會津若松 → 山形", title:"跨越山脈，進入雪國山形",
+    items:[
+      {cat:'transport', time:'交通', text:'JR 磐越西線 → 新幹線，約 6,500 JPY／人'},
+      {cat:'hotel', time:'住宿', text:'Daiwa Roynet Hotel Yamagata'},
+      {cat:'activity', time:'上午', text:'飯店退房，若時間允許可安排短程只見線區間搭乘體驗雪景鐵道，之後返回會津若松車站'},
+      {cat:'activity', time:'中午', text:'搭乘 JR 磐越西線轉新幹線前往山形，車程約 3 小時，車上可享用鐵路便當'},
+      {cat:'activity', time:'下午', text:'抵達山形，飯店寄放行李後步行遊覽霞城公園（山形城跡），雪景中格外寧靜'},
+      {cat:'activity', time:'傍晚', text:'前往山形市區文翔館（舊縣廳舍），感受大正時期洋樓建築'},
+      {cat:'activity', time:'晚上', text:'市區享用山形牛與拉麵，入住 Daiwa Roynet Hotel Yamagata'},
+      {cat:'food', time:'美食', text:'山形牛燒肉／涮涮鍋 — 市區內多家專門店，冬季暖身首選'},
+      {cat:'food', time:'美食', text:'山形拉麵 — 濃厚風味的在地拉麵名店'},
+      {cat:'food', time:'美食', text:'山形鄉土居酒屋，可搭配當地日本酒（山形為知名酒鄉）'}
+    ]
+  },
+  {
+    day:4, date:"1/12（二）", route:"山形 → 銀山溫泉（來回）", title:"大正浪漫雪國祕湯，點燈夜景之日",
+    items:[
+      {cat:'transport', time:'交通', text:'奧羽本線 → 花笠巴士，來回約 2,000 JPY／人（預估）'},
+      {cat:'hotel', time:'住宿', text:'Daiwa Roynet Hotel Yamagata'},
+      {cat:'activity', time:'上午', text:'山形市區飯店寄放大件行李，輕裝搭奧羽本線前往大石田駅，車程約 30–40 分鐘'},
+      {cat:'activity', time:'上午', text:'大石田駅轉乘花笠巴士前往銀山溫泉，車程約 40 分鐘，冬季班次較少'},
+      {cat:'activity', time:'中午', text:'抵達銀山溫泉，沿銀山川漫步、拍攝木造樓館雪景，逛土產小店、足湯體驗'},
+      {cat:'activity', time:'下午', text:'持續在街區散策，可安排「白銀の滝」瀑布散步道往返，或於咖啡店休息取暖'},
+      {cat:'activity', time:'傍晚', text:'天色轉暗後，街上瓦斯燈依序點亮，是銀山溫泉一天中最夢幻的時刻'},
+      {cat:'activity', time:'晚上', text:'點燈欣賞後搭巴士返回大石田駅，轉奧羽本線回山形續住一晚，行李打包準備隔日前往仙台'},
+      {cat:'food', time:'美食', text:'「こんにゃく番所」蒟蒻田樂 — 銀山溫泉街最知名的路邊小吃'},
+      {cat:'food', time:'美食', text:'温泉たまご（溫泉蛋）— 街區小店現煮現賣，體驗溫泉鄉風情'},
+      {cat:'food', time:'美食', text:'大正浪漫喫茶店的抹茶或紅豆湯甜點，散策途中歇腳'},
+      {cat:'tip', time:'提醒', text:'冬季往返銀山溫泉巴士班次不多，點燈約在日落後（1 月約 16:30–17:00），務必抓緊末班車時間'}
+    ]
+  },
+  {
+    day:5, date:"1/13（三）", route:"山形 → 仙台", title:"告別山形，仙台市區慢慢遊",
+    items:[
+      {cat:'transport', time:'交通', text:'JR 仙山線，約 1,200 JPY／人'},
+      {cat:'hotel', time:'住宿', text:'Onyado Nono Sendai'},
+      {cat:'activity', time:'上午', text:'山形飯店退房，搭 JR 仙山線前往仙台，車程約 1 小時，抵達後飯店寄放或直接辦理入住'},
+      {cat:'activity', time:'中午', text:'仙台車站周邊「牛たん通り・すし通り」享用牛舌午餐，正式坐下來慢慢品嚐'},
+      {cat:'activity', time:'下午', text:'前往仙台城跡（青葉城）眺望市區全景，或改遊瑞鳳殿感受伊達政宗歷史'},
+      {cat:'activity', time:'傍晚', text:'漫步仙台一番町商店街／勾當台公園周邊，感受城市氛圍，順道採購伴手禮'},
+      {cat:'activity', time:'晚上', text:'享用仙台名物晚餐，入住 Onyado Nono Sendai（附大浴場）'},
+      {cat:'food', time:'美食', text:'仙台厚切炭烤牛舌 — 推薦「利久」或「牛たん通り」內任一名店'},
+      {cat:'food', time:'美食', text:'毛豆泥奶昔（ずんだシェイク）— 仙台限定甜點，牛舌套餐後的清爽收尾'},
+      {cat:'food', time:'美食', text:'一番町商店街周邊居酒屋，晚餐可搭配當地地酒'}
+    ]
+  },
+  {
+    day:6, date:"1/14（四）", route:"仙台 → 東京 → 羽田", title:"仙台市區巡禮，返回東京圈",
+    items:[
+      {cat:'transport', time:'交通', text:'JR 新幹線 → 地鐵，約 12,000 JPY／人'},
+      {cat:'hotel', time:'住宿', text:'Toyoko Inn Tokyo Haneda'},
+      {cat:'activity', time:'上午', text:'飯店寄放行李，前往前一天未完成的景點（仙台城跡或瑞鳳殿），或改為市區採購伴手禮'},
+      {cat:'activity', time:'中午', text:'市區內享用最後一餐仙台美食，順道採購牛舌真空包裝當伴手禮'},
+      {cat:'activity', time:'下午', text:'搭東北新幹線返回東京，轉地鐵前往羽田機場周邊'},
+      {cat:'activity', time:'傍晚', text:'抵達羽田機場周邊飯店，行李打包整理，確認隔日班機資訊'},
+      {cat:'activity', time:'晚上', text:'機場周邊商場簡單用餐、採購最後的伴手禮，入住 Toyoko Inn Tokyo Haneda'},
+      {cat:'food', time:'美食', text:'仙台車站「牛たん通り・すし通り」— 出發前再吃一次牛舌套餐'},
+      {cat:'food', time:'美食', text:'羽田機場周邊商場美食街，選擇多元適合作為旅程收尾'}
+    ]
+  },
+  {
+    day:7, date:"1/15（五）", route:"羽田機場 → 返台", title:"賦歸日",
+    items:[
+      {cat:'transport', time:'交通', text:'電車／接駁巴士，約 500 JPY／人'},
+      {cat:'activity', time:'清晨', text:'飯店退房，搭電車或接駁巴士前往羽田機場第三航廈'},
+      {cat:'activity', time:'08:25 前', text:'務必抵達機場完成報到、安檢、出境手續'},
+      {cat:'activity', time:'10:25', text:'班機起飛，返回台灣，結束 7 日東北雪景之旅'},
+      {cat:'tip', time:'提醒', text:'1/15 班機 10:25 起飛，請務必於 08:25 前抵達羽田機場第三航廈'}
+    ]
+  }
+];
+
+const globalTips = [
+  '交通購票：建議抵達日本後於車站綠色售票機分段購買；行程確定者可提前於 JR East 官網（Ekinet）預訂指定席。',
+  '電子票券：建議將 Suica 或 Pasmo 加入手機錢包，市區短程交通感應即可。',
+  '只見線：以第一只見川橋梁絕景聞名，若想順遊建議提早出發或於隔日安排半天彈性時間，並確認冬季列車班次。',
+  '銀山溫泉巴士：冬季班次少，點燈約在日落後（16:30–17:00），務必查好末班車。',
+  '回程提醒：1/15 班機 10:25 起飛，08:25 前抵達第三航廈。'
+];
+
+// ---------- state ----------
+let query = '';
+let categoryFilter = 'all';
+let dayFilter = 'all';
+
+// ---------- flatten & stats ----------
+const totalItems = days.reduce((sum,d)=>sum+d.items.length,0);
+document.getElementById('statItems').textContent = totalItems;
+
+// ---------- build chips ----------
+const chipRow = document.getElementById('chipRow');
+Object.keys(CAT_LABEL).forEach(cat=>{
+  const btn = document.createElement('button');
+  btn.className = 'chip' + (cat==='all' ? ' active' : '');
+  btn.dataset.cat = cat;
+  btn.innerHTML = (cat!=='all' ? ICONS[cat] : '') + '<span>'+CAT_LABEL[cat]+'</span>';
+  btn.addEventListener('click', ()=>{
+    categoryFilter = cat;
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active','ember'));
+    btn.classList.add('active');
+    if(cat!=='all') btn.classList.add('ember');
+    render();
+  });
+  chipRow.appendChild(btn);
+});
+
+// ---------- build day tabs ----------
+const dayTabs = document.getElementById('dayTabs');
+const allTab = document.createElement('div');
+allTab.className = 'day-tab active';
+allTab.innerHTML = '<span class="d">全部</span><span class="m">7天</span>';
+allTab.addEventListener('click', ()=>{ dayFilter='all'; refreshDayTabs(); render(); });
+dayTabs.appendChild(allTab);
+days.forEach(d=>{
+  const tab = document.createElement('div');
+  tab.className = 'day-tab';
+  tab.innerHTML = '<span class="d">Day '+d.day+'</span><span class="m">'+d.date.split('（')[0]+'</span>';
+  tab.addEventListener('click', ()=>{ dayFilter = d.day; refreshDayTabs(); render(); });
+  tab.dataset.day = d.day;
+  dayTabs.appendChild(tab);
+});
+function refreshDayTabs(){
+  document.querySelectorAll('.day-tab').forEach(t=>{
+    const isAll = !t.dataset.day;
+    t.classList.toggle('active', (isAll && dayFilter==='all') || (t.dataset.day && Number(t.dataset.day)===dayFilter));
+  });
+}
+
+// ---------- side tips ----------
+const tipListSide = document.getElementById('tipListSide');
+globalTips.forEach(t=>{
+  const li = document.createElement('li');
+  li.innerHTML = ICONS.tip + '<span>'+t+'</span>';
+  tipListSide.appendChild(li);
+});
+
+// ---------- search events ----------
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('input', e=>{ query = e.target.value.trim().toLowerCase(); render(); });
+document.getElementById('clearBtn').addEventListener('click', ()=>{
+  query=''; searchInput.value='';
+  categoryFilter='all'; dayFilter='all';
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active','ember'));
+  document.querySelector('.chip[data-cat="all"]').classList.add('active');
+  refreshDayTabs();
+  render();
+});
+
+function highlight(text){
+  if(!query) return text;
+  const idx = text.toLowerCase().indexOf(query);
+  if(idx===-1) return text;
+  return text.slice(0,idx) + '<mark>' + text.slice(idx, idx+query.length) + '</mark>' + text.slice(idx+query.length);
+}
+
+function itemMatches(item, day){
+  if(categoryFilter!=='all' && item.cat!==categoryFilter) return false;
+  if(!query) return true;
+  const hay = (item.text+' '+item.time+' '+day.route+' '+day.title).toLowerCase();
+  return hay.indexOf(query) !== -1;
+}
+
+function render(){
+  const mainCol = document.getElementById('mainCol');
+  mainCol.innerHTML = '';
+  let matchedCount = 0;
+  let renderedDays = 0;
+
+  days.forEach(day=>{
+    if(dayFilter!=='all' && day.day!==dayFilter) return;
+
+    const filtering = !!query || categoryFilter!=='all';
+    const visibleItems = filtering ? day.items.filter(it=>itemMatches(it, day)) : day.items;
+
+    if(filtering && visibleItems.length===0) return;
+
+    matchedCount += visibleItems.length;
+    renderedDays++;
+
+    const section = document.createElement('div');
+    section.className = 'day-section';
+
+    const head = document.createElement('div');
+    head.className = 'day-head';
+    head.innerHTML =
+      '<div class="day-badge mono">Day '+day.day+' ・ '+day.date+'</div>'+
+      '<div class="day-head-text"><div class="day-head-title">'+day.title+'</div>'+
+      '<div class="day-head-route">'+day.route+'</div></div>';
+    section.appendChild(head);
+
+    visibleItems.forEach(item=>{
+      const row = document.createElement('div');
+      row.className = 'item-row ' + item.cat;
+      row.innerHTML =
+        '<div class="item-icon">'+ICONS[item.cat]+'</div>'+
+        '<div class="item-body"><span class="item-time">'+item.time+'</span>'+
+        '<div class="item-text">'+highlight(item.text)+'</div></div>';
+      section.appendChild(row);
+    });
+
+    mainCol.appendChild(section);
+  });
+
+  document.getElementById('statMatched').textContent = (query || categoryFilter!=='all' || dayFilter!=='all') ? matchedCount : totalItems;
+
+  if(renderedDays===0){
+    mainCol.innerHTML = '<div class="empty-state"><div class="big">🚉</div>沒有找到符合條件的行程資訊<br>試試清除搜尋字詞或篩選條件</div>';
+  }
+}
+
+render();
+</script>
+</body>
+</html>
