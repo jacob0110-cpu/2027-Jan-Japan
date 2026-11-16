@@ -32,6 +32,8 @@ h1{font:900 22px/1.25 "Noto Serif TC",serif;margin:0 0 4px;letter-spacing:.02em}
 .badge{display:inline-block;font-size:12px;padding:1px 9px;border-radius:999px;background:#e8f1fc;color:#1b5fa8;white-space:nowrap}
 .badge.pay{background:#fdeee3;color:var(--pay)}.badge.jr{background:#e1f5ea;color:#17784b}
 .hotel{display:flex;gap:8px;align-items:center;background:#fff7ea;border:1px solid #f4dcb4;border-radius:10px;padding:8px 12px;margin:8px 0 14px;font-size:14px}
+.hc{background:#fff7ea;border:1px solid #f4dcb4;border-radius:10px;padding:8px 12px;margin:8px 0 14px;font-size:14px}
+.hc summary{cursor:pointer}.hc dl{display:grid;grid-template-columns:4.5em 1fr;gap:4px 10px;margin:10px 0 4px}.hc dt{color:var(--mute)}.hc dd{margin:0;word-break:break-word}
 .acts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;padding:5px 11px;font:inherit;font-size:13px;text-decoration:none;cursor:pointer}
 .btn:hover{border-color:var(--ice);color:var(--ice)}
@@ -90,9 +92,21 @@ ul.p{margin:0;padding-left:20px;font-size:14px}
 // ---- 資料 ----------------------------------------------------------
 // 停留點格式：[時間, 圖示, 標題, 說明, 類型(jr=JR Pass免費/pay=自費), 座標, 地圖搜尋字串, 提醒, 費用]
 const COLORS=['#2f7fd1','#0f9f9a','#7c5cd6','#d6405f','#e8912d','#2e9d57','#5f6f86'];
+const HOTELS=[
+{s:'GRIDS 盛岡',n:'盛岡格瑞茲高級酒店 GRIDS PREMIUM HOTEL MORIOKA',note:'2026/5/1 新開業',ll:[39.7027,141.1362],inn:'1/09',out:'1/10',nt:1,
+ room:'大床房（1 張大床）・含 2 份早餐・2 位成人',addr:'3-6 Moriokaekimae-Kitadori, Morioka 020-0033',tel:'+81-19-6814380',
+ pay:'易遊網預訂，待扣款；現場另收住宿稅約 TWD 79（以飯店當日公告為準）',via:'易遊網 ezTravel'},
+{s:'Dormy Inn 秋田',n:'中通溫泉 小町之湯 多美迎秋田 Dormy Inn Akita',ll:[39.7189,140.1250],inn:'1/10',out:'1/11',nt:1,
+ room:'禁煙雙人房（18㎡，1–2 人）・含早餐',addr:'秋田縣秋田市仲通',pay:'現場支付，總額 ¥15,300（含稅）',
+ via:'官網（感恩節特惠・雙倍積分・官網獨家）',q:'Dormy Inn Akita'},
+{s:'山形大和魯內',n:'山形站前大和魯內酒店 Daiwa Roynet Hotel Yamagata Ekimae',ll:[38.2493,140.3297],inn:'1/11',out:'1/13',nt:2,
+ room:'中等大床房・禁菸（1 張大床）・含 2 份早餐・2 位成人',addr:'2-9 Saiwaicho, Yamagata 990-0038',tel:'+81-23-6277255',
+ pay:'易遊網預訂，待扣款',via:'易遊網 ezTravel'},
+{s:'東橫INN 馬喰町',n:'東橫INN 東京日本橋馬喰町',ll:[35.6924,139.7842],inn:'1/13',out:'1/15',nt:2,via:'東橫INN 官網'}
+];
 const DAYS=[
 {d:'1/09 (六)',s:'盛岡',t:'台北 ➔ 羽田 ➔ 盛岡',jr:'Day 1',
- hotel:['GRIDS PREMIUM HOTEL MORIOKA',[39.7027,141.1362]],
+ h:0,
  path:[[35.5494,139.7798],[35.6812,139.7671],[39.7013,141.1366]],
  st:[
  ['07:15–11:00','✈️','長榮 BR192 台北松山 ➔ 羽田','TSA T1 ➔ HND T3。',,[35.5494,139.7798]],
@@ -102,7 +116,7 @@ const DAYS=[
  ['16:30–18:30','🏯','盛岡城跡公園、岩手銀行赤磚館','雪景與歐式紅磚建築，夜間點燈。',,[39.7006,141.1514]],
  ['晚餐','🍜','盛樓閣（冷麵、燒肉）或 東家（碗子蕎麥麵）','',,,'盛樓閣 盛岡']]},
 {d:'1/10 (日)',s:'秋田',t:'盛岡 ➔ 秋田市區',jr:'Day 2',
- hotel:['Dormy Inn 秋田（中通溫泉 小町之湯）',[39.7189,140.1250]],
+ h:1,
  path:[[39.7013,141.1366],[39.7170,140.1290],[39.7198,140.1103]],
  st:[
  ['08:30–10:30','⛩️','盛岡市區晨景散步','櫻山神社、紺屋町番屋傳統街區。',,[39.7022,141.1496]],
@@ -112,7 +126,7 @@ const DAYS=[
  ['晚餐','🍲','無限堂 或 秋田比內地鶏屋','比內地雞親子丼、切蒲葵鍋。',,,'秋田 比內地雞'],
  ['21:30–22:30','♨️','飯店溫泉與夜鳴拉麵','小町之湯天然溫泉，免費夜鳴醬油拉麵。']]},
 {d:'1/11 (一)',s:'角館·田澤湖',t:'秋田 ➔ 角館 ➔ 田澤湖 ➔ 山形',jr:'Day 3',
- hotel:['Daiwa Roynet Hotel 山形站前',[38.2493,140.3297]],
+ h:2,
  path:[[39.7170,140.1290],[39.5988,140.5613],[39.7003,140.7278],[39.4536,140.4786],[38.7625,140.3017],[38.2486,140.3281]],
  st:[
  ['08:00–08:45','🚄','秋田 ➔ 角館','搭秋田新幹線抵達「陸奧小京都」。','jr',[39.5988,140.5613]],
@@ -122,7 +136,7 @@ const DAYS=[
  ['14:15–17:30','🚆','田澤湖 ➔ 大曲 ➔ 新庄 ➔ 山形','新幹線 ➔ JR 奧羽本線 ➔ 山形新幹線 翼號。','jr',[38.2486,140.3281],,'⚠️ 大曲～新庄的奧羽本線班次少、冬季易延誤，請事先用 Navitime／Jorudan 查好班次，並預留備案。'],
  ['晚餐','🥩','米澤牛 登起波 或 黃木','米澤牛燒肉／壽喜燒，可搭山形芋煮。',,,'米澤牛 山形站']]},
 {d:'1/12 (二)',s:'藏王',t:'山形 ➔ 藏王樹冰 ➔ 山形',jr:'Day 4',
- hotel:['Daiwa Roynet Hotel 山形站前（連泊）',[38.2493,140.3297]],
+ h:2,
  path:[[38.2486,140.3281],[38.1597,140.4467],[38.2486,140.3281]],
  st:[
  ['08:20–09:05','🚌','山形站前 ➔ 藏王溫泉（山交巴士）','山形站東口 1 號站牌上車。','pay',[38.2486,140.3281],,,'單程約 ¥1,000'],
@@ -131,7 +145,7 @@ const DAYS=[
  ['16:00–16:45','🚌','藏王溫泉 ➔ 山形站','山交巴士返回市區。','pay'],
  ['晚餐','🍜','龍上海（山形店）','山形人氣辣味噌拉麵。',,,'龍上海 山形']]},
 {d:'1/13 (三)',s:'銀山溫泉',t:'山形 ➔ 銀山溫泉 ➔ 東京',jr:'Day 5',
- hotel:['東橫INN 東京日本橋馬喰町',[35.6924,139.7842]],
+ h:3,
  path:[[38.2486,140.3281],[38.5976,140.3667],[38.5720,140.5340],[38.5976,140.3667],[35.6812,139.7671],[35.6924,139.7842]],
  st:[
  ['08:30–09:15','🚄','山形 ➔ 大石田','山形新幹線或奧羽本線。','jr',[38.5976,140.3667]],
@@ -140,7 +154,7 @@ const DAYS=[
  ['15:30–18:50','🚄','山形新幹線 翼號 大石田 ➔ 東京','直達東京站，再轉 JR 總武線快速至馬喰町（Pass 最後一次使用）。','jr',[35.6812,139.7671]],
  ['晚餐','🍤','東京站一番街拉麵街（六厘舍沾麵）','或馬喰町周邊居酒屋。',,,'六厘舍 東京站']]},
 {d:'1/14 (四)',s:'東京',t:'東京市區自由行',jr:'自費',
- hotel:['東橫INN 東京日本橋馬喰町（連泊）',[35.6924,139.7842]],
+ h:3,
  path:[[35.6924,139.7842],[35.7148,139.7967],[35.7101,139.8107],[35.6717,139.7640],[35.6595,139.7005]],
  st:[
  ['09:00–12:00','⛩️','淺草寺、雷門、仲見世通','採買伴手禮。',,[35.7148,139.7967]],
@@ -167,7 +181,20 @@ const base={
  '衛星':L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'Tiles &copy; Esri',maxZoom:18})
 };
 base['標準'].addTo(map);
-L.control.layers(base,null,{position:'topright',collapsed:true}).addTo(map);
+const ctl=L.control.layers(base,null,{position:'topright',collapsed:true}).addTo(map);
+
+// ---- Google 地圖底圖 -----------------------------------------------
+// 在下方引號內貼上你的 Google Maps JavaScript API 金鑰；留空則使用上方的免金鑰底圖。
+const GMAPS_KEY='';
+const loadScript=src=>new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+if(GMAPS_KEY){
+ window.initG=()=>loadScript('https://cdn.jsdelivr.net/npm/leaflet.gridlayer.googlemutant@0.14.1/dist/Leaflet.GoogleMutant.js').then(()=>{
+  const types={'Google 地圖':'roadmap','Google 衛星':'hybrid','Google 地形':'terrain'};let first;
+  for(const [n,t] of Object.entries(types)){const l=L.gridLayer.googleMutant({type:t,maxZoom:20});ctl.addBaseLayer(l,n);first=first||l}
+  map.removeLayer(base['標準']);first.addTo(map);
+ }).catch(()=>console.warn('Google 地圖載入失敗，已保留原底圖'));
+ loadScript(`https://maps.googleapis.com/maps/api/js?key=${GMAPS_KEY}&language=zh-TW&callback=initG`).catch(()=>console.warn('Google Maps API 載入失敗'));
+}
 const layer=L.layerGroup().addTo(map);
 
 const pin=(n,c,h)=>L.divIcon({className:'',iconSize:[26,26],iconAnchor:[13,26],popupAnchor:[0,-26],html:`<div class="pin${h?' h':''}" style="--c:${c}"><i>${n}</i></div>`});
@@ -197,21 +224,27 @@ function overview(){
   L.marker(x.path[Math.min(1,x.path.length-1)],{icon:pin(i+1,COLORS[i])}).addTo(layer).bindPopup(`<b>Day ${i+1}｜${x.d}</b><br>${x.t}`).on('click',()=>go(i));
  });
  body.innerHTML=`<h3 style="margin-top:2px">點選任一天，地圖會聚焦當天路線</h3>`+
- DAYS.map((x,i)=>`<button class="card" style="--c:${COLORS[i]}" data-i="${i}"><div class="dot">${i+1}</div><div><b>${x.d}｜${x.t}</b><span>${x.jr==='自費'?'自費交通':'JR Pass '+x.jr} ${x.hotel?'· 🏨 '+x.hotel[0]:''}</span></div></button>`).join('')+
- `<h3>🎫 JR Pass 涵蓋（Day 1–5）</h3><ul class="p"><li>東京單軌電車（羽田 ➔ 濱松町）</li><li>東北新幹線（東京 ➔ 盛岡）</li><li>秋田新幹線（盛岡 ➔ 秋田／角館／田澤湖／大曲）</li><li>山形新幹線（新庄 ➔ 山形 ➔ 大石田 ➔ 東京）</li><li>JR 都內路線（山手線、總武線等）</li></ul>
+ DAYS.map((x,i)=>`<button class="card" style="--c:${COLORS[i]}" data-i="${i}"><div class="dot">${i+1}</div><div><b>${x.d}｜${x.t}</b><span>${x.jr==='自費'?'自費交通':'JR Pass '+x.jr} ${x.h!==undefined?'· 🏨 '+HOTELS[x.h].s:''}</span></div></button>`).join('')+
+ `<h3>🏨 住宿一覽</h3>${HOTELS.map(H=>{const k=DAYS.findIndex(d=>d.h===HOTELS.indexOf(H));return `<button class="card" style="--c:${COLORS[k]}" data-i="${k}"><div class="dot">🏨</div><div><b>${H.s}</b><span>${H.inn} 入住 ➔ ${H.out} 退房（${H.nt} 晚）</span></div></button>`}).join('')}<h3>🎫 JR Pass 涵蓋（Day 1–5）</h3><ul class="p"><li>東京單軌電車（羽田 ➔ 濱松町）</li><li>東北新幹線（東京 ➔ 盛岡）</li><li>秋田新幹線（盛岡 ➔ 秋田／角館／田澤湖／大曲）</li><li>山形新幹線（新庄 ➔ 山形 ➔ 大石田 ➔ 東京）</li><li>JR 都內路線（山手線、總武線等）</li></ul>
  <h3>💴 需另行自費</h3><ul class="p"><li>田澤湖環湖巴士（約 ¥1,230）</li><li>山形 ➔ 藏王溫泉巴士、藏王纜車票</li><li>大石田 ➔ 銀山溫泉巴士（單程約 ¥1,000）</li><li>Day 6–7 東京地鐵與羽田交通</li></ul>
  <h3>🔗 實用連結</h3><div class="links"><a class="btn" target="_blank" rel="noopener" href="https://www.eki-net.com/">JR Eki-Net 劃位</a><a class="btn" target="_blank" rel="noopener" href="https://tenki.jp/forecast/2/">東北天氣</a><a class="btn" target="_blank" rel="noopener" href="https://zaoropeway.co.jp/livecam/">藏王 LiveCam</a><a class="btn" target="_blank" rel="noopener" href="https://tokyo-haneda.com/zh-TW/">羽田航班</a><a class="btn" target="_blank" rel="noopener" href="https://www.tokyo-monorail.co.jp/tc/">東京單軌電車</a></div>`;
  fit(all);
 }
+const gq=q=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+function hotelCard(H,open){
+ const q=H.q||(H.addr?H.n.split(' ').pop()+' '+H.addr:H.n),rows=[
+  ['入住 / 退房',`${H.inn} ➔ ${H.out}（${H.nt} 晚）`],['房型',H.room],['地址',H.addr&&`<a href="${gq(q)}" target="_blank" rel="noopener">${H.addr}</a>`],
+  ['電話',H.tel&&`<a href="tel:${H.tel.replace(/[^+\d]/g,'')}">${H.tel}</a>`],['付款',H.pay],['預訂來源',H.via]].filter(r=>r[1]);
+ return `<details class="hc"${open?' open':''}><summary>🏨 <b>${H.s}</b>${open?'':'（連泊）'} <span class="badge">${H.inn}–${H.out}</span>${H.note?` <span class="badge">${H.note}</span>`:''}</summary><dl>${rows.map(r=>`<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join('')}</dl><a class="btn" target="_blank" rel="noopener" href="${gq(q)}">📍 在 Google 地圖開啟</a></details>`}
 function day(i){
  const x=DAYS[i],c=COLORS[i];layer.clearLayers();
  L.polyline(x.path,{color:c,weight:5,opacity:.9}).addTo(layer);
  const pts=[...x.path];let n=0;const mk={};
  x.st.forEach((s,k)=>{if(s[5]){n++;mk[k]=L.marker(s[5],{icon:pin(n,c)}).addTo(layer).bindPopup(`<b>${s[2]}</b><br><small>${s[0]}</small>`);pts.push(s[5])}});
- if(x.hotel){L.marker(x.hotel[1],{icon:pin('🏨',c,1)}).addTo(layer).bindPopup(`<b>🏨 ${x.hotel[0]}</b>`);pts.push(x.hotel[1])}
+ const H=x.h!==undefined?HOTELS[x.h]:null;if(H){L.marker(H.ll,{icon:pin('🏨',c,1)}).addTo(layer).bindPopup(`<b>🏨 ${H.n}</b>`);pts.push(H.ll)}
  let nn=0;
  body.innerHTML=`<div class="dhead"><h2>Day ${i+1}｜${x.d}<br><span style="font-weight:500;font-size:15px">${x.t}</span></h2>${x.jr==='自費'?'<span class="badge pay">自費交通</span>':`<span class="badge jr">JR Pass ${x.jr}</span>`}</div>
- ${x.hotel?`<div class="hotel">🏨 <a href="${gm(x.hotel[1])}" target="_blank" rel="noopener" style="color:inherit">${x.hotel[0]}</a></div>`:''}
+ ${H?hotelCard(H,DAYS.findIndex(d=>d.h===x.h)===i):''}
  <div class="acts"><a class="btn main" target="_blank" rel="noopener" href="${dirUrl(x.path)}">📍 Google 地圖導航</a><button class="btn" data-fit>🔍 回到當天全景</button></div>
  <ol class="tl" style="--c:${c}">`+x.st.map((s,k)=>{const key=`${i}-${k}`,has=!!s[5];if(has)nn++;
   return `<li class="st${done[key]?' done':''}" style="--c:${c}"><div class="time">${s[0]}</div>
