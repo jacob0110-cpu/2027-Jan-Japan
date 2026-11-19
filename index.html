@@ -188,15 +188,21 @@ const ctl=L.control.layers(base,null,{position:'topright',collapsed:true}).addTo
 
 // ---- Google 地圖底圖 -----------------------------------------------
 // 在下方引號內貼上你的 Google Maps JavaScript API 金鑰；留空則使用上方的免金鑰底圖。
-const GMAPS_KEY='AIzaSyAQUYwu_eIRv_TUNG06C8Afw2J4_UePHkE';
+const GMAPS_KEY='AIzaSyASpYtikL8QKyu2OLCgcm_c0cUBiLYb0rQ';
 const loadScript=src=>new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+let gFailed=false;const gLayers=[];
+function gFallback(why){if(gFailed)return;gFailed=true;console.warn('Google 地圖無法使用，已切回免金鑰底圖：',why);
+ gLayers.forEach(l=>{try{ctl.removeLayer(l);map.removeLayer(l)}catch(e){}});if(!map.hasLayer(base['標準']))base['標準'].addTo(map)}
 if(GMAPS_KEY){
+ window.gm_authFailure=()=>gFallback('金鑰或 API 設定錯誤（請確認已啟用 Maps JavaScript API 並綁定帳單）');
+ addEventListener('unhandledrejection',e=>{if(String(e.reason).includes('IntersectionObserver'))gFallback('Google 圖層初始化失敗')});
  window.initG=()=>loadScript('https://cdn.jsdelivr.net/npm/leaflet.gridlayer.googlemutant@0.14.1/dist/Leaflet.GoogleMutant.js').then(()=>{
-  const types={'Google 地圖':'roadmap','Google 衛星':'hybrid','Google 地形':'terrain'};let first;
-  for(const [n,t] of Object.entries(types)){const l=L.gridLayer.googleMutant({type:t,maxZoom:20});ctl.addBaseLayer(l,n);first=first||l}
-  map.removeLayer(base['標準']);first.addTo(map);
- }).catch(()=>console.warn('Google 地圖載入失敗，已保留原底圖'));
- loadScript(`https://maps.googleapis.com/maps/api/js?key=${GMAPS_KEY}&language=zh-TW&callback=initG`).catch(()=>console.warn('Google Maps API 載入失敗'));
+  if(gFailed)return;
+  const types={'Google 地圖':'roadmap','Google 衛星':'hybrid','Google 地形':'terrain'};
+  for(const [n,t] of Object.entries(types)){const l=L.gridLayer.googleMutant({type:t,maxZoom:20});gLayers.push(l);ctl.addBaseLayer(l,n)}
+  map.removeLayer(base['標準']);gLayers[0].addTo(map);
+ }).catch(e=>gFallback(e));
+ loadScript(`https://maps.googleapis.com/maps/api/js?key=${GMAPS_KEY}&language=zh-TW&callback=initG`).catch(e=>gFallback(e));
 }
 const layer=L.layerGroup().addTo(map);
 
