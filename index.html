@@ -188,7 +188,7 @@ const ctl=L.control.layers(base,null,{position:'topright',collapsed:true}).addTo
 
 // ---- Google 地圖底圖 -----------------------------------------------
 // 在下方引號內貼上你的 Google Maps JavaScript API 金鑰；留空則使用上方的免金鑰底圖。
-const GMAPS_KEY='';
+const GMAPS_KEY='AIzaSyAQUYwu_eIRv_TUNG06C8Afw2J4_UePHkE';
 const loadScript=src=>new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=no;document.head.appendChild(s)});
 if(GMAPS_KEY){
  window.initG=()=>loadScript('https://cdn.jsdelivr.net/npm/leaflet.gridlayer.googlemutant@0.14.1/dist/Leaflet.GoogleMutant.js').then(()=>{
