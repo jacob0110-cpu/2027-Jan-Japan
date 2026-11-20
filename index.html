@@ -236,7 +236,6 @@ const HOTELS=[
  addr:'東京都中央區日本橋馬喰町 1-4-16',via:'東橫INN 官網',note:'直達羽田/成田線便利'}
 ];
 
-// 伴手禮與當地美食清單（附官方網站／介紹連結）
 const FOOD_SOUVENIRS=[
  {id:'f01',day:0,type:'美食',name:'比內地雞烤雞串＆切蒲葵鍋（秋田比内や）',where:'秋田站 Topico 3F / 川反通居酒屋',price:'約 ¥3,500–5,000/人',url:'https://akitahinaiya.co.jp/',urlLabel:'秋田比内や官網'},
  {id:'f02',day:0,type:'伴手禮',name:'佐藤養助 稻庭烏龍麵（手工乾麵禮盒）',where:'秋田站 Topico 2F 伴手禮區',price:'約 ¥1,080–2,160',url:'https://www.sato-yoske.co.jp/',urlLabel:'佐藤養助官網'},
@@ -373,19 +372,50 @@ const DAYS=[
  ]
 }];
 
-// ---- 地圖初始化 ------------------------------------------------------
+// ---- 地圖初始化 + Google Maps Platform API 整合 ----------------
+const GMAPS_KEY='AIzaSyASpYtikL8QKyu2OLCgcm_c0cUBiLYb0rQ';
+
 const map=L.map('map',{zoomControl:false,attributionControl:true}).setView([38.5,140.5],7);
 L.control.zoom({position:'bottomright'}).addTo(map);
 const A='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 const base={
- '標準':L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{attribution:A+' &copy; CARTO',subdomains:'abcd',maxZoom:19}),
- '街道':L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:A,maxZoom:19}),
- '地形':L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{attribution:A+' &copy; OpenTopoMap',subdomains:'abc',maxZoom:17}),
- '衛星':L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'Tiles &copy; Esri',maxZoom:18})
+ 'CARTO 簡潔':L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{attribution:A+' &copy; CARTO',subdomains:'abcd',maxZoom:19}),
+ 'OpenStreetMap':L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:A,maxZoom:19}),
+ '地形圖':L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{attribution:A+' &copy; OpenTopoMap',subdomains:'abc',maxZoom:17}),
+ '衛星影像':L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'Tiles &copy; Esri',maxZoom:18})
 };
-base['標準'].addTo(map);
+base['CARTO 簡潔'].addTo(map);
 const ctl=L.control.layers(base,null,{position:'topright',collapsed:true}).addTo(map);
 const layer=L.layerGroup().addTo(map);
+
+const loadScript=src=>new Promise((ok,no)=>{
+ const s=document.createElement('script');
+ s.src=src;s.async=true;
+ s.onload=ok;s.onerror=no;
+ document.head.appendChild(s);
+});
+
+if(GMAPS_KEY){
+ window.initGoogleMapMutant=function(){
+  loadScript('https://cdn.jsdelivr.net/npm/leaflet.gridlayer.googlemutant@0.14.1/dist/Leaflet.GoogleMutant.js')
+   .then(()=>{
+    const types={'Google 地圖':'roadmap','Google 衛星':'hybrid','Google 地形':'terrain'};
+    let firstLayer=null;
+    for(const [label,mapTypeId] of Object.entries(types)){
+     const gLayer=L.gridLayer.googleMutant({type:mapTypeId,maxZoom:20});
+     ctl.addBaseLayer(gLayer,label);
+     if(!firstLayer)firstLayer=gLayer;
+    }
+    if(firstLayer){
+     map.removeLayer(base['CARTO 簡潔']);
+     firstLayer.addTo(map);
+    }
+   })
+   .catch(err=>console.warn('GoogleMutant 載入失敗，維持原底圖：',err));
+ };
+ loadScript(`https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(GMAPS_KEY)}&language=zh-TW&callback=initGoogleMapMutant`)
+  .catch(err=>console.warn('Google Maps API 載入失敗，請檢查 API Key 或 API 權限：',err));
+}
 
 const pin=(n,c,cls='')=>L.divIcon({className:'',iconSize:[26,26],iconAnchor:[13,26],popupAnchor:[0,-26],html:`<div class="pin${cls?' '+cls:''}" style="--c:${c}"><i>${n}</i></div>`});
 const gm=(ll,q)=>ll?`https://www.google.com/maps/search/?api=1&query=${ll[0]},${ll[1]}`:`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
