@@ -14,7 +14,7 @@
 html,body{height:100%;margin:0}
 body{font:15px/1.6 "Noto Sans TC",system-ui,sans-serif;color:var(--ink);overflow:hidden}
 #map{position:fixed;inset:0;background:#dfe9f3}
-.panel{position:fixed;z-index:500;left:16px;top:16px;bottom:16px;width:min(490px,calc(100vw - 32px));display:flex;flex-direction:column;background:var(--snow);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);border:1px solid rgba(255,255,255,.75);border-radius:18px;box-shadow:0 12px 40px rgba(20,35,58,.28);overflow:hidden;transition:transform .3s}
+.panel{position:fixed;z-index:500;left:16px;top:16px;bottom:16px;width:min(500px,calc(100vw - 32px));display:flex;flex-direction:column;background:var(--snow);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);border:1px solid rgba(255,255,255,.75);border-radius:18px;box-shadow:0 12px 40px rgba(20,35,58,.28);overflow:hidden;transition:transform .3s}
 .panel.hide{transform:translateX(calc(-100% - 24px))}
 header{padding:18px 20px 10px;position:relative}
 .hdr-tools{position:absolute;right:14px;top:14px;display:flex;gap:6px}
@@ -31,7 +31,7 @@ h1{font:900 22px/1.25 "Noto Serif TC",serif;margin:0 0 4px;letter-spacing:.02em;
 .dhead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:8px}
 .dhead h2{font:900 18px/1.35 "Noto Serif TC",serif;margin:0}
 .badge{display:inline-block;font-size:12px;padding:1px 9px;border-radius:999px;background:#e8f1fc;color:#1b5fa8;white-space:nowrap}
-.badge.pay{background:#fdeee3;color:var(--pay)}.badge.jr{background:#e1f5ea;color:#17784b}.badge.custom{background:#f3e8ff;color:#6b21a8}
+.badge.pay{background:#fdeee3;color:var(--pay)}.badge.jr{background:#e1f5ea;color:#17784b}.badge.custom{background:#f3e8ff;color:#6b21a8}.badge.food{background:#fef3c7;color:#92400e}
 
 /* 即時氣候卡片 */
 .wx{background:linear-gradient(135deg,#eef6ff 0%,#f7fbff 100%);border:1px solid #cfe2f7;border-radius:12px;padding:10px 13px;margin:8px 0 12px;font-size:13px}
@@ -43,6 +43,34 @@ h1{font:900 22px/1.25 "Noto Serif TC",serif;margin:0 0 4px;letter-spacing:.02em;
 .wx-cell small{display:block;color:var(--mute);font-size:11px}
 .wx-cell b{font-size:13px;color:var(--ink)}
 .wx-tip{margin-top:7px;color:#334e68;font-size:12.5px}
+
+/* 預算統計儀表板 */
+.budget-card{background:linear-gradient(135deg,#f0fdf4 0%,#f8fafc 100%);border:1px solid #bbf7d0;border-radius:12px;padding:12px 14px;margin:8px 0 14px;font-size:13.5px}
+.budget-top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.budget-total{font-size:18px;font-weight:900;color:#14532d;font-variant-numeric:tabular-nums}
+.budget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}
+.b-cell{background:#fff;border:1px solid #dcfce7;border-radius:8px;padding:6px 8px}
+.b-cell small{display:block;font-size:11px;color:var(--mute)}
+.b-cell b{font-size:13px;font-variant-numeric:tabular-nums;color:var(--ink)}
+.budget-details summary{cursor:pointer;font-size:12.5px;font-weight:700;color:#166534;margin-top:4px}
+.budget-edit-list{display:flex;flex-direction:column;gap:6px;margin-top:8px;padding-top:8px;border-top:1px dashed #bbf7d0}
+.b-edit-row{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12.5px}
+.b-edit-row label{flex:1;color:#334155}
+.b-edit-row input{width:105px;border:1px solid #cbd5e1;border-radius:6px;padding:3px 7px;font:inherit;font-size:12.5px;text-align:right;background:#fff}
+
+/* 伴手禮與美食卡片 */
+.food-box{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:9px 12px;margin:8px 0 12px;font-size:13.5px}
+.food-box summary{cursor:pointer;font-weight:700;color:#78350f;display:flex;align-items:center;justify-content:space-between}
+.food-list{display:flex;flex-direction:column;gap:6px;margin-top:9px}
+.food-item{display:flex;align-items:flex-start;gap:8px;background:#fff;border:1px solid #fef3c7;border-radius:8px;padding:7px 9px}
+.food-item input[type=checkbox]{margin-top:3px;accent-color:#d97706;width:15px;height:15px;cursor:pointer;flex:none}
+.food-item.checked b{text-decoration:line-through;color:var(--mute)}
+.food-item div{flex:1;min-width:0}
+.food-item b{display:block;font-size:13px;color:#451a03}
+.food-item span{display:block;font-size:12px;color:#78350f}
+.food-links{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px}
+.food-link{display:inline-flex;align-items:center;gap:3px;font-size:11.5px;padding:2px 8px;border-radius:6px;background:#fffbeb;border:1px solid #fcd34d;color:#92400e;text-decoration:none;font-weight:500}
+.food-link:hover{background:#fef3c7;border-color:#f59e0b}
 
 /* 住宿卡片 */
 .hc{background:#fff7ea;border:1px solid #f4dcb4;border-radius:10px;padding:8px 12px;margin:8px 0 12px;font-size:14px}
@@ -58,7 +86,7 @@ h1{font:900 22px/1.25 "Noto Serif TC",serif;margin:0 0 4px;letter-spacing:.02em;
 .preset-item div{flex:1;min-width:0}
 .preset-item b{display:block;font-size:13px}
 .preset-item span{display:block;font-size:12px;color:var(--mute)}
-.custom-form{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);display:grid;grid-template-columns:88px 1fr;gap:6px}
+.custom-form{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);display:grid;grid-template-columns:88px 1fr 92px;gap:6px}
 .custom-form input{border:1px solid var(--line);border-radius:7px;padding:6px 8px;font:inherit;font-size:13px;background:#fff;width:100%}
 .custom-form .full{grid-column:1/-1;display:flex;gap:6px}
 
@@ -83,8 +111,12 @@ ol.tl{list-style:none;margin:0;padding:0 0 0 14px;border-left:2px solid var(--c)
 .desc{color:#34445c;font-size:14px;margin:2px 0}
 .warn{font-size:13px;background:#fff4f0;border-left:3px solid var(--pay);padding:5px 10px;border-radius:0 6px 6px 0;margin:5px 0}
 .opt{font-size:12.5px;background:#f0fdf4;border-left:3px solid var(--ok);padding:4px 10px;border-radius:0 6px 6px 0;margin:5px 0;color:#165b38}
-.row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:6px}
 .row .btn{padding:2px 9px;font-size:12px}
+.cost-pill{display:inline-flex;align-items:center;gap:3px;background:#f8fafc;border:1px solid var(--line);border-radius:7px;padding:1px 7px;font-size:12px;color:#334155}
+.cost-pill input{width:64px;border:0;background:transparent;font:inherit;font-size:12px;font-weight:700;color:#14532d;text-align:right;font-variant-numeric:tabular-nums}
+.cost-pill input:focus{outline:none;background:#fff}
+
 .card{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 14px;margin-bottom:10px;cursor:pointer;display:flex;gap:12px;align-items:center;width:100%;text-align:left;font:inherit;color:inherit}
 .card:hover{border-color:var(--c)}
 .dot{flex:none;width:34px;height:34px;border-radius:50%;background:var(--c);color:#fff;display:grid;place-items:center;font-weight:700;font-size:13px}
@@ -112,7 +144,7 @@ ul.p li{margin-bottom:4px}
 .ps-head{border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
 .ps-head h2{font:900 24px/1.25 "Noto Serif TC",serif;margin:0}
 .ps-meta{font-size:13px;color:var(--mute);margin-top:4px}
-.ps-summary{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+.ps-summary{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
 .ps-box{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#fafcff}
 .ps-box h4{margin:0 0 8px;font-size:14px;color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:4px}
 .ps-box ul{margin:0;padding-left:18px;font-size:13px}
@@ -120,13 +152,14 @@ ul.p li{margin-bottom:4px}
 .ps-day{margin-bottom:26px;break-inside:avoid}
 .ps-day-hdr{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:8px;background:#f1f5f9;border-left:5px solid var(--c);margin-bottom:10px}
 .ps-day-hdr h3{margin:0;font:900 16px/1.3 "Noto Serif TC",serif}
-.ps-wx{font-size:12.5px;color:#1e40af;background:#eff6ff;border:1px solid #dbeafe;border-radius:7px;padding:6px 10px;margin-bottom:10px}
-.ps-hotel{font-size:13px;background:#fffbeb;border:1px solid #fde68a;border-radius:7px;padding:7px 11px;margin-bottom:10px}
+.ps-wx{font-size:12.5px;color:#1e40af;background:#eff6ff;border:1px solid #dbeafe;border-radius:7px;padding:6px 10px;margin-bottom:8px}
+.ps-hotel{font-size:13px;background:#fffbeb;border:1px solid #fde68a;border-radius:7px;padding:7px 11px;margin-bottom:8px}
+.ps-food{font-size:12.5px;background:#fefce8;border:1px solid #fef08a;border-radius:7px;padding:6px 10px;margin-bottom:10px;color:#713f12}
 .ps-table{width:100%;border-collapse:collapse;font-size:13.5px}
 .ps-table th,.ps-table td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
 .ps-table th{background:#f8fafc;font-weight:700;color:var(--mute);font-size:12px}
 .ps-table td.col-time{width:115px;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--mute);font-weight:500}
-.ps-table td.col-tag{width:88px;text-align:center}
+.ps-table td.col-tag{width:96px;text-align:center}
 .ps-note{font-size:12px;color:var(--pay);margin-top:3px}
 .ps-opt{font-size:12px;color:#166534;margin-top:3px}
 
@@ -139,6 +172,7 @@ ul.p li{margin-bottom:4px}
  .leaflet-control-layers{margin-top:8px!important}
  .print-sheet{padding:20px 16px}
  .ps-summary{grid-template-columns:1fr}
+ .custom-form{grid-template-columns:1fr 1fr}
 }
 
 @media print{
@@ -182,25 +216,48 @@ ul.p li{margin-bottom:4px}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
-// ---- 核心資料 ----------------------------------------------------------
-// 停留點格式：[時間, 圖示, 標題, 說明, 類型(jr=JR Pass免費/pay=自費/custom=臨時新增), 座標, 地圖搜尋字串, 風險提醒, 費用, 優化建議]
+function mkStop(time, icon, title, desc='', type='', ll=null, q='', warn='', tagCost='', opt='', cost=0){
+ return {time, icon, title, desc, type, ll, q, warn, tagCost, opt, cost: +cost || 0};
+}
+
 const COLORS=['#2f7fd1','#0f9f9a','#7c5cd6','#d6405f','#e8912d','#2e9d57','#5f6f86'];
 
 const HOTELS=[
-{s:'Dormy Inn 秋田',n:'中通溫泉 小町之湯 多美迎秋田 Dormy Inn Akita',ll:[39.7189,140.1250],inn:'1/09',out:'1/10',nt:1,
+{id:'h0',s:'Dormy Inn 秋田',n:'中通溫泉 小町之湯 多美迎秋田 Dormy Inn Akita',ll:[39.7189,140.1250],inn:'1/09',out:'1/10',nt:1,defaultCost:18000,
  room:'禁煙雙人房（18㎡，1–2 人）・含早餐',addr:'秋田縣秋田市仲通 2-3-1',pay:'現場支付，總額 ¥18,000（含稅）',
  via:'官網・多美迎標準方案（大浴池與桑拿房）',q:'Dormy Inn Akita'},
-{s:'Dormy Inn 盛岡',n:'天然溫泉 三颯之湯 多美迎盛岡 Dormy Inn Morioka',ll:[39.7035,141.1450],inn:'1/10',out:'1/11',nt:1,
+{id:'h1',s:'Dormy Inn 盛岡',n:'天然溫泉 三颯之湯 多美迎盛岡 Dormy Inn Morioka',ll:[39.7035,141.1450],inn:'1/10',out:'1/11',nt:1,defaultCost:16200,
  room:'禁煙雙人房（席夢思床與淋浴間，15㎡，1–2 人）・含早餐',addr:'岩手縣盛岡市中央通 2-11-3',pay:'現場支付，總額 ¥16,200（含稅）',
  via:'官網・多美迎標準方案（大浴池與桑拿房）',q:'Dormy Inn Morioka'},
-{s:'山形大和魯內',n:'山形站前大和魯內酒店 Daiwa Roynet Hotel Yamagata Ekimae',ll:[38.2493,140.3297],inn:'1/11',out:'1/13',nt:2,
+{id:'h2',s:'山形大和魯內',n:'山形站前大和魯內酒店 Daiwa Roynet Hotel Yamagata Ekimae',ll:[38.2493,140.3297],inn:'1/11',out:'1/13',nt:2,defaultCost:24000,
  room:'中等大床房・禁菸（1 張大床）・含 2 份早餐・2 位成人',addr:'2-9 Saiwaicho, Yamagata 990-0038',tel:'+81-23-6277255',
- pay:'易遊網預訂，待扣款',via:'易遊網 ezTravel',note:'連續 2 晚免換飯店'},
-{s:'東橫INN 馬喰町',n:'東橫INN 東京日本橋馬喰町',ll:[35.6924,139.7842],inn:'1/13',out:'1/15',nt:2,
+ pay:'易遊網預訂（可於總覽預算表調整金額）',via:'易遊網 ezTravel',note:'連續 2 晚免換飯店'},
+{id:'h3',s:'東橫INN 馬喰町',n:'東橫INN 東京日本橋馬喰町',ll:[35.6924,139.7842],inn:'1/13',out:'1/15',nt:2,defaultCost:22000,
  addr:'東京都中央區日本橋馬喰町 1-4-16',via:'東橫INN 官網',note:'直達羽田/成田線便利'}
 ];
 
-// 每日氣候基準與即時查詢座標
+// 伴手禮與當地美食清單（附官方網站／介紹連結）
+const FOOD_SOUVENIRS=[
+ {id:'f01',day:0,type:'美食',name:'比內地雞烤雞串＆切蒲葵鍋（秋田比内や）',where:'秋田站 Topico 3F / 川反通居酒屋',price:'約 ¥3,500–5,000/人',url:'https://akitahinaiya.co.jp/',urlLabel:'秋田比内や官網'},
+ {id:'f02',day:0,type:'伴手禮',name:'佐藤養助 稻庭烏龍麵（手工乾麵禮盒）',where:'秋田站 Topico 2F 伴手禮區',price:'約 ¥1,080–2,160',url:'https://www.sato-yoske.co.jp/',urlLabel:'佐藤養助官網'},
+ {id:'f03',day:0,type:'伴手禮',name:'秋田銘菓 金萬（白豆沙蜂蜜蛋糕）＆秋田地酒',where:'秋田站 Topico 銘品館',price:'約 ¥800–2,500',url:'https://kinman.co.jp/',urlLabel:'金萬官網'},
+ {id:'f11',day:1,type:'美食',name:'お食事処 桜の里 比內地雞究極親子丼',where:'角館武家屋敷通',price:'約 ¥1,600–2,000/人',url:'https://www.sakuranosato.net/',urlLabel:'桜の里官網'},
+ {id:'f12',day:1,type:'美食',name:'盛樓閣 盛岡冷麵（推薦點「辛味別」分開加辣）',where:'盛岡站正對面 Gen Plaza 2F',price:'約 ¥1,500–3,800/人',url:'https://www.gen-plaza.com/',urlLabel:'盛樓閣官網'},
+ {id:'f13',day:1,type:'伴手禮',name:'南部せんべい乃 巖手屋 南部煎餅（花生／巧克力）',where:'盛岡站 Fesan 1F おでんせ館',price:'約 ¥650–1,500',url:'https://www.iwateya.co.jp/',urlLabel:'巖手屋官網'},
+ {id:'f21',day:2,type:'美食',name:'仙台厚切炭烤牛舌定食（たんや善治郎／利久／伊達）',where:'仙台站 3F 牛たん通り',price:'約 ¥2,500–3,500/人',url:'https://www.livit.jregroup.ne.jp/gyutan-sushistreet/',urlLabel:'仙台牛たん通り'},
+ {id:'f22',day:2,type:'美食',name:'米澤牛 登起波（壽喜燒／牛排）＋山形芋煮',where:'山形站周邊 / 米澤牛專門店',price:'約 ¥5,000–9,000/人',url:'https://www.yonezawabeef.co.jp/chinese02.html',urlLabel:'登起波中文官網'},
+ {id:'f23',day:2,type:'伴手禮',name:'菓匠三全 萩之月（萩の月）卡士達蛋糕＆毛豆麻糬',where:'仙台站 2F／3F 伴手禮街',price:'約 ¥1,200–2,000',url:'https://www.sanzen.co.jp/product/haginotsuki/index.html',urlLabel:'萩之月官網'},
+ {id:'f31',day:3,type:'美食',name:'銀山溫泉「野川とうふや」現煮湯豆腐＆炸豆腐',where:'銀山溫泉街（鄰近免費和樂足湯）',price:'約 ¥250–600',url:'https://twobunnytravel.tw/nogawa-tofuya/',urlLabel:'野川豆腐屋資訊'},
+ {id:'f32',day:3,type:'美食',name:'赤湯ラーメン 龍上海（山形赤湯辣味噌拉麵）',where:'山形市區／站前周邊',price:'約 ¥950–1,200/碗',url:'https://ryushanhai.com/',urlLabel:'龍上海官網'},
+ {id:'f33',day:3,type:'伴手禮',name:'藏王溫泉「稻花餅（いがもち）」＆山形白桃果凍',where:'藏王溫泉街／山形站 S-PAL',price:'約 ¥700–1,500',url:'https://www.visityamagata.jp/',urlLabel:'山形觀光美食'},
+ {id:'f41',day:4,type:'美食',name:'新杵屋「牛肉どまん中」米澤牛新幹線便當',where:'山形站改札口外便當專賣店',price:'約 ¥1,480/個',url:'https://www.shinkineya.com/bentou/',urlLabel:'新杵屋便當官網'},
+ {id:'f42',day:4,type:'伴手禮',name:'乃し梅本舗 佐藤屋 梅子羊羹＆玉響巧克力羊羹',where:'山形站 S-PAL 2F 銘品館',price:'約 ¥900–1,600',url:'https://satoya-matsubei.com/',urlLabel:'佐藤屋官網'},
+ {id:'f43',day:4,type:'購物',name:'三井 OUTLET PARK 幕張（日系服飾＆藥妝免稅）',where:'JR 海濱幕張站南口步行 1 分鐘',price:'依個人購物預算',url:'https://mitsui-shopping-park.com/mop/makuhari/tw/',urlLabel:'幕張Outlet繁中官網'},
+ {id:'f51',day:5,type:'美食',name:'淺草 大黑家天麩羅（明治20年創業胡麻油海老天丼）',where:'淺草雷門傳法院通周邊',price:'約 ¥2,200–4,000/人',url:'http://www.tempura.co.jp/',urlLabel:'大黑家官網'},
+ {id:'f52',day:5,type:'伴手禮',name:'御菓子司 龜十（東京三大銅鑼燒・黑糖/白豆沙）',where:'淺草雷門斜對面',price:'約 ¥430/個',url:'https://asakusa-shoren.jp/zh-hant/stores/1626/',urlLabel:'龜十店舖資訊'},
+ {id:'f61',day:6,type:'伴手禮',name:'NEWYORK PERFECT CHEESE 起司奶油脆餅',where:'羽田機場 T3 江戶小路／免稅店',price:'約 ¥1,080–2,160',url:'https://newyork-perfect-cheese.com/zh-tw',urlLabel:'NY起司餅官網'}
+];
+
 const WEATHER_META=[
  {city:'秋田市（日本海側）',date:'2027-01-09',ll:[39.7200,140.1025],avg:'-3°C ～ 2°C',snow:'高（降雪機率約 75%）',wind:'西北風偏強',tip:'日本海側夜間易積雪結冰，建議出站即換穿防滑靴，行李箱輪子留意積雪。'},
  {city:'角館・盛岡（內陸盆地）',date:'2027-01-10',ll:[39.7036,141.1527],avg:'-5°C ～ 1°C',snow:'中高（乾粉雪為主）',wind:'微風至中風',tip:'盛岡為本州最冷城市之一，早晚氣溫常跌破 -5°C，務必戴毛帽與觸控手套。'},
@@ -211,110 +268,110 @@ const WEATHER_META=[
  {city:'東京 ➔ 羽田機場',date:'2027-01-15',ll:[35.5494,139.7798],avg:'2°C ～ 9°C',snow:'極低（晴朗）',wind:'東京灣海風',tip:'清晨前往羽田機場氣溫約 2°C，登機前可將厚羽絨衣壓縮收納進隨身袋。'}
 ];
 
-// 每日可臨時插入的彈性行程選項
 const FLEX_OPTIONS=[
  [
-  {cat:'❄️ 雪天／室內備案',time:'17:30–18:30',icon:'🛍️',title:'秋田站 Topico & ALS 商場避寒',desc:'新幹線若遇雪延誤或天冷不想走遠，可直接在站共構商場採買稻庭烏龍麵與清酒。',type:'custom',ll:[39.7172,140.1298],q:'秋田駅 トピコ'},
-  {cat:'🍶 宵夜加碼',time:'20:15–21:15',icon:'🏮',title:'秋田市民市場／站前清酒試飲機',desc:'品嚐秋田地酒（新政、雪之茅舍等），小酌暖身後步行回 Dormy Inn。',type:'custom',ll:[39.7156,140.1265],q:'秋田駅前 地酒'}
+  {cat:'❄️ 雪天／室內備案',time:'17:30–18:30',icon:'🛍️',title:'秋田站 Topico & ALS 商場避寒',desc:'新幹線若遇雪延誤或天冷不想走遠，可直接在站共構商場採買稻庭烏龍麵與清酒。',type:'custom',ll:[39.7172,140.1298],q:'秋田駅 トピコ',cost:2000},
+  {cat:'🍶 宵夜加碼',time:'20:15–21:15',icon:'🏮',title:'秋田市民市場／站前清酒試飲機',desc:'品嚐秋田地酒（新政、雪之茅舍等），小酌暖身後步行回 Dormy Inn。',type:'custom',ll:[39.7156,140.1265],q:'秋田駅前 地酒',cost:1500}
  ],
  [
-  {cat:'🖼️ 雪天／室內備案',time:'09:30–10:30',icon:'🎨',title:'秋田縣立美術館（安藤忠雄設計）',desc:'若千秋公園風雪過大，改至對面美術館室內賞藤田嗣治《秋田之行事》巨幅壁畫。',type:'custom',ll:[39.7176,140.1219],q:'秋田県立美術館'},
-  {cat:'☀️ 晴天備案（二選一）',time:'12:30–14:30',icon:'🏞️',title:'田澤湖辰子像雪景（替代角館）',desc:'若當日晴朗無風且確認羽後交通巴士正常運行，可改往日本最深湖泊賞琉璃湖水與白雪。',type:'custom',ll:[39.7236,140.6617],q:'田沢湖 たつこ像'},
-  {cat:'🛍️ 盛岡室內備案',time:'17:00–18:00',icon:'🍎',title:'盛岡站 Fesan 商場伴手禮巡禮',desc:'室外氣溫過低時，直接在車站內採買南部煎餅與岩手蘋果派。',type:'custom',ll:[39.7015,141.1362],q:'盛岡駅 フェザン'}
+  {cat:'🖼️ 雪天／室內備案',time:'09:30–10:30',icon:'🎨',title:'秋田縣立美術館（安藤忠雄設計）',desc:'若千秋公園風雪過大，改至對面美術館室內賞藤田嗣治《秋田之行事》巨幅壁畫。',type:'custom',ll:[39.7176,140.1219],q:'秋田県立美術館',cost:1400},
+  {cat:'☀️ 晴天備案（二選一）',time:'12:30–14:30',icon:'🏞️',title:'田澤湖辰子像雪景（替代角館）',desc:'若當日晴朗無風且確認羽後交通巴士正常運行，可改往日本最深湖泊賞琉璃湖水與白雪。',type:'custom',ll:[39.7236,140.6617],q:'田沢湖 たつこ像',cost:2500},
+  {cat:'🛍️ 盛岡室內備案',time:'17:00–18:00',icon:'🍎',title:'盛岡站 Fesan 商場伴手禮巡禮',desc:'室外氣溫過低時，直接在車站內採買南部煎餅與岩手蘋果派。',type:'custom',ll:[39.7015,141.1362],q:'盛岡駅 フェザン',cost:2000}
  ],
  [
-  {cat:'🥩 仙台加碼',time:'12:15–13:00',icon:'🥤',title:'仙台站毛豆奶昔（ずんだ茶寮）',desc:'吃完牛舌後在車站 3 樓順手買一杯招牌毛豆奶昔帶上車。',type:'custom',ll:[38.2604,140.8822],q:'ずんだ茶寮 仙台駅'},
-  {cat:'🚄 暴雪改道備案',time:'13:15–15:00',icon:'🔄',title:'仙山線停駛備案：經福島轉山形新幹線',desc:'遇大雪仙山線停駛時，改搭東北新幹線至福島站轉乘翼號（Tsubasa）直達山形，全程適用 JR Pass。',type:'jr',ll:[37.7540,140.4590],q:'福島駅'}
+  {cat:'🥩 仙台加碼',time:'12:15–13:00',icon:'🥤',title:'仙台站毛豆奶昔（ずんだ茶寮）',desc:'吃完牛舌後在車站 3 樓順手買一杯招牌毛豆奶昔帶上車。',type:'custom',ll:[38.2604,140.8822],q:'ずんだ茶寮 仙台駅',cost:800},
+  {cat:'🚄 暴雪改道備案',time:'13:15–15:00',icon:'🔄',title:'仙山線停駛備案：經福島轉山形新幹線',desc:'遇大雪仙山線停駛時，改搭東北新幹線至福島站轉乘翼號（Tsubasa）直達山形，全程適用 JR Pass。',type:'jr',ll:[37.7540,140.4590],q:'福島駅',cost:0}
  ],
  [
-  {cat:'☀️ 藏王晴朗加碼',time:'10:30–11:00',icon:'🗿',title:'藏王地藏尊雪中參拜',desc:'走出地藏山頂站即可見半埋在深雪中的巨型地藏菩薩，雪季僅露出頭部與肩膀。',type:'custom',ll:[38.1605,140.4432],q:'蔵王地蔵尊'},
-  {cat:'🌫️ 藏王白牆備案',time:'09:30–11:30',icon:'🏛️',title:'霞城中央 24 樓免費展望台＋山寺遠眺',desc:'若一早 LiveCam 顯示藏王山頂全白零能見度，省下纜車費改走市區高空展望台，下午照常去銀山。',type:'custom',ll:[38.2495,140.3260],q:'霞城セントラル'},
-  {cat:'♨️ 銀山暖身加碼',time:'16:00–16:40',icon:'🛁',title:'銀山溫泉「白銀湯」公共浴場泡湯',desc:'在等待天黑點燈前先泡湯驅寒（入浴料 ¥500，毛巾需自備或現場購買）。',type:'pay',ll:[38.5716,140.5352],q:'しろがね湯 銀山温泉'}
+  {cat:'☀️ 藏王晴朗加碼',time:'10:30–11:00',icon:'🗿',title:'藏王地藏尊雪中參拜',desc:'走出地藏山頂站即可見半埋在深雪中的巨型地藏菩薩，雪季僅露出頭部與肩膀。',type:'custom',ll:[38.1605,140.4432],q:'蔵王地蔵尊',cost:0},
+  {cat:'🌫️ 藏王白牆備案',time:'09:30–11:30',icon:'🏛️',title:'霞城中央 24 樓免費展望台＋山寺遠眺',desc:'若一早 LiveCam 顯示藏王山頂全白零能見度，省下纜車費改走市區高空展望台，下午照常去銀山。',type:'custom',ll:[38.2495,140.3260],q:'霞城セントラル',cost:0},
+  {cat:'♨️ 銀山暖身加碼',time:'16:00–16:40',icon:'🛁',title:'銀山溫泉「白銀湯」公共浴場泡湯',desc:'在等待天黑點燈前先泡湯驅寒（入浴料 ¥500/人，毛巾需自備或現場購買）。',type:'pay',ll:[38.5716,140.5352],q:'しろがね湯 銀山温泉',cost:1000}
  ],
  [
-  {cat:'🛍️ 幕張加碼',time:'18:30–19:30',icon:'🍣',title:'海濱幕張站前 Plena / Mitsui 晚餐',desc:'逛完 Outlet 後在站前商場吃迴轉壽司或拉麵再搭京葉線返回市區。',type:'custom',ll:[35.6488,140.0422],q:'プレナ幕張'},
-  {cat:'☔ 延誤備案（放棄 Outlet）',time:'17:30–19:30',icon:'🍜',title:'東京站一番街拉麵街（六厘舍沾麵）',desc:'若山形新幹線遇大雪延誤抵京，取消前往幕張，直接於東京站一番街吃晚餐與買伴手禮。',type:'custom',ll:[35.6812,139.7681],q:'東京ラーメンストリート'}
+  {cat:'🛍️ 幕張加碼',time:'18:30–19:30',icon:'🍣',title:'海濱幕張站前 Plena / Mitsui 晚餐',desc:'逛完 Outlet 後在站前商場吃迴轉壽司或拉麵再搭京葉線返回市區。',type:'custom',ll:[35.6488,140.0422],q:'プレナ幕張',cost:3500},
+  {cat:'☔ 延誤備案（放棄 Outlet）',time:'17:30–19:30',icon:'🍜',title:'東京站一番街拉麵街（六厘舍沾麵）',desc:'若山形新幹線遇大雪延誤抵京，取消前往幕張，直接於東京站一番街吃晚餐與買伴手禮。',type:'custom',ll:[35.6812,139.7681],q:'東京ラーメンストリート',cost:2400}
  ],
  [
-  {cat:'🌇 黃昏加碼',time:'16:30–18:00',icon:'🌃',title:'SHIBUYA SKY 夕陽與東京夜景',desc:'從晴空塔轉往澀谷時可順遊（需提前兩週官網預約日落時段門票）。',type:'pay',ll:[35.6584,139.7022],q:'SHIBUYA SKY'},
-  {cat:'☔ 雨雪／避寒備案',time:'14:00–17:30',icon:'🐠',title:'墨田水族館（晴空塔城 5–6F）',desc:'全室內恆溫空間，適合走累了放慢步調看企鵝與水母。',type:'pay',ll:[35.7102,139.8096],q:'すみだ水族館'}
+  {cat:'🌇 黃昏加碼',time:'16:30–18:00',icon:'🌃',title:'SHIBUYA SKY 夕陽與東京夜景',desc:'從晴空塔轉往澀谷時可順遊（需提前兩週官網預約日落時段門票，約 ¥2,500/人）。',type:'pay',ll:[35.6584,139.7022],q:'SHIBUYA SKY',cost:5000},
+  {cat:'☔ 雨雪／避寒備案',time:'14:00–17:30',icon:'🐠',title:'墨田水族館（晴空塔城 5–6F）',desc:'全室內恆溫空間，適合走累了放慢步調看企鵝與水母（約 ¥2,500/人）。',type:'pay',ll:[35.7102,139.8096],q:'すみだ水族館',cost:5000}
  ],
  [
-  {cat:'🍜 登機前加碼',time:'08:30–09:30',icon:'🏮',title:'羽田機場第 3 航廈「江戶小路」最後採買',desc:'出發大廳 4 樓江戶風商店街，補齊東京芭娜娜、NY 起司奶油脆餅與免稅伴手禮。',type:'custom',ll:[35.5448,139.7676],q:'羽田空港 第3ターミナル 江戸小路'}
+  {cat:'🍜 登機前加碼',time:'08:30–09:30',icon:'🏮',title:'羽田機場第 3 航廈「江戶小路」最後採買',desc:'出發大廳 4 樓江戶風商店街，補齊東京芭娜娜、NY 起司奶油脆餅與免稅伴手禮。',type:'custom',ll:[35.5448,139.7676],q:'羽田空港 第3ターミナル 江戸小路',cost:4000}
  ]
 ];
 
 const DAYS=[
-{d:'1/09 (六)',s:'秋田',t:'台北 ➔ 羽田 ➔ 東京 ➔ 秋田',jr:'Day 1',
- h:0,
+{d:'1/09 (六)',s:'秋田',t:'台北 ➔ 羽田 ➔ 東京 ➔ 秋田',jr:'Day 1',h:0,
  path:[[35.5494,139.7798],[35.6812,139.7671],[39.7170,140.1290]],
  st:[
- ['07:15–11:00','✈️','長榮 BR192 台北松山 ➔ 羽田','TSA T1 ➔ HND T3。',,[35.5494,139.7798],,,,'建議出發前 48 小時完成線上報到與 Visit Japan Web 填寫。'],
- ['11:00–12:00','🛃','入境、兌換並啟用 JR PASS','於羽田 T3 JR 東日本旅行服務中心兌換周遊券，並一次劃好 Day 1–5 新幹線指定席。',,,,,,'2026年3月起整合為新版 JR EAST PASS（5日券 ¥35,000），可直接在自動售票機掃護照領票。'],
- ['12:06–12:45','🚆','東京單軌電車 ➔ 濱松町 ➔ 山手線 ➔ 東京站','單軌電車與 JR 山手線皆含在 Pass 內，東京站轉乘建議預留 25 分鐘以上。','jr',[35.6812,139.7671],,,,'可在東京站 Gransta 購買鐵路便當帶上新幹線享用。'],
- ['約 13:20–17:10','🚄','秋田新幹線 小町號 東京 ➔ 秋田','東京站直達秋田，約 3 小時 45 分，全車指定席。','jr',[39.7170,140.1290],,'⚠️ 實際發車與抵達時間請以 JR 東日本冬季時刻表為準；冬季 16:30 即天黑，抵達後以休息與在地晚餐為主。'],
- ['18:00–20:00','🍲','晚餐：比內地雞、切蒲葵鍋','秋田站周邊（秋田比內地雞や）或川反通居酒屋。',,,'秋田 比內地雞 居酒屋'],
- ['21:30–23:00','♨️','飯店溫泉與夜鳴拉麵','小町之湯天然溫泉，21:30–23:00 提供免費夜鳴醬油拉麵。']]},
-{d:'1/10 (日)',s:'角館·盛岡',t:'秋田 ➔ 角館 ➔ 盛岡',jr:'Day 2',
- h:1,
+  mkStop('07:15–11:00','✈️','長榮 BR192 台北松山 ➔ 羽田','TSA T1 ➔ HND T3。','', [35.5494,139.7798], '','', '', '建議出發前 48 小時完成線上報到與 Visit Japan Web 填寫。', 0),
+  mkStop('11:00–12:00','🛃','入境、兌換並啟用 JR PASS','於羽田 T3 JR 東日本旅行服務中心兌換周遊券，並一次劃好 Day 1–5 新幹線指定席。','', null, '','', '', '2026年3月起整合為新版 JR EAST PASS（5日券 ¥35,000），可直接在自動售票機掃護照領票。', 0),
+  mkStop('12:06–12:45','🚆','東京單軌電車 ➔ 濱松町 ➔ 山手線 ➔ 東京站','單軌電車與 JR 山手線皆含在 Pass 內，東京站轉乘建議預留 25 分鐘以上。','jr', [35.6812,139.7671], '','', '', '可在東京站 Gransta 購買鐵路便當帶上新幹線享用（預估便當約 ¥3,000/2人）。', 3000),
+  mkStop('約 13:20–17:10','🚄','秋田新幹線 小町號 東京 ➔ 秋田','東京站直達秋田，約 3 小時 45 分，全車指定席。','jr', [39.7170,140.1290], '','⚠️ 實際發車與抵達時間請以 JR 東日本冬季時刻表為準；冬季 16:30 即天黑，抵達後以休息與在地晚餐為主。','', '', 0),
+  mkStop('18:00–20:00','🍲','晚餐：比內地雞、切蒲葵鍋','秋田站周邊（秋田比内や）或川反通居酒屋。','', null, '秋田 比内地鶏 居酒屋','', '預估 ¥8,000/2人', '', 8000),
+  mkStop('21:30–23:00','♨️','飯店溫泉與夜鳴拉麵','小町之湯天然溫泉，21:30–23:00 提供免費夜鳴醬油拉麵。','', null, '','', '', '', 0)
+ ]},
+{d:'1/10 (日)',s:'角館·盛岡',t:'秋田 ➔ 角館 ➔ 盛岡',jr:'Day 2',h:1,
  path:[[39.7198,140.1103],[39.7170,140.1290],[39.5988,140.5613],[39.7013,141.1366],[39.7006,141.1514]],
  st:[
- ['08:30–10:30','🏯','千秋公園（久保田城跡）雪景','從飯店步行約 10 分鐘，雪中護城河與御隅櫓景色清幽。',,[39.7198,140.1103]],
- ['約 11:00–11:50','🚄','秋田 ➔ 角館（小町號）','全車指定席需先劃位；大件行李可寄放角館站前觀光案內所（藏）或車站置物櫃。','jr',[39.5988,140.5613],,,,'若遇大型行李箱滿櫃，角館站旁觀光案內所提供人工寄物服務。'],
- ['12:00–14:30','🏯','角館武家屋敷散策與午餐','雪中黑牆古宅區（青柳家、石黑家）；午餐推薦櫻之里比內地雞親子丼與稻庭烏龍麵。',,[39.5967,140.5636]],
- ['約 15:00–15:55','🚄','角館 ➔ 盛岡（小町號）','穿越奧羽山脈雪景抵達盛岡。','jr',[39.7013,141.1366],,'⚠️ 田澤湖環湖巴士冬季班次極少，主行程已精簡；若天氣極佳想改去田澤湖，可從上方「臨時增加行程」切換。'],
- ['16:30–18:00','🏯','盛岡城跡公園、岩手銀行赤磚館','雪景與紅磚建築夜間點燈。',,[39.7006,141.1514]],
- ['晚餐','🍜','盛樓閣冷麵 或 東家碗子蕎麥麵','盛岡三大麵名店，冷麵搭配烤肉是當地經典吃法。',,,'盛樓閣 盛岡']]},
-{d:'1/11 (一)',s:'仙台·山形',t:'盛岡 ➔ 仙台 ➔ 山形',jr:'Day 3',
- h:2,
+  mkStop('08:30–10:30','🏯','千秋公園（久保田城跡）雪景','從飯店步行約 10 分鐘，雪中護城河與御隅櫓景色清幽。','', [39.7198,140.1103], '','', '', '', 0),
+  mkStop('約 11:00–11:50','🚄','秋田 ➔ 角館（小町號）','全車指定席需先劃位；大件行李可寄放角館站前觀光案內所（藏）或車站置物櫃（約 ¥800）。','jr', [39.5988,140.5613], '','', '', '若遇大型行李箱滿櫃，角館站旁觀光案內所提供人工寄物服務。', 800),
+  mkStop('12:00–14:30','🏯','角館武家屋敷散策與午餐','雪中黑牆古宅區（青柳家、石黑家）；午餐推薦櫻之里比內地雞親子丼與稻庭烏龍麵。','', [39.5967,140.5636], '','', '門票＋午餐約 ¥5,000/2人', '', 5000),
+  mkStop('約 15:00–15:55','🚄','角館 ➔ 盛岡（小町號）','穿越奧羽山脈雪景抵達盛岡。','jr', [39.7013,141.1366], '','⚠️ 田澤湖環湖巴士冬季班次極少，主行程已精簡；若天氣極佳想改去田澤湖，可從上方「臨時增加行程」切換。','', '', 0),
+  mkStop('16:30–18:00','🏯','盛岡城跡公園、岩手銀行赤磚館','雪景與紅磚建築夜間點燈。','', [39.7006,141.1514], '','', '', '', 0),
+  mkStop('晚餐','🍜','盛樓閣冷麵 或 東家碗子蕎麥麵','盛岡三大麵名店，冷麵搭配烤肉是當地經典吃法。','', null, '盛樓閣 盛岡','', '預估 ¥5,500/2人', '', 5500)
+ ]},
+{d:'1/11 (一)',s:'仙台·山形',t:'盛岡 ➔ 仙台 ➔ 山形',jr:'Day 3',h:2,
  path:[[39.7013,141.1366],[38.2601,140.8824],[38.2486,140.3281]],
  st:[
- ['08:30–09:45','⛩️','盛岡晨景散步','櫻山神社烏帽子岩、紺屋町番屋傳統街區。',,[39.7022,141.1496]],
- ['約 10:00–10:50','🚄','東北新幹線 盛岡 ➔ 仙台','隼號（Hayabusa）約 40 分鐘直達，全車指定席。','jr',[38.2601,140.8824],,,,'行李可先寄放仙台站投幣式置物櫃，輕鬆吃午餐。'],
- ['11:00–13:00','🥩','仙台站午餐：厚切牛舌','站內 3 樓「牛たん通り」（善治郎、利久、伊達牛舌）。',,,'仙台站 牛たん通り'],
- ['約 13:15–14:40','🚆','JR 仙山線 仙台 ➔ 山形','快速列車約 1 小時 15 分，沿途欣賞山寺與峽谷雪景（自由席）。','jr',[38.2486,140.3281],,'⚠️ 仙山線行經山區，冬季易受大雪延誤或停駛；若停駛請立即啟動備案：改搭東北新幹線至福島站，轉山形新幹線「翼號」直達山形。'],
- ['15:00–17:00','🛍️','飯店入住、山形站前商場與 S-PAL 採買','辦理連泊入住手續，逛站共構商場採買山形縣產水果點心與清酒，早點休息養精蓄銳。',,[38.2493,140.3297],,,,'文翔館與霞城公園調整至 1/13 上午陽光充足時段順遊。'],
- ['晚餐','🥩','米澤牛 登起波 或 黃木','山形站前直結商場即可品嚐米澤牛壽喜燒／牛排，推薦加點山形鄉土料理「芋煮」。',,,'米澤牛 山形站']]},
-{d:'1/12 (二)',s:'藏王·銀山',t:'山形 ➔ 藏王樹冰 ➔ 銀山溫泉夜景 ➔ 山形',jr:'Day 4',
- h:2,
+  mkStop('08:30–09:45','⛩️','盛岡晨景散步','櫻山神社烏帽子岩、紺屋町番屋傳統街區。','', [39.7022,141.1496], '','', '', '', 0),
+  mkStop('約 10:00–10:50','🚄','東北新幹線 盛岡 ➔ 仙台','隼號（Hayabusa）約 40 分鐘直達，全車指定席。','jr', [38.2601,140.8824], '','', '', '行李可先寄放仙台站投幣式置物櫃（約 ¥800），輕鬆吃午餐。', 800),
+  mkStop('11:00–13:00','🥩','仙台站午餐：厚切牛舌','站內 3 樓「牛たん通り」（善治郎、利久、伊達牛舌）。','', null, '仙台站 牛たん通り','', '預估 ¥6,000/2人', '', 6000),
+  mkStop('約 13:15–14:40','🚆','JR 仙山線 仙台 ➔ 山形','快速列車約 1 小時 15 分，沿途欣賞山寺與峽谷雪景（自由席）。','jr', [38.2486,140.3281], '','⚠️ 仙山線行經山區，冬季易受大雪延誤或停駛；若停駛請立即啟動備案：改搭東北新幹線至福島站，轉山形新幹線「翼號」直達山形。','', '', 0),
+  mkStop('15:00–17:00','🛍️','飯店入住、山形站前商場與 S-PAL 採買','辦理連泊入住手續，逛站共構商場採買山形縣產水果點心與清酒，早點休息養精蓄銳。','', [38.2493,140.3297], '','', '', '文翔館與霞城公園調整至 1/13 上午陽光充足時段順遊。', 2000),
+  mkStop('晚餐','🥩','米澤牛 登起波 或 黃木','山形站前直結商場即可品嚐米澤牛壽喜燒／牛排，推薦加點山形鄉土料理「芋煮」。','', null, '米澤牛 山形站','', '預估 ¥14,000/2人', '', 14000)
+ ]},
+{d:'1/12 (二)',s:'藏王·銀山',t:'山形 ➔ 藏王樹冰 ➔ 銀山溫泉夜景 ➔ 山形',jr:'Day 4',h:2,
  path:[[38.2486,140.3281],[38.1610,140.4418],[38.2486,140.3281],[38.5976,140.3667],[38.5720,140.5340],[38.5976,140.3667],[38.2486,140.3281]],
  st:[
- ['08:20–09:05','🚌','山形站前 ➔ 藏王溫泉（山交巴士）','山形站東口 1 號站牌上車，建議 08:00 前排隊搭首班車（可購巴士＋纜車套票）。連泊免拖行李。','pay',[38.2486,140.3281],,,'單程約 ¥1,000'],
- ['09:30–11:30','❄️','藏王纜車 賞「雪怪」樹冰','搭乘兩段纜車登上地藏山頂站（海拔 1,661m），上午排隊人潮較少、能見度通常較穩定。','pay',[38.1610,140.4418],'藏王纜車 蔵王ロープウェイ','⚠️ 07:30 起床先看「藏王 LiveCam」，若山頂全白零能見度或停駛，可改用上方市區備案。','來回約 ¥3,800–4,400'],
- ['11:45–12:30','🚌','藏王溫泉 ➔ 山形站','搭山交巴士下山返回山形市區。','pay'],
- ['12:30–13:50','🥢','山形站午餐與休息','品嚐山形板蕎麥麵或米澤牛便當，並確認下午前往大石田的 JR 班次。',,,'山形站 蕎麥麵'],
- ['約 14:00–14:40','🚄','山形 ➔ 大石田','搭乘山形新幹線「翼號」或奧羽本線北上至大石田站。','jr',[38.5976,140.3667]],
- ['15:30–16:05','🚌','大石田站 ➔ 銀山溫泉（花笠路線巴士）','單程約 ¥1,000（僅收現金，請備妥零錢），直達銀山溫泉入口。','pay',[38.5720,140.5340],,'⚠️ 2026–2027 冬季銀山溫泉實施交通管制（自駕須預約接駁），搭火車轉路線巴士雖可直達，出發前仍請再核對銀山溫泉官網最新公告。','約 ¥1,000'],
- ['16:05–18:05','🏮','銀山溫泉 大正浪漫街景與藍調瓦斯燈夜景','1 月中旬約 16:35 日落，可完整欣賞黃昏轉深藍、黃色瓦斯燈亮起的夢幻雪景！可逛野川豆腐店、Haikara 咖哩麵包。',,,,,,'石板路積雪結冰極滑，務必套上簡易防滑冰爪；18:00 前須回到巴士站排隊。'],
- ['18:21–19:35','🚆','銀山溫泉 ➔ 大石田 ➔ 山形','搭乘 18:21 末班巴士回大石田（約 18:56 抵），轉搭 JR 返回山形站（連泊免換飯店）。','jr',[38.2486,140.3281],,'⚠️ 18:21 為往大石田末班巴士，切勿錯過；山區夜間無計程車隨叫隨到。'],
- ['晚餐','🍜','龍上海（山形店）或站前居酒屋','山形超人氣赤湯辣味噌拉麵，湯頭濃郁驅寒。',,,'龍上海 山形']]},
-{d:'1/13 (三)',s:'山形·幕張',t:'山形半日遊 ➔ 東京 ➔ 三井 Outlet 幕張',jr:'Day 5',
- h:3,
+  mkStop('08:20–09:05','🚌','山形站前 ➔ 藏王溫泉（山交巴士）','山形站東口 1 號站牌上車，建議 08:00 前排隊搭首班車（可購巴士＋纜車套票）。連泊免拖行李。','pay', [38.2486,140.3281], '','', '單程 ¥1,000/人', '', 2000),
+  mkStop('09:30–11:30','❄️','藏王纜車 賞「雪怪」樹冰','搭乘兩段纜車登上地藏山頂站（海拔 1,661m），上午排隊人潮較少、能見度通常較穩定。','pay', [38.1610,140.4418], '藏王纜車 蔵王ロープウェイ','⚠️ 07:30 起床先看「藏王 LiveCam」，若山頂全白零能見度或停駛，可改用上方市區備案。','來回 ¥4,400/人', '', 8800),
+  mkStop('11:45–12:30','🚌','藏王溫泉 ➔ 山形站','搭山交巴士下山返回山形市區。','pay', null, '','', '單程 ¥1,000/人', '', 2000),
+  mkStop('12:30–13:50','🥢','山形站午餐與休息','品嚐山形板蕎麥麵或米澤牛便當，並確認下午前往大石田的 JR 班次。','', null, '山形站 蕎麥麵','', '預估 ¥3,000/2人', '', 3000),
+  mkStop('約 14:00–14:40','🚄','山形 ➔ 大石田','搭乘山形新幹線「翼號」或奧羽本線北上至大石田站。','jr', [38.5976,140.3667], '','', '', '', 0),
+  mkStop('15:30–16:05','🚌','大石田站 ➔ 銀山溫泉（花笠路線巴士）','單程 ¥1,000/人（僅收現金，請備妥零錢），直達銀山溫泉入口。','pay', [38.5720,140.5340], '','⚠️ 2026–2027 冬季銀山溫泉實施交通管制（自駕須預約接駁），搭火車轉路線巴士雖可直達，出發前仍請再核對銀山溫泉官網最新公告。','單程 ¥1,000/人', '', 2000),
+  mkStop('16:05–18:05','🏮','銀山溫泉 大正浪漫街景與藍調瓦斯燈夜景','1 月中旬約 16:35 日落，可完整欣賞黃昏轉深藍、黃色瓦斯燈亮起的夢幻雪景！可逛野川豆腐屋、Haikara 咖哩麵包。','', null, '','','小吃約 ¥1,500/2人','石板路積雪結冰極滑，務必套上簡易防滑冰爪；18:00 前須回到巴士站排隊。', 1500),
+  mkStop('18:21–19:35','🚆','銀山溫泉 ➔ 大石田 ➔ 山形','搭乘 18:21 末班巴士回大石田（約 18:56 抵，¥1,000/人），轉搭 JR 返回山形站（連泊免換飯店）。','jr', [38.2486,140.3281], '','⚠️ 18:21 為往大石田末班巴士，切勿錯過；山區夜間無計程車隨叫隨到。','巴士 ¥1,000/人', '', 2000),
+  mkStop('晚餐','🍜','龍上海（山形店）或站前居酒屋','山形超人氣赤湯辣味噌拉麵，湯頭濃郁驅寒。','', null, '龍上海 山形','', '預估 ¥2,500/2人', '', 2500)
+ ]},
+{d:'1/13 (三)',s:'山形·幕張',t:'山形半日遊 ➔ 東京 ➔ 三井 Outlet 幕張',jr:'Day 5',h:3,
  path:[[38.2486,140.3281],[38.2540,140.3380],[38.2558,140.3275],[35.6812,139.7671],[35.6484,140.0418],[35.6924,139.7842]],
  st:[
- ['08:30–09:00','🧳','退房、大型行李寄放','行李寄放山形大和魯內櫃檯或山形站置物櫃，中午搭車前再取。'],
- ['09:00–10:30','🏛️','文翔館（山形縣舊縣廳）','大正初期英國文藝復興式洋風建築，免費參觀，雪中紅磚與鐘樓極具氣勢。',,[38.2540,140.3380]],
- ['10:40–11:50','🏯','霞城公園（山形城跡）雪景散策','欣賞日本百名城之一的巨石城牆與護城河雪景，步行返回山形站。',,[38.2558,140.3275]],
- ['12:00–13:00','🍱','取回行李、購買新幹線便當','在山形站採買「牛肉どまん中」米澤牛便當帶上車當午餐。',,,'山形駅 牛肉どまん中'],
- ['約 13:10–16:00','🚄','山形新幹線 翼號 山形 ➔ 東京','全車指定席直達東京站（約 2 小時 50 分）。今天是 JR Pass 5 日券最後一天，全程免費！','jr',[35.6812,139.7671],,'⚠️ 抵達東京站後可將大件行李暫存東京站置物櫃，或先搭總武線 2 站到馬喰町飯店寄放（僅需約 15 分鐘）。'],
- ['16:40–20:00','🛍️','三井 OUTLET PARK 幕張（Mitsui Outlet Park Makuhari）','從東京站搭 JR 京葉線快速約 30 分鐘至「海濱幕張站」，出站步行 1 分鐘即達。營業至 20:00，主打日系服飾、運動休閒與藥妝，持 JR Pass 交通全免！','jr',[35.6484,140.0418],'三井アウトレットパーク 幕張',,'逛街前先至服務中心出示護照領取外國旅客優惠券（部分店舖享額外折扣＋免稅）。'],
- ['20:15–21:00','🚆','海濱幕張 ➔ 東京 ➔ 東橫INN 馬喰町','搭 JR 京葉線回東京站轉 JR 總武線快速至馬喰町站辦理入住（刷 JR Pass 最後一趟）。','jr',[35.6924,139.7842]]]},
-{d:'1/14 (四)',s:'東京',t:'東京市區自由行',jr:'自費',
- h:3,
+  mkStop('08:30–09:00','🧳','退房、大型行李寄放','行李寄放山形大和魯內櫃檯或山形站置物櫃，中午搭車前再取。','', null, '','', '', '', 0),
+  mkStop('09:00–10:30','🏛️','文翔館（山形縣舊縣廳）','大正初期英國文藝復興式洋風建築，免費參觀，雪中紅磚與鐘樓極具氣勢。','', [38.2540,140.3380], '','', '', '', 0),
+  mkStop('10:40–11:50','🏯','霞城公園（山形城跡）雪景散策','欣賞日本百名城之一的巨石城牆與護城河雪景，步行返回山形站。','', [38.2558,140.3275], '','', '', '', 0),
+  mkStop('12:00–13:00','🍱','取回行李、購買新幹線便當','在山形站採買「牛肉どまん中」米澤牛便當帶上車當午餐。','', null, '山形駅 牛肉どまん中','', '預估 ¥3,200/2人', '', 3200),
+  mkStop('約 13:10–16:00','🚄','山形新幹線 翼號 山形 ➔ 東京','全車指定席直達東京站（約 2 小時 50 分）。今天是 JR Pass 5 日券最後一天，全程免費！','jr', [35.6812,139.7671], '','⚠️ 抵達東京站後可將大件行李暫存東京站置物櫃（約 ¥1,000），或先搭總武線 2 站到馬喰町飯店寄放（僅需約 15 分鐘）。','', '', 1000),
+  mkStop('16:40–20:00','🛍️','三井 OUTLET PARK 幕張（Mitsui Outlet Park Makuhari）','從東京站搭 JR 京葉線快速約 30 分鐘至「海濱幕張站」，出站步行 1 分鐘即達。營業至 20:00，主打日系服飾、運動休閒與藥妝，持 JR Pass 交通全免！','jr', [35.6484,140.0418], '三井アウトレットパーク 幕張','','逛街前先至服務中心出示護照領取外國旅客優惠券（部分店舖享額外折扣＋免稅）。','購物預算可自填', '', 15000),
+  mkStop('20:15–21:00','🚆','海濱幕張 ➔ 東京 ➔ 東橫INN 馬喰町','搭 JR 京葉線回東京站轉 JR 總武線快速至馬喰町站辦理入住（刷 JR Pass 最後一趟）。','jr', [35.6924,139.7842], '','', '', '', 0)
+ ]},
+{d:'1/14 (四)',s:'東京',t:'東京市區自由行',jr:'自費',h:3,
  path:[[35.6924,139.7842],[35.7148,139.7967],[35.7101,139.8107],[35.6717,139.7640],[35.6595,139.7005]],
  st:[
- ['09:00–12:00','⛩️','淺草寺、雷門、仲見世通','從馬喰町搭都營淺草線約 6 分鐘直達淺草，早起人潮較少好拍照。',,[35.7148,139.7967],,,,'建議刷 Suica / PASMO 感應進出站，不必買一日券。'],
- ['12:00–13:30','🍤','午餐：淺草大黑家 或 淺草今半','百年天婦羅蓋飯或黑毛和牛壽喜燒午間套餐。',,,'淺草大黑家 天丼'],
- ['14:00–17:00','🏙️','東京晴空塔（Tokyo Skytree）','可從淺草沿隅田川步道步行約 20 分鐘前往，或搭東武線 1 站即達。',,[35.7101,139.8107]],
- ['18:00–19:30','🛍️','銀座商圈散步','搭東京 Metro 銀座線直達，逛 Uniqlo 銀座旗艦店與百貨。',,[35.6717,139.7640]],
- ['19:30–20:30','🍣','澀谷晚餐與夜景','迴轉壽司（美登利／根室花丸）或燒肉，之後搭銀座線轉總武線回馬喰町。',,[35.6595,139.7005]]]},
-{d:'1/15 (五)',s:'返家',t:'東京 ➔ 台北松山',jr:'自費',
+  mkStop('09:00–12:00','⛩️','淺草寺、雷門、仲見世通','從馬喰町搭都營淺草線約 6 分鐘直達淺草，早起人潮較少好拍照。','', [35.7148,139.7967], '','', '', '建議刷 Suica / PASMO 感應進出站，不必買一日券（單程 ¥180/人）。', 1500),
+  mkStop('12:00–13:30','🍤','午餐：淺草大黑家 或 淺草今半','百年天婦羅蓋飯或黑毛和牛壽喜燒午間套餐。','', null, '淺草大黑家 天丼','', '預估 ¥6,000/2人', '', 6000),
+  mkStop('14:00–17:00','🏙️','東京晴空塔（Tokyo Skytree）','可從淺草沿隅田川步道步行約 20 分鐘前往，或搭東武線 1 站即達（展望台門票另計）。','', [35.7101,139.8107], '','', '展望台＋購物約 ¥6,000', '', 6000),
+  mkStop('18:00–19:30','🛍️','銀座商圈散步','搭東京 Metro 銀座線直達，逛 Uniqlo 銀座旗艦店與百貨。','', [35.6717,139.7640], '','', '地鐵＋購物約 ¥5,000', '', 5000),
+  mkStop('19:30–20:30','🍣','澀谷晚餐與夜景','迴轉壽司（美登利／根室花丸）或燒肉，之後搭銀座線轉總武線回馬喰町。','', [35.6595,139.7005], '','', '晚餐＋交通約 ¥7,000', '', 7000)
+ ]},
+{d:'1/15 (五)',s:'返家',t:'東京 ➔ 台北松山',jr:'自費',h:3,
  path:[[35.6924,139.7842],[35.6554,139.7570],[35.5494,139.7798]],
  st:[
- ['07:15–08:00','🚆','馬喰町 ➔ 濱松町 ➔ 羽田機場第 3 航廈','或從「東日本橋站」搭乘都營淺草線直通京急線列車，免換車直達羽田機場 T3（約 35 分鐘）。','pay',[35.5494,139.7798],,,'約 ¥530–700（東日本橋直通最省力）'],
- ['08:25–10:25','🛫','報到、行李托運、安檢與免稅店','起飛前 2 小時抵達長榮航空櫃檯辦理。'],
- ['10:25–13:25','✈️','長榮 BR189 羽田 ➔ 台北松山','HND T3 ➔ TSA T1，平安返家。']]}
-];
+  mkStop('07:15–08:00','🚆','馬喰町 ➔ 濱松町 ➔ 羽田機場第 3 航廈','或從「東日本橋站」搭乘都營淺草線直通京急線列車，免換車直達羽田機場 T3（約 35 分鐘）。','pay', [35.5494,139.7798], '','', '¥530–700/人', '', 1400),
+  mkStop('08:25–10:25','🛫','報到、行李托運、安檢與免稅店','起飛前 2 小時抵達長榮航空櫃檯辦理，最後補齊機場伴手禮。','', null, '','', '免稅伴手禮預估 ¥6,000', '', 6000),
+  mkStop('10:25–13:25','✈️','長榮 BR189 羽田 ➔ 台北松山','HND T3 ➔ TSA T1，平安返家。','', null, '','', '', '', 0)
+ ]
+}];
 
 // ---- 地圖初始化 ------------------------------------------------------
 const map=L.map('map',{zoomControl:false,attributionControl:true}).setView([38.5,140.5],7);
@@ -328,37 +385,57 @@ const base={
 };
 base['標準'].addTo(map);
 const ctl=L.control.layers(base,null,{position:'topright',collapsed:true}).addTo(map);
-
-const GMAPS_KEY='';
-const loadScript=src=>new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=no;document.head.appendChild(s)});
-if(GMAPS_KEY){
- window.initG=()=>loadScript('https://cdn.jsdelivr.net/npm/leaflet.gridlayer.googlemutant@0.14.1/dist/Leaflet.GoogleMutant.js').then(()=>{
-  const types={'Google 地圖':'roadmap','Google 衛星':'hybrid','Google 地形':'terrain'};let first;
-  for(const [n,t] of Object.entries(types)){const l=L.gridLayer.googleMutant({type:t,maxZoom:20});ctl.addBaseLayer(l,n);first=first||l}
-  map.removeLayer(base['標準']);first.addTo(map);
- }).catch(()=>console.warn('Google 地圖載入失敗，已保留原底圖'));
- loadScript(`https://maps.googleapis.com/maps/api/js?key=${GMAPS_KEY}&language=zh-TW&callback=initG`).catch(()=>console.warn('Google Maps API 載入失敗'));
-}
 const layer=L.layerGroup().addTo(map);
 
 const pin=(n,c,cls='')=>L.divIcon({className:'',iconSize:[26,26],iconAnchor:[13,26],popupAnchor:[0,-26],html:`<div class="pin${cls?' '+cls:''}" style="--c:${c}"><i>${n}</i></div>`});
 const gm=(ll,q)=>ll?`https://www.google.com/maps/search/?api=1&query=${ll[0]},${ll[1]}`:`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
-const dirUrl=p=>{const o=p[0],d=p[p.length-1],w=p.slice(1,-1).slice(0,8).map(x=>x.join(',')).join('|');
- return `https://www.google.com/maps/dir/?api=1&travelmode=transit&origin=${o}&destination=${d}${w?'&waypoints='+w:''}`};
-const pad=()=>innerWidth<=760?{paddingTopLeft:[24,24],paddingBottomRight:[24,24]}:{paddingTopLeft:[520,40],paddingBottomRight:[60,40]};
-function fit(pts){if(pts.length)map.fitBounds(L.latLngBounds(pts),{...pad(),maxZoom:12})}
+const dirUrl=p=>{
+ if(!p||p.length<2)return 'https://www.google.com/maps';
+ const o=p[0],d=p[p.length-1],w=p.slice(1,-1).slice(0,8).map(x=>x.join(',')).join('|');
+ return `https://www.google.com/maps/dir/?api=1&travelmode=transit&origin=${o}&destination=${d}${w?'&waypoints='+w:''}`;
+};
+const pad=()=>innerWidth<=760?{paddingTopLeft:[24,24],paddingBottomRight:[24,24]}:{paddingTopLeft:[530,40],paddingBottomRight:[60,40]};
+function fit(pts){if(pts&&pts.length)map.fitBounds(L.latLngBounds(pts),{...pad(),maxZoom:12})}
 
-// ---- 狀態儲存（完成勾選 + 臨時新增行程） ----------------------------
-let cur='all',done={},extra={};
+// ---- 狀態儲存 ------------------------------------------------------
+let cur='all',done={},extra={},costs={},bought={},metaBudget={pass:70000,rate:0.215,h0:18000,h1:16200,h2:24000,h3:22000};
 try{done=JSON.parse(localStorage.getItem('tohoku27_done')||'{}')}catch(e){}
 try{extra=JSON.parse(localStorage.getItem('tohoku27_extra')||'{}')}catch(e){}
+try{costs=JSON.parse(localStorage.getItem('tohoku27_costs')||'{}')}catch(e){}
+try{bought=JSON.parse(localStorage.getItem('tohoku27_bought')||'{}')}catch(e){}
+try{metaBudget={...metaBudget,...JSON.parse(localStorage.getItem('tohoku27_mbudget')||'{}')}}catch(e){}
+
 const saveDone=()=>{try{localStorage.setItem('tohoku27_done',JSON.stringify(done))}catch(e){}};
 const saveExtra=()=>{try{localStorage.setItem('tohoku27_extra',JSON.stringify(extra))}catch(e){}};
+const saveCosts=()=>{try{localStorage.setItem('tohoku27_costs',JSON.stringify(costs))}catch(e){}};
+const saveBought=()=>{try{localStorage.setItem('tohoku27_bought',JSON.stringify(bought))}catch(e){}};
+const saveMetaBudget=()=>{try{localStorage.setItem('tohoku27_mbudget',JSON.stringify(metaBudget))}catch(e){}};
+
+const fmtY=n=>'¥'+Math.round(n||0).toLocaleString('en-US');
+const fmtTWD=n=>'NT$ '+Math.round((n||0)*(+metaBudget.rate||0.215)).toLocaleString('en-US');
+
+function getStopCost(i,origIdx,defaultCost){
+ const k=`${i}-${origIdx}`;
+ return costs[k]!==undefined ? +costs[k] : (+defaultCost||0);
+}
+function getDayTotal(i){
+ let sum=0;
+ DAYS[i].st.forEach((s,idx)=>{sum+=getStopCost(i,idx,s.cost)});
+ (extra[i]||[]).forEach(e=>{sum+=(+e.cost||0)});
+ return sum;
+}
+function getGrandBudget(){
+ const hotelSum=(+metaBudget.h0||0)+(+metaBudget.h1||0)+(+metaBudget.h2||0)+(+metaBudget.h3||0);
+ const passSum=+metaBudget.pass||0;
+ let dailySum=0;
+ for(let i=0;i<DAYS.length;i++) dailySum+=getDayTotal(i);
+ return {hotelSum,passSum,dailySum,total:hotelSum+passSum+dailySum};
+}
 
 const tabs=document.getElementById('tabs'),body=document.getElementById('body'),panel=document.getElementById('panel');
 const tag=t=>t==='jr'?'<span class="badge jr">JR Pass 免費</span>':t==='pay'?'<span class="badge pay">自費</span>':t==='custom'?'<span class="badge custom">臨時新增</span>':'';
 
-// ---- 即時氣候查詢（Open-Meteo 免金鑰 API + 1月基準備援） ---------------
+// ---- 即時氣候查詢（Open-Meteo + 1月基準備援） -------------------------
 const wxCache={};
 const WMO={0:'☀️ 晴朗',1:'🌤️ 大致晴朗',2:'⛅ 多雲',3:'☁️ 陰天',45:'🌫️ 霧',48:'🌫️ 霧淞',51:'🌦️ 毛毛雨',61:'🌧️ 小雨',63:'🌧️ 中雨',65:'🌧️ 大雨',71:'🌨️ 小雪',73:'❄️ 中雪',75:'❄️ 大雪',77:'🌨️ 雪粒',80:'🌦️ 陣雨',85:'🌨️ 陣雪',86:'❄️ 強陣雪',95:'⛈️ 雷雨'};
 async function loadWeather(i){
@@ -369,8 +446,8 @@ async function loadWeather(i){
   const url=`https://api.open-meteo.com/v1/forecast?latitude=${M.ll[0]}&longitude=${M.ll[1]}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,snowfall_sum&timezone=Asia%2FTokyo&forecast_days=7`;
   const res=await fetch(url);if(!res.ok)throw new Error('wx');
   const data=await res.json();
-  const c=data.current,d=data.daily;
-  const idx=d.time?d.time.indexOf(M.date):-1;
+  const c=data.current||{},d=data.daily||{};
+  const idx=Array.isArray(d.time)?d.time.indexOf(M.date):-1;
   const wText=WMO[c.weather_code]||'🌡️ 多雲';
   let html='';
   if(idx>=0){
@@ -383,17 +460,17 @@ async function loadWeather(i){
    </div>
    <div class="wx-tip">🧥 <b>防寒提示：</b>${M.tip}</div>`;
   }else{
-   html=`<div class="wx-top"><div class="wx-main">${wText}・${M.city}（目前 ${Math.round(c.temperature_2m)}°C）</div><span class="wx-tag">📡 當地即時觀測 ＋ 1月氣候基準</span></div>
+   html=`<div class="wx-top"><div class="wx-main">${wText}・${M.city}（目前 ${Math.round(c.temperature_2m??0)}°C）</div><span class="wx-tag">📡 當地即時觀測 ＋ 1月氣候基準</span></div>
    <div class="wx-grid">
-    <div class="wx-cell"><small>當地即時體感</small><b>${Math.round(c.apparent_temperature)}°C（風速 ${Math.round(c.wind_speed_10m)} km/h）</b></div>
+    <div class="wx-cell"><small>當地即時體感</small><b>${Math.round(c.apparent_temperature??0)}°C（風速 ${Math.round(c.wind_speed_10m??0)} km/h）</b></div>
     <div class="wx-cell"><small>1月中旬歷年均溫</small><b>${M.avg}</b></div>
     <div class="wx-cell"><small>1月降雪機率</small><b>${M.snow}</b></div>
    </div>
-   <div class="wx-tip">📅 <b>${M.date} 氣候與裝備提醒：</b>${M.tip}（出發前 7 天此區將自動切換為當日逐日預報）</div>`;
+   <div class="wx-tip">📅 <b>${M.date} 氣候與裝備提醒：</b>${M.tip}</div>`;
   }
   wxCache[i]=html;box.innerHTML=html;
  }catch(e){
-  box.innerHTML=`<div class="wx-top"><div class="wx-main">❄️ ${M.city}・1月氣候基準</div><span class="wx-tag">離線模式</span></div>
+  box.innerHTML=`<div class="wx-top"><div class="wx-main">❄️ ${M.city}・1月氣候基準</div><span class="wx-tag">氣候基準</span></div>
   <div class="wx-grid">
    <div class="wx-cell"><small>1月歷年均溫</small><b>${M.avg}</b></div>
    <div class="wx-cell"><small>降雪風險</small><b>${M.snow}</b></div>
@@ -404,9 +481,13 @@ async function loadWeather(i){
 }
 
 function getMergedStops(i){
- const baseSt=DAYS[i].st.map((s,idx)=>({data:s,isExtra:false,origIdx:idx}));
+ const baseSt=DAYS[i].st.map((s,idx)=>({
+  stop:{...s,cost:getStopCost(i,idx,s.cost)},
+  isExtra:false,
+  origIdx:idx
+ }));
  const exSt=(extra[i]||[]).map((e,idx)=>({
-  data:[e.time||'彈性時段',e.icon||'📍',e.title,e.desc||'',e.type||'custom',e.ll||null,e.q||e.title,'','','臨時新增行程'],
+  stop:mkStop(e.time||'彈性時段',e.icon||'📍',e.title,e.desc||'','custom',e.ll||null,e.q||e.title,'','','臨時新增行程',+e.cost||0),
   isExtra:true,
   exIdx:idx
  }));
@@ -421,19 +502,76 @@ function drawTabs(){
  }).join('');
 }
 
+function renderBudgetOverview(){
+ const B=getGrandBudget();
+ return `<div class="budget-card" id="budget-overview">
+  <div class="budget-top">
+   <div>
+    <div style="font-size:12px;font-weight:700;color:#166534">💴 7天6夜預估總預算（2人同行・不含機票）</div>
+    <div class="budget-total" id="b-grand-jpy">${fmtY(B.total)}</div>
+   </div>
+   <div style="text-align:right">
+    <span class="badge jr" id="b-grand-twd">約 ${fmtTWD(B.total)}</span>
+    <div style="font-size:11px;color:var(--mute);margin-top:2px">每日明細金額可直接修改</div>
+   </div>
+  </div>
+  <div class="budget-grid">
+   <div class="b-cell"><small>🏨 6晚住宿小計</small><b id="b-hotel-jpy">${fmtY(B.hotelSum)}</b></div>
+   <div class="b-cell"><small>🎫 JR Pass 票券</small><b id="b-pass-jpy">${fmtY(B.passSum)}</b></div>
+   <div class="b-cell"><small>🍜 每日餐飲交通購物</small><b id="b-daily-jpy">${fmtY(B.dailySum)}</b></div>
+  </div>
+  <details class="budget-details">
+   <summary>⚙️ 展開調整住宿／JR Pass 金額與匯率（點擊編輯）</summary>
+   <div class="budget-edit-list">
+    <div class="b-edit-row"><label>JR EAST PASS 5日券（¥35,000 × 2人）</label><input type="number" step="500" data-mb="pass" value="${metaBudget.pass}"></div>
+    <div class="b-edit-row"><label>1/09 Dormy Inn 秋田（1晚）</label><input type="number" step="500" data-mb="h0" value="${metaBudget.h0}"></div>
+    <div class="b-edit-row"><label>1/10 Dormy Inn 盛岡（1晚）</label><input type="number" step="500" data-mb="h1" value="${metaBudget.h1}"></div>
+    <div class="b-edit-row"><label>1/11–13 山形大和魯內（2晚預估）</label><input type="number" step="500" data-mb="h2" value="${metaBudget.h2}"></div>
+    <div class="b-edit-row"><label>1/13–15 東橫INN 馬喰町（2晚預估）</label><input type="number" step="500" data-mb="h3" value="${metaBudget.h3}"></div>
+    <div class="b-edit-row"><label>日圓換算台幣匯率</label><input type="number" step="0.001" data-mb="rate" value="${metaBudget.rate}"></div>
+   </div>
+  </details>
+ </div>`;
+}
+
+function renderFoodChecklist(filterDay=null){
+ const items=filterDay===null?FOOD_SOUVENIRS:FOOD_SOUVENIRS.filter(f=>f.day===filterDay);
+ if(!items.length)return '';
+ const doneCount=items.filter(f=>bought[f.id]).length;
+ return `<details class="food-box"${filterDay===null?'':' open'}>
+  <summary><span>🍜 伴手禮＆當地美食清單（可勾選＋官網連結）</span><span class="badge food">${doneCount}/${items.length} 已完成</span></summary>
+  <div class="food-list">
+   ${items.map(f=>`<div class="food-item${bought[f.id]?' checked':''}">
+    <input type="checkbox" data-food="${f.id}" ${bought[f.id]?'checked':''} aria-label="${f.name}">
+    <div>
+     <b><span class="badge food" style="font-size:11px;padding:0 6px;margin-right:4px">D${f.day+1}・${f.type}</span>${f.name}</b>
+     <span>📍 ${f.where}｜💴 ${f.price}</span>
+     <div class="food-links">
+      ${f.url?`<a class="food-link" href="${f.url}" target="_blank" rel="noopener">🔗 ${f.urlLabel||'官方網站'}</a>`:''}
+      <a class="food-link" href="${gm(null,f.name+' '+f.where)}" target="_blank" rel="noopener">📍 Google 地圖</a>
+     </div>
+    </div>
+   </div>`).join('')}
+  </div>
+ </details>`;
+}
+
 function overview(){
  layer.clearLayers();const all=[];
  DAYS.forEach((x,i)=>{
   L.polyline(x.path,{color:COLORS[i],weight:4,opacity:.85,dashArray:i>4?'2 8':null}).addTo(layer).bindTooltip(`D${i+1} ${x.t}`);
   x.path.forEach(p=>all.push(p));
-  L.marker(x.path[Math.min(1,x.path.length-1)],{icon:pin(i+1,COLORS[i])}).addTo(layer).bindPopup(`<b>Day ${i+1}｜${x.d}</b><br>${x.t}<br><small>🌡️ ${WEATHER_META[i].avg}</small>`).on('click',()=>go(i));
+  L.marker(x.path[Math.min(1,x.path.length-1)],{icon:pin(i+1,COLORS[i])}).addTo(layer).bindPopup(`<b>Day ${i+1}｜${x.d}</b><br>${x.t}<br><small>🌡️ ${WEATHER_META[i].avg}｜💴 ${fmtY(getDayTotal(i))}</small>`).on('click',()=>go(i));
  });
- body.innerHTML=`<h3 style="margin-top:2px">點選任一天，查看當地即時氣候、地圖路線與彈性備案</h3>`+
+ body.innerHTML=`${renderBudgetOverview()}
+ <h3 style="margin-top:6px">📅 每日路線與花費總覽（點選進入明細）</h3>`+
  DAYS.map((x,i)=>{
   const cnt=(extra[i]||[]).length;
-  return `<button class="card" style="--c:${COLORS[i]}" data-i="${i}"><div class="dot">${i+1}</div><div><b>${x.d}｜${x.t} ${cnt?`<span class="badge custom">+${cnt} 臨時行程</span>`:''}</b><span>${x.jr==='自費'?'自費交通':'JR Pass '+x.jr} · 🌡️ ${WEATHER_META[i].avg}${x.h!==undefined?' · 🏨 '+HOTELS[x.h].s:''}</span></div></button>`;
+  const dCost=getDayTotal(i);
+  return `<button class="card" style="--c:${COLORS[i]}" data-i="${i}"><div class="dot">${i+1}</div><div><b>${x.d}｜${x.t} ${cnt?`<span class="badge custom">+${cnt} 臨時行程</span>`:''}</b><span>${x.jr==='自費'?'自費交通':'JR Pass '+x.jr} · 💴 ${fmtY(dCost)} · 🌡️ ${WEATHER_META[i].avg}</span></div></button>`;
  }).join('')+
- `<h3>🏨 住宿一覽</h3>${HOTELS.map(H=>{const k=DAYS.findIndex(d=>d.h===HOTELS.indexOf(H));return `<button class="card" style="--c:${COLORS[k]}" data-i="${k}"><div class="dot">🏨</div><div><b>${H.s}</b><span>${H.inn} 入住 ➔ ${H.out} 退房（${H.nt} 晚）</span></div></button>`}).join('')}
+ `<h3>🎁 7天沿途伴手禮＆必吃美食總表</h3>${renderFoodChecklist(null)}`+
+ `<h3>🏨 住宿一覽</h3>${HOTELS.map(H=>{const k=DAYS.findIndex(d=>d.h===HOTELS.indexOf(H));return `<button class="card" style="--c:${COLORS[k]}" data-i="${k}"><div class="dot">🏨</div><div><b>${H.s}</b><span>${H.inn} 入住 ➔ ${H.out} 退房（${H.nt} 晚）· 💴 ${fmtY(metaBudget[H.id])}</span></div></button>`}).join('')}
  <h3>🎫 行程優化與票券重點（2026–2027 新制）</h3><ul class="p">
   <li><b>JR EAST PASS 5 日券（Day 1–5）</b>：涵蓋羽田單軌、東北／秋田／山形新幹線、仙山線，以及 Day 5 東京站往返<b>海濱幕張站（三井 Outlet 幕張）</b>之 JR 京葉線，全程免額外購票。</li>
   <li><b>雙重點順遊動線</b>：Day 4 利用山形連泊免搬行李，早上衝<b>藏王樹冰</b>、傍晚直奔<b>銀山溫泉瓦斯燈夜景</b>；Day 5 白天悠閒逛山形市區，下午回東京後晚間順逛幕張 Outlet 至 20:00。</li>
@@ -460,13 +598,14 @@ function renderFlexBox(i){
  return `<details class="addbox">
   <summary><span>➕ 臨時增加行程 / 晴雨雪備案切換</span><span class="badge">可一鍵加入</span></summary>
   ${presets.length?`<div class="preset-group"><span class="preset-label">推薦彈性選項（依當日天氣或體力一鍵插入）：</span><div class="preset-list">`+
-   presets.map((p,idx)=>`<div class="preset-item"><div><b>${p.cat}｜${p.icon} ${p.title} <small style="color:var(--mute);font-weight:400">(${p.time})</small></b><span>${p.desc}</span></div><button class="btn add" data-add-preset="${idx}">＋ 加入</button></div>`).join('')+
+   presets.map((p,idx)=>`<div class="preset-item"><div><b>${p.cat}｜${p.icon} ${p.title} <small style="color:var(--mute);font-weight:400">(${p.time}${p.cost?` · 約${fmtY(p.cost)}`:''})</small></b><span>${p.desc}</span></div><button class="btn add" data-add-preset="${idx}">＋ 加入</button></div>`).join('')+
   `</div></div>`:''}
   <form class="custom-form" id="custom-form">
-   <input type="text" name="time" placeholder="時間 (如 16:30)" required>
-   <input type="text" name="title" placeholder="臨時景點或餐廳名稱 (如 仙台朝市)" required>
+   <input type="text" name="time" placeholder="時間 (16:30)" required>
+   <input type="text" name="title" placeholder="臨時景點或餐廳名稱" required>
+   <input type="number" name="cost" placeholder="日圓預算 ¥" min="0" step="100">
    <div class="full">
-    <input type="text" name="desc" placeholder="備註說明（選填，例如：雨天室內備案）">
+    <input type="text" name="desc" placeholder="備註說明（選填，例如：伴手禮採買或雨天備案）">
     <button type="submit" class="btn main">新增</button>
    </div>
   </form>
@@ -477,40 +616,49 @@ function day(i){
  const x=DAYS[i],c=COLORS[i];layer.clearLayers();
  const merged=getMergedStops(i);
  const pts=[...x.path];
- merged.forEach(item=>{if(item.isExtra&&item.data[5])pts.push(item.data[5])});
+ merged.forEach(item=>{if(item.isExtra&&item.stop.ll)pts.push(item.stop.ll)});
  L.polyline(x.path,{color:c,weight:5,opacity:.9}).addTo(layer);
 
  let n=0;const mk={};
  merged.forEach((item,k)=>{
-  const s=item.data;
-  if(s[5]){
+  const s=item.stop;
+  if(s.ll){
    n++;
-   mk[k]=L.marker(s[5],{icon:pin(item.isExtra?'★':n,c,item.isExtra?'ex':'')}).addTo(layer).bindPopup(`<b>${item.isExtra?'[臨時] ':''}${s[2]}</b><br><small>${s[0]}</small>`);
-   pts.push(s[5]);
+   mk[k]=L.marker(s.ll,{icon:pin(item.isExtra?'★':n,c,item.isExtra?'ex':'')}).addTo(layer).bindPopup(`<b>${item.isExtra?'[臨時] ':''}${s.title}</b><br><small>${s.time}</small>`);
+   pts.push(s.ll);
   }
  });
  const H=x.h!==undefined?HOTELS[x.h]:null;
  if(H){L.marker(H.ll,{icon:pin('🏨',c,'h')}).addTo(layer).bindPopup(`<b>🏨 ${H.n}</b>`);pts.push(H.ll)}
 
+ const daySum=getDayTotal(i);
  let nn=0;
- body.innerHTML=`<div class="dhead"><h2>Day ${i+1}｜${x.d}<br><span style="font-weight:500;font-size:15px">${x.t}</span></h2>${x.jr==='自費'?'<span class="badge pay">自費交通</span>':`<span class="badge jr">JR Pass ${x.jr}</span>`}</div>
+ body.innerHTML=`<div class="dhead">
+  <h2>Day ${i+1}｜${x.d}<br><span style="font-weight:500;font-size:15px">${x.t}</span></h2>
+  <div style="text-align:right">
+   ${x.jr==='自費'?'<span class="badge pay">自費交通</span>':`<span class="badge jr">JR Pass ${x.jr}</span>`}
+   <div style="margin-top:4px"><span class="badge" style="background:#dcfce7;color:#14532d" id="day-sum-badge">💴 本日小計 ${fmtY(daySum)}</span></div>
+  </div>
+ </div>
  <div class="wx" id="wx-${i}">⏳ 正在載入 ${WEATHER_META[i].city} 即時氣候預報...</div>
  ${H?hotelCard(H,DAYS.findIndex(d=>d.h===x.h)===i):''}
+ ${renderFoodChecklist(i)}
  ${renderFlexBox(i)}
  <div class="acts"><a class="btn main" target="_blank" rel="noopener" href="${dirUrl(pts)}">📍 Google 地圖路線導航</a><button class="btn" data-fit>🔍 回到當天全景</button><button class="btn" onclick="openPrintPreview(${i})">🖨️ 列印本日</button></div>
  <ol class="tl" style="--c:${c}">`+merged.map((item,k)=>{
-  const s=item.data;
+  const s=item.stop;
   const key=item.isExtra?`ex-${i}-${item.exIdx}`:`${i}-${item.origIdx}`;
-  const has=!!s[5];if(has)nn++;
+  const has=!!s.ll;if(has)nn++;
   return `<li class="st${done[key]?' done':''}${item.isExtra?' is-extra':''}" style="--c:${c}">
-   <div class="time">${s[0]}</div>
-   <div class="tt"><span>${s[1]} ${has?`<span class="badge" style="background:${item.isExtra?'#7e22ce':c};color:#fff">${item.isExtra?'★':nn}</span> `:''}${s[2]}</span> ${tag(s[4])} ${s[8]?`<span class="badge pay">${s[8]}</span>`:''}</div>
-   ${s[3]?`<div class="desc">${s[3]}</div>`:''}
-   ${s[7]?`<div class="warn">${s[7]}</div>`:''}
-   ${s[9]&&!item.isExtra?`<div class="opt">💡 <b>優化建議：</b>${s[9]}</div>`:''}
+   <div class="time">${s.time}</div>
+   <div class="tt"><span>${s.icon} ${has?`<span class="badge" style="background:${item.isExtra?'#7e22ce':c};color:#fff">${item.isExtra?'★':nn}</span> `:''}${s.title}</span> ${tag(s.type)} ${s.tagCost?`<span class="badge pay">${s.tagCost}</span>`:''}</div>
+   ${s.desc?`<div class="desc">${s.desc}</div>`:''}
+   ${s.warn?`<div class="warn">${s.warn}</div>`:''}
+   ${s.opt&&!item.isExtra?`<div class="opt">💡 <b>優化建議：</b>${s.opt}</div>`:''}
    <div class="row">
     ${has?`<button class="btn" data-loc="${k}">📍 地圖定位</button>`:''}
-    ${has||s[6]?`<a class="btn" target="_blank" rel="noopener" href="${gm(s[5],s[6])}">Google 地圖</a>`:''}
+    ${has||s.q?`<a class="btn" target="_blank" rel="noopener" href="${gm(s.ll,s.q)}">Google 地圖</a>`:''}
+    <label class="cost-pill" title="可直接修改此項目預估或實際花費">💴 <input type="number" min="0" step="100" value="${s.cost}" data-cost-day="${i}" ${item.isExtra?`data-cost-ex="${item.exIdx}"`:`data-cost-orig="${item.origIdx}"`}> 円</label>
     <button class="btn" data-done="${key}">${done[key]?'↩ 取消完成':'✓ 完成'}</button>
     ${item.isExtra?`<button class="btn del" data-del-ex="${item.exIdx}">🗑️ 移除</button>`:''}
    </div>
@@ -526,16 +674,17 @@ function day(i){
   form.onsubmit=e=>{
    e.preventDefault();
    const fd=new FormData(form);
-   const title=fd.get('title').trim();
+   const title=(fd.get('title')||'').trim();
    if(!title)return;
    extra[i]=extra[i]||[];
    extra[i].push({
-    time:fd.get('time').trim()||'彈性時段',
+    time:(fd.get('time')||'').trim()||'彈性時段',
     icon:'📌',
     title,
-    desc:fd.get('desc').trim(),
+    desc:(fd.get('desc')||'').trim(),
     type:'custom',
-    q:title
+    q:title,
+    cost:+(fd.get('cost')||0)
    });
    saveExtra();drawTabs();day(i);
   };
@@ -543,7 +692,7 @@ function day(i){
 }
 
 // ---- 預覽列印功能 ----------------------------------------------------
-let printScope='all'; // 'all' 或 0..6
+let printScope='all';
 const printOverlay=document.getElementById('print-overlay');
 const printSheet=document.getElementById('print-sheet');
 const btnPrintScope=document.getElementById('btn-print-scope');
@@ -557,6 +706,7 @@ function buildPrintSheet(scope){
 
  const targetIndices=isAll?[0,1,2,3,4,5,6]:[scope];
  const nowStr=new Date().toLocaleDateString('zh-TW');
+ const B=getGrandBudget();
 
  let html=`<div class="ps-head">
   <div>
@@ -569,17 +719,18 @@ function buildPrintSheet(scope){
  if(isAll){
   html+=`<div class="ps-summary">
    <div class="ps-box">
-    <h4>🏨 住宿預訂一覽</h4>
+    <h4>💴 預算總覽（2人同行・不含機票）</h4>
     <ul>
-     ${HOTELS.map(H=>`<li><b>${H.s}</b>（${H.inn}–${H.out}，${H.nt}晚）<br><span style="color:var(--mute)">${H.addr||''}${H.pay?' · '+H.pay:''}</span></li>`).join('')}
+     <li><b>預估總支出：${fmtY(B.total)}</b>（約 ${fmtTWD(B.total)}）</li>
+     <li><b>6 晚住宿小計</b>：${fmtY(B.hotelSum)}</li>
+     <li><b>JR EAST PASS 5日券</b>：${fmtY(B.passSum)}</li>
+     <li><b>每日餐飲交通購物</b>：${fmtY(B.dailySum)}</li>
     </ul>
    </div>
    <div class="ps-box">
-    <h4>🎫 票券與雪地緊急應變重點</h4>
+    <h4>🏨 住宿預訂一覽</h4>
     <ul>
-     <li><b>JR EAST PASS（Day 1–5）</b>：涵蓋羽田單軌、東北／秋田／山形新幹線、仙山線與京葉線（海濱幕張 Outlet）。</li>
-     <li><b>暴雪備案</b>：Day 3 仙山線停駛時，改搭新幹線至<b>福島站</b>轉翼號往山形。</li>
-     <li><b>行李與防寒</b>：藏王與銀山溫泉日將大行李留山形飯店；必備防水防滑靴與簡易冰爪。</li>
+     ${HOTELS.map(H=>`<li><b>${H.s}</b>（${H.inn}–${H.out}，${H.nt}晚）· ${fmtY(metaBudget[H.id])}<br><span style="color:var(--mute)">${H.addr||''}</span></li>`).join('')}
     </ul>
    </div>
   </div>`;
@@ -589,32 +740,39 @@ function buildPrintSheet(scope){
   const x=DAYS[i],c=COLORS[i],W=WEATHER_META[i];
   const H=x.h!==undefined?HOTELS[x.h]:null;
   const merged=getMergedStops(i);
+  const dFoods=FOOD_SOUVENIRS.filter(f=>f.day===i);
+  const dTotal=getDayTotal(i);
 
   html+=`<section class="ps-day">
    <div class="ps-day-hdr" style="--c:${c}">
     <h3>Day ${i+1}｜${x.d} ${x.t}</h3>
-    ${x.jr==='自費'?'<span class="badge pay">自費交通</span>':`<span class="badge jr">JR Pass ${x.jr}</span>`}
+    <div>
+     <span class="badge" style="background:#dcfce7;color:#14532d;margin-right:4px">本日小計 ${fmtY(dTotal)}</span>
+     ${x.jr==='自費'?'<span class="badge pay">自費交通</span>':`<span class="badge jr">JR Pass ${x.jr}</span>`}
+    </div>
    </div>
    <div class="ps-wx">🌡️ <b>當地氣候參考（${W.city}）</b>：歷年均溫 ${W.avg}｜降雪機率：${W.snow}｜提示：${W.tip}</div>
    ${H?`<div class="ps-hotel">🏨 <b>住宿：${H.n}</b>（${H.inn} 入住 ➔ ${H.out} 退房）${H.addr?'｜地址：'+H.addr:''}${H.tel?'｜電話：'+H.tel:''}</div>`:''}
+   ${dFoods.length?`<div class="ps-food">🎁 <b>本日伴手禮＆必吃美食：</b>${dFoods.map(f=>`${bought[f.id]?'☑':'☐'} ${f.name}（${f.where}，${f.price}）`).join('；')}</div>`:''}
    <table class="ps-table">
-    <thead><tr><th>時間</th><th>行程與說明</th><th>票券／備註</th></tr></thead>
+    <thead><tr><th>時間</th><th>行程與說明</th><th>票券／預算</th></tr></thead>
     <tbody>
      ${merged.map(item=>{
-      const s=item.data;
+      const s=item.stop;
       const key=item.isExtra?`ex-${i}-${item.exIdx}`:`${i}-${item.origIdx}`;
       const isDone=!!done[key];
       return `<tr>
-       <td class="col-time">${isDone?'☑':'☐'} ${s[0]}</td>
+       <td class="col-time">${isDone?'☑':'☐'} ${s.time}</td>
        <td>
-        <b>${s[1]} ${s[2]}</b>
-        ${s[3]?`<div style="color:#34445c;margin-top:2px">${s[3]}</div>`:''}
-        ${s[7]?`<div class="ps-note">${s[7]}</div>`:''}
-        ${s[9]&&!item.isExtra?`<div class="ps-opt">💡 ${s[9]}</div>`:''}
+        <b>${s.icon} ${s.title}</b>
+        ${s.desc?`<div style="color:#34445c;margin-top:2px">${s.desc}</div>`:''}
+        ${s.warn?`<div class="ps-note">${s.warn}</div>`:''}
+        ${s.opt&&!item.isExtra?`<div class="ps-opt">💡 ${s.opt}</div>`:''}
        </td>
        <td class="col-tag">
-        ${tag(s[4])}
-        ${s[8]?`<div style="font-size:11.5px;color:var(--pay);margin-top:3px">${s[8]}</div>`:''}
+        ${tag(s.type)}
+        ${s.cost>0?`<div style="font-size:12px;font-weight:700;color:#14532d;margin-top:3px">${fmtY(s.cost)}</div>`:''}
+        ${s.tagCost?`<div style="font-size:11px;color:var(--pay);margin-top:2px">${s.tagCost}</div>`:''}
        </td>
       </tr>`;
      }).join('')}
@@ -646,11 +804,12 @@ function go(i){cur=i;drawTabs();i==='all'?overview():day(i);
  if(innerWidth<=760)panel.classList.remove('hide')}
 
 tabs.addEventListener('click',e=>{const b=e.target.closest('.tab');if(b)go(b.dataset.i==='all'?'all':+b.dataset.i);b&&b.scrollIntoView({inline:'center',block:'nearest'})});
+
 body.addEventListener('click',e=>{
  const t=e.target.closest('[data-i],[data-loc],[data-done],[data-fit],[data-add-preset],[data-del-ex]');if(!t)return;
  if(t.dataset.i!==undefined)go(+t.dataset.i);
  else if(t.dataset.fit!==undefined)fit(body._pts);
- else if(t.dataset.loc!==undefined){const m=body._mk[t.dataset.loc];map.flyTo(m.getLatLng(),14,{duration:.8});setTimeout(()=>m.openPopup(),700)}
+ else if(t.dataset.loc!==undefined){const m=body._mk[t.dataset.loc];if(m){map.flyTo(m.getLatLng(),14,{duration:.8});setTimeout(()=>m.openPopup(),700)}}
  else if(t.dataset.done){const k=t.dataset.done;done[k]=!done[k];saveDone();const y=body.scrollTop;day(body._day);body.scrollTop=y}
  else if(t.dataset.addPreset!==undefined){
   const dIdx=body._day,p=FLEX_OPTIONS[dIdx][+t.dataset.addPreset];
@@ -669,6 +828,50 @@ body.addEventListener('click',e=>{
   }
  }
 });
+
+body.addEventListener('change',e=>{
+ if(e.target.dataset.food){
+  const fid=e.target.dataset.food;
+  bought[fid]=e.target.checked;
+  saveBought();
+  const label=e.target.closest('.food-item');
+  if(label)label.classList.toggle('checked',e.target.checked);
+  const box=e.target.closest('.food-box');
+  if(box){
+   const cbs=box.querySelectorAll('input[type=checkbox]');
+   const checkedCnt=[...cbs].filter(c=>c.checked).length;
+   const badge=box.querySelector('.badge.food');
+   if(badge)badge.textContent=`${checkedCnt}/${cbs.length} 已完成`;
+  }
+ }
+ if(e.target.dataset.costDay!==undefined){
+  const dIdx=+e.target.dataset.costDay;
+  const val=Math.max(0,+e.target.value||0);
+  if(e.target.dataset.costOrig!==undefined){
+   costs[`${dIdx}-${e.target.dataset.costOrig}`]=val;
+   saveCosts();
+  }else if(e.target.dataset.costEx!==undefined){
+   const exIdx=+e.target.dataset.costEx;
+   if(extra[dIdx]&&extra[dIdx][exIdx]){
+    extra[dIdx][exIdx].cost=val;
+    saveExtra();
+   }
+  }
+  const badge=document.getElementById('day-sum-badge');
+  if(badge)badge.textContent=`💴 本日小計 ${fmtY(getDayTotal(dIdx))}`;
+ }
+ if(e.target.dataset.mb){
+  const k=e.target.dataset.mb;
+  metaBudget[k]=Math.max(0,+e.target.value||0);
+  saveMetaBudget();
+  const B=getGrandBudget();
+  const elG=document.getElementById('b-grand-jpy');if(elG)elG.textContent=fmtY(B.total);
+  const elT=document.getElementById('b-grand-twd');if(elT)elT.textContent=`約 ${fmtTWD(B.total)}`;
+  const elH=document.getElementById('b-hotel-jpy');if(elH)elH.textContent=fmtY(B.hotelSum);
+  const elP=document.getElementById('b-pass-jpy');if(elP)elP.textContent=fmtY(B.passSum);
+ }
+});
+
 document.getElementById('fab').onclick=()=>panel.classList.remove('hide');
 document.querySelector('header').addEventListener('dblclick',()=>panel.classList.toggle('hide'));
 if(innerWidth>760){
