@@ -3,169 +3,393 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>東北雪國 JR PASS 7天6夜行程</title>
+<title>東北雪國 JR PASS 7天6夜｜日式精品行程手冊</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❄️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <style>
-:root{--ink:#14233a;--mute:#5d6b80;--snow:rgba(250,252,255,.94);--line:#dde5f0;--ice:#2f7fd1;--lamp:#e8912d;--ok:#1f9d63;--pay:#c2410c;--sky:#eef6ff}
+:root{
+  --ink:#1c1b19;
+  --ink-soft:#4a4742;
+  --mute:#7d7870;
+  --paper:rgba(250,248,245,.96);
+  --card:#ffffff;
+  --sand:#f3efe9;
+  --line:#e5dfd5;
+  --gold:#9a7b4f;
+  --gold-soft:#f6f1e8;
+  --terracotta:#a64b35;
+  --terracotta-soft:#fbf1ee;
+  --sage:#2f634d;
+  --sage-soft:#edf4f0;
+  --font-sans:"Noto Sans TC",-apple-system,BlinkMacSystemFont,sans-serif;
+  --font-serif:"Noto Serif TC","Cormorant Garamond",Georgia,serif;
+  --font-en:"Cormorant Garamond","Noto Serif TC",serif;
+}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
-body{font:15px/1.6 "Noto Sans TC",system-ui,sans-serif;color:var(--ink);overflow:hidden}
-#map{position:fixed;inset:0;background:#dfe9f3}
-.panel{position:fixed;z-index:500;left:16px;top:16px;bottom:16px;width:min(500px,calc(100vw - 32px));display:flex;flex-direction:column;background:var(--snow);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);border:1px solid rgba(255,255,255,.75);border-radius:18px;box-shadow:0 12px 40px rgba(20,35,58,.28);overflow:hidden;transition:transform .3s}
-.panel.hide{transform:translateX(calc(-100% - 24px))}
-header{padding:18px 20px 10px;position:relative}
-.hdr-tools{position:absolute;right:14px;top:14px;display:flex;gap:6px}
-h1{font:900 22px/1.25 "Noto Serif TC",serif;margin:0 0 4px;letter-spacing:.02em;padding-right:135px}
-.meta{color:var(--mute);font-size:13px;display:flex;flex-wrap:wrap;gap:4px 14px}
-.tabs{display:flex;gap:6px;padding:6px 14px 10px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line)}
+body{
+  font-family:var(--font-sans);
+  font-size:14.5px;
+  line-height:1.68;
+  font-weight:400;
+  color:var(--ink);
+  overflow:hidden;
+  letter-spacing:.02em;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,select,textarea{font-family:var(--font-sans);letter-spacing:.02em}
+#map{position:fixed;inset:0;background:#eae6df}
+
+/* 主側邊面板：極簡和風精品質感 */
+.panel{
+  position:fixed;z-index:500;left:20px;top:20px;bottom:20px;
+  width:min(510px,calc(100vw - 40px));
+  display:flex;flex-direction:column;
+  background:var(--paper);
+  backdrop-filter:blur(16px) saturate(1.15);
+  -webkit-backdrop-filter:blur(16px) saturate(1.15);
+  border:1px solid rgba(229,223,213,.95);
+  border-radius:12px;
+  box-shadow:0 18px 48px rgba(28,27,25,.14);
+  overflow:hidden;
+  transition:transform .35s cubic-bezier(.22,1,.36,1);
+}
+.panel.hide{transform:translateX(calc(-100% - 28px))}
+
+header{
+  padding:22px 24px 14px;
+  position:relative;
+  background:linear-gradient(180deg,#ffffff 0%,rgba(250,248,245,0) 100%);
+}
+.eyebrow{
+  font-family:var(--font-en);
+  font-size:11.5px;
+  font-weight:700;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:4px;
+  display:block;
+}
+.hdr-tools{position:absolute;right:18px;top:20px;display:flex;gap:6px}
+h1{
+  font-family:var(--font-serif);
+  font-weight:700;
+  font-size:22px;
+  line-height:1.3;
+  margin:0 0 6px;
+  letter-spacing:.05em;
+  padding-right:135px;
+  color:var(--ink);
+}
+.meta{
+  color:var(--mute);
+  font-size:12.5px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px 16px;
+}
+
+/* 精品底線式分頁導覽 */
+.tabs{
+  display:flex;gap:2px;
+  padding:0 18px;
+  overflow-x:auto;scrollbar-width:none;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  background:rgba(255,255,255,.65);
+}
 .tabs::-webkit-scrollbar{display:none}
-.tab{flex:none;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:5px 12px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
-.tab small{color:var(--mute);margin-left:4px}
-.tab[aria-selected=true]{background:var(--c,var(--ink));border-color:var(--c,var(--ink));color:#fff}
-.tab[aria-selected=true] small{color:#ffffffcc}
-.tab:focus-visible,button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--ice);outline-offset:2px}
-.body{flex:1;overflow-y:auto;padding:14px 18px 28px;scroll-behavior:smooth}
-.dhead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:8px}
-.dhead h2{font:900 18px/1.35 "Noto Serif TC",serif;margin:0}
-.badge{display:inline-block;font-size:12px;padding:1px 9px;border-radius:999px;background:#e8f1fc;color:#1b5fa8;white-space:nowrap}
-.badge.pay{background:#fdeee3;color:var(--pay)}.badge.jr{background:#e1f5ea;color:#17784b}.badge.custom{background:#f3e8ff;color:#6b21a8}.badge.food{background:#fef3c7;color:#92400e}
+.tab{
+  flex:none;
+  border:0;
+  border-bottom:2px solid transparent;
+  background:transparent;
+  color:var(--mute);
+  padding:10px 12px;
+  font-size:13px;
+  font-weight:500;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:color .2s,border-color .2s;
+}
+.tab small{font-size:11.5px;color:var(--mute);margin-left:4px;font-weight:400}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected=true]{
+  color:var(--ink);
+  font-weight:700;
+  border-bottom-color:var(--c,var(--gold));
+}
+.tab[aria-selected=true] small{color:var(--ink-soft)}
+.tab:focus-visible,button:focus-visible,a:focus-visible,input:focus-visible{outline:1.5px solid var(--gold);outline-offset:2px}
+
+.body{flex:1;overflow-y:auto;padding:18px 22px 32px;scroll-behavior:smooth}
+.body::-webkit-scrollbar{width:5px}
+.body::-webkit-scrollbar-thumb{background:#d6cfc4;border-radius:99px}
+
+/* 每日標題與標籤 */
+.dhead{
+  display:flex;justify-content:space-between;gap:12px;align-items:flex-start;
+  padding-bottom:12px;margin-bottom:14px;
+  border-bottom:1px solid var(--line);
+}
+.dhead h2{
+  font-family:var(--font-serif);
+  font-weight:700;
+  font-size:19px;
+  line-height:1.4;
+  margin:0;
+  letter-spacing:.03em;
+}
+.dhead .sub{
+  display:block;
+  font-family:var(--font-sans);
+  font-weight:400;
+  font-size:13.5px;
+  color:var(--ink-soft);
+  margin-top:3px;
+}
+.badge{
+  display:inline-flex;align-items:center;
+  font-size:11.5px;font-weight:500;
+  padding:2px 9px;border-radius:4px;
+  background:var(--sand);color:var(--ink-soft);
+  border:1px solid var(--line);
+  white-space:nowrap;
+}
+.badge.pay{background:var(--terracotta-soft);color:var(--terracotta);border-color:#ebd0c8}
+.badge.jr{background:var(--sage-soft);color:var(--sage);border-color:#c8dfd3}
+.badge.custom{background:var(--gold-soft);color:var(--gold);border-color:#e2d4be}
+.badge.food{background:#fbf5e8;color:#855c24;border-color:#ead9b7}
 
 /* 即時氣候卡片 */
-.wx{background:linear-gradient(135deg,#eef6ff 0%,#f7fbff 100%);border:1px solid #cfe2f7;border-radius:12px;padding:10px 13px;margin:8px 0 12px;font-size:13px}
+.wx{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-left:3px solid var(--gold);
+  border-radius:8px;
+  padding:11px 14px;
+  margin:0 0 14px;
+  font-size:13px;
+}
 .wx-top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
-.wx-main{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:#12345b}
-.wx-tag{font-size:11px;padding:2px 8px;border-radius:999px;background:#fff;border:1px solid #cfe2f7;color:#2563eb}
-.wx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px;padding-top:8px;border-top:1px dashed #cfe2f7}
-.wx-cell{background:rgba(255,255,255,.75);border-radius:8px;padding:5px 8px}
+.wx-main{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;color:var(--ink)}
+.wx-tag{font-size:11px;padding:1px 8px;border-radius:4px;background:var(--gold-soft);border:1px solid #e2d4be;color:var(--gold)}
+.wx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px;padding-top:9px;border-top:1px solid var(--line)}
+.wx-cell{background:var(--sand);border-radius:6px;padding:6px 9px}
 .wx-cell small{display:block;color:var(--mute);font-size:11px}
-.wx-cell b{font-size:13px;color:var(--ink)}
-.wx-tip{margin-top:7px;color:#334e68;font-size:12.5px}
+.wx-cell b{font-size:12.5px;font-weight:700;color:var(--ink)}
+.wx-tip{margin-top:8px;color:var(--ink-soft);font-size:12.5px}
 
 /* 預算統計儀表板 */
-.budget-card{background:linear-gradient(135deg,#f0fdf4 0%,#f8fafc 100%);border:1px solid #bbf7d0;border-radius:12px;padding:12px 14px;margin:8px 0 14px;font-size:13.5px}
-.budget-top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
-.budget-total{font-size:18px;font-weight:900;color:#14532d;font-variant-numeric:tabular-nums}
-.budget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}
-.b-cell{background:#fff;border:1px solid #dcfce7;border-radius:8px;padding:6px 8px}
+.budget-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-top:3px solid var(--ink);
+  border-radius:8px;
+  padding:14px 16px;
+  margin:0 0 18px;
+  font-size:13.5px;
+}
+.budget-top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.budget-total{font-family:var(--font-serif);font-size:21px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.budget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
+.b-cell{background:var(--sand);border-radius:6px;padding:7px 9px}
 .b-cell small{display:block;font-size:11px;color:var(--mute)}
-.b-cell b{font-size:13px;font-variant-numeric:tabular-nums;color:var(--ink)}
-.budget-details summary{cursor:pointer;font-size:12.5px;font-weight:700;color:#166534;margin-top:4px}
-.budget-edit-list{display:flex;flex-direction:column;gap:6px;margin-top:8px;padding-top:8px;border-top:1px dashed #bbf7d0}
+.b-cell b{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
+.budget-details summary{cursor:pointer;font-size:12.5px;font-weight:500;color:var(--gold);margin-top:6px}
+.budget-edit-list{display:flex;flex-direction:column;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
 .b-edit-row{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12.5px}
-.b-edit-row label{flex:1;color:#334155}
-.b-edit-row input{width:105px;border:1px solid #cbd5e1;border-radius:6px;padding:3px 7px;font:inherit;font-size:12.5px;text-align:right;background:#fff}
+.b-edit-row label{flex:1;color:var(--ink-soft)}
+.b-edit-row input{width:105px;border:1px solid var(--line);border-radius:4px;padding:4px 8px;font-size:12.5px;text-align:right;background:var(--paper);color:var(--ink)}
 
 /* 伴手禮與美食卡片 */
-.food-box{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:9px 12px;margin:8px 0 12px;font-size:13.5px}
-.food-box summary{cursor:pointer;font-weight:700;color:#78350f;display:flex;align-items:center;justify-content:space-between}
-.food-list{display:flex;flex-direction:column;gap:6px;margin-top:9px}
-.food-item{display:flex;align-items:flex-start;gap:8px;background:#fff;border:1px solid #fef3c7;border-radius:8px;padding:7px 9px}
-.food-item input[type=checkbox]{margin-top:3px;accent-color:#d97706;width:15px;height:15px;cursor:pointer;flex:none}
+.food-box{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:10px 14px;
+  margin:0 0 12px;
+  font-size:13.5px;
+}
+.food-box summary{cursor:pointer;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:space-between}
+.food-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.food-item{display:flex;align-items:flex-start;gap:9px;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:8px 10px}
+.food-item input[type=checkbox]{margin-top:3px;accent-color:var(--gold);width:15px;height:15px;cursor:pointer;flex:none}
 .food-item.checked b{text-decoration:line-through;color:var(--mute)}
 .food-item div{flex:1;min-width:0}
-.food-item b{display:block;font-size:13px;color:#451a03}
-.food-item span{display:block;font-size:12px;color:#78350f}
-.food-links{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px}
-.food-link{display:inline-flex;align-items:center;gap:3px;font-size:11.5px;padding:2px 8px;border-radius:6px;background:#fffbeb;border:1px solid #fcd34d;color:#92400e;text-decoration:none;font-weight:500}
-.food-link:hover{background:#fef3c7;border-color:#f59e0b}
+.food-item b{display:block;font-size:13px;font-weight:700;color:var(--ink)}
+.food-item span{display:block;font-size:12px;color:var(--mute);margin-top:1px}
+.food-links{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.food-link{
+  display:inline-flex;align-items:center;gap:3px;
+  font-size:11.5px;padding:2px 8px;border-radius:4px;
+  background:#fff;border:1px solid var(--line);color:var(--gold);
+  text-decoration:none;font-weight:500;transition:all .2s;
+}
+.food-link:hover{border-color:var(--gold);background:var(--gold-soft)}
 
 /* 住宿卡片 */
-.hc{background:#fff7ea;border:1px solid #f4dcb4;border-radius:10px;padding:8px 12px;margin:8px 0 12px;font-size:14px}
-.hc summary{cursor:pointer;font-weight:500}.hc dl{display:grid;grid-template-columns:4.8em 1fr;gap:4px 10px;margin:10px 0 6px}.hc dt{color:var(--mute)}.hc dd{margin:0;word-break:break-word}
+.hc{
+  background:var(--gold-soft);
+  border:1px solid #e2d4be;
+  border-radius:8px;
+  padding:10px 14px;
+  margin:0 0 12px;
+  font-size:13.5px;
+}
+.hc summary{cursor:pointer;font-weight:500;color:var(--ink)}.hc dl{display:grid;grid-template-columns:5em 1fr;gap:5px 10px;margin:10px 0 8px}.hc dt{color:var(--mute);font-size:12.5px}.hc dd{margin:0;word-break:break-word;font-size:13px}
+.hc a{color:var(--gold);text-decoration:none}
 
 /* 臨時增加行程區塊 */
-.addbox{background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:9px 12px;margin:8px 0 14px;font-size:13.5px}
-.addbox summary{cursor:pointer;font-weight:700;color:#1e3a5f;display:flex;align-items:center;justify-content:space-between}
+.addbox{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:10px 14px;
+  margin:0 0 14px;
+  font-size:13.5px;
+}
+.addbox summary{cursor:pointer;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:space-between}
 .preset-group{margin-top:10px}
-.preset-label{font-size:12px;font-weight:700;color:var(--mute);margin-bottom:5px;display:block}
+.preset-label{font-size:12px;font-weight:500;color:var(--mute);margin-bottom:6px;display:block}
 .preset-list{display:flex;flex-direction:column;gap:6px}
-.preset-item{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:7px 10px}
+.preset-item{display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:8px 10px}
 .preset-item div{flex:1;min-width:0}
-.preset-item b{display:block;font-size:13px}
+.preset-item b{display:block;font-size:13px;font-weight:700}
 .preset-item span{display:block;font-size:12px;color:var(--mute)}
 .custom-form{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);display:grid;grid-template-columns:88px 1fr 92px;gap:6px}
-.custom-form input{border:1px solid var(--line);border-radius:7px;padding:6px 8px;font:inherit;font-size:13px;background:#fff;width:100%}
+.custom-form input{border:1px solid var(--line);border-radius:5px;padding:6px 8px;font-size:13px;background:#fff;width:100%;color:var(--ink)}
 .custom-form .full{grid-column:1/-1;display:flex;gap:6px}
 
-.acts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-.btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;padding:5px 11px;font:inherit;font-size:13px;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
-.btn:hover{border-color:var(--ice);color:var(--ice)}
+/* 按鈕系統統一 */
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.btn{
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--ink);
+  border-radius:5px;
+  padding:5px 12px;
+  font-size:12.5px;
+  font-weight:500;
+  text-decoration:none;
+  cursor:pointer;
+  display:inline-flex;align-items:center;gap:4px;
+  transition:all .2s;
+}
+.btn:hover{border-color:var(--gold);color:var(--gold)}
 .btn.main{background:var(--ink);color:#fff;border-color:var(--ink)}
-.btn.main:hover{opacity:.9;color:#fff}
-.btn.add{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8;font-weight:500;white-space:nowrap}
-.btn.add:hover{background:#dbeafe}
-.btn.del{color:#b91c1c;border-color:#fecaca;background:#fef2f2}
-.btn.del:hover{background:#fee2e2}
+.btn.main:hover{background:#33312e;border-color:#33312e;color:#fff}
+.btn.add{background:var(--gold-soft);border-color:#d8c4a6;color:var(--gold);white-space:nowrap}
+.btn.add:hover{background:#ede2d0}
+.btn.del{color:var(--terracotta);border-color:#ebd0c8;background:var(--terracotta-soft)}
+.btn.del:hover{background:#f6e2dc}
 
-ol.tl{list-style:none;margin:0;padding:0 0 0 14px;border-left:2px solid var(--c)}
-.st{position:relative;padding:0 0 16px 18px}
-.st::before{content:"";position:absolute;left:-23px;top:6px;width:10px;height:10px;border-radius:50%;background:#fff;border:2px solid var(--c)}
-.st.done::before{background:var(--c)}
+/* 時間軸 */
+ol.tl{list-style:none;margin:0;padding:0 0 0 16px;border-left:1.5px solid var(--c,var(--gold))}
+.st{position:relative;padding:0 0 18px 18px}
+.st::before{content:"";position:absolute;left:-21.5px;top:6px;width:9px;height:9px;border-radius:50%;background:var(--paper);border:2px solid var(--c,var(--gold))}
+.st.done::before{background:var(--c,var(--gold))}
 .st.done .tt{text-decoration:line-through;color:var(--mute)}
-.st.is-extra{background:rgba(243,232,255,.35);border-radius:10px;padding:8px 10px 12px 18px;margin-bottom:10px}
-.time{font-size:12px;color:var(--mute);font-variant-numeric:tabular-nums}
-.tt{font-weight:700;display:flex;gap:6px;align-items:baseline;flex-wrap:wrap}
-.desc{color:#34445c;font-size:14px;margin:2px 0}
-.warn{font-size:13px;background:#fff4f0;border-left:3px solid var(--pay);padding:5px 10px;border-radius:0 6px 6px 0;margin:5px 0}
-.opt{font-size:12.5px;background:#f0fdf4;border-left:3px solid var(--ok);padding:4px 10px;border-radius:0 6px 6px 0;margin:5px 0;color:#165b38}
-.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:6px}
-.row .btn{padding:2px 9px;font-size:12px}
-.cost-pill{display:inline-flex;align-items:center;gap:3px;background:#f8fafc;border:1px solid var(--line);border-radius:7px;padding:1px 7px;font-size:12px;color:#334155}
-.cost-pill input{width:64px;border:0;background:transparent;font:inherit;font-size:12px;font-weight:700;color:#14532d;text-align:right;font-variant-numeric:tabular-nums}
-.cost-pill input:focus{outline:none;background:#fff}
+.st.is-extra{background:var(--gold-soft);border:1px solid #e2d4be;border-radius:8px;padding:10px 12px 12px 18px;margin-bottom:12px}
+.time{font-family:var(--font-en);font-size:13px;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.tt{font-family:var(--font-serif);font-weight:700;font-size:15.5px;display:flex;gap:6px;align-items:baseline;flex-wrap:wrap;color:var(--ink);margin-top:1px}
+.desc{color:var(--ink-soft);font-size:13.5px;margin:4px 0}
+.warn{font-size:12.5px;background:var(--terracotta-soft);border-left:2.5px solid var(--terracotta);color:#7a3221;padding:6px 10px;border-radius:0 5px 5px 0;margin:6px 0}
+.opt{font-size:12.5px;background:var(--sage-soft);border-left:2.5px solid var(--sage);padding:5px 10px;border-radius:0 5px 5px 0;margin:6px 0;color:#234b3a}
+.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.row .btn{padding:3px 9px;font-size:12px}
+.cost-pill{display:inline-flex;align-items:center;gap:3px;background:#fff;border:1px solid var(--line);border-radius:5px;padding:2px 8px;font-size:12px;color:var(--ink-soft)}
+.cost-pill input{width:64px;border:0;background:transparent;font-size:12px;font-weight:700;color:var(--sage);text-align:right;font-variant-numeric:tabular-nums}
+.cost-pill input:focus{outline:none;background:var(--sand)}
 
-.card{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 14px;margin-bottom:10px;cursor:pointer;display:flex;gap:12px;align-items:center;width:100%;text-align:left;font:inherit;color:inherit}
-.card:hover{border-color:var(--c)}
-.dot{flex:none;width:34px;height:34px;border-radius:50%;background:var(--c);color:#fff;display:grid;place-items:center;font-weight:700;font-size:13px}
-.card b{display:block}.card span{color:var(--mute);font-size:13px}
-h3{font:700 15px "Noto Sans TC";margin:20px 0 6px}
-ul.p{margin:0;padding-left:20px;font-size:14px}
-ul.p li{margin-bottom:4px}
+/* 總覽列表卡片 */
+.card{
+  border:1px solid var(--line);
+  background:var(--card);
+  border-radius:8px;
+  padding:12px 14px;
+  margin-bottom:10px;
+  cursor:pointer;
+  display:flex;gap:14px;align-items:center;
+  width:100%;text-align:left;color:inherit;
+  transition:all .2s;
+}
+.card:hover{border-color:var(--gold);transform:translateY(-1px);box-shadow:0 4px 14px rgba(28,27,25,.06)}
+.dot{
+  flex:none;width:36px;height:36px;border-radius:50%;
+  background:var(--c,var(--ink));color:#fff;
+  display:grid;place-items:center;
+  font-family:var(--font-en);font-weight:700;font-size:14px;
+}
+.card b{display:block;font-family:var(--font-serif);font-size:14.5px;font-weight:700;color:var(--ink)}
+.card span{color:var(--mute);font-size:12.5px;display:block;margin-top:2px}
+
+h3{
+  font-family:var(--font-serif);
+  font-weight:700;
+  font-size:15.5px;
+  letter-spacing:.05em;
+  margin:24px 0 10px;
+  padding-bottom:6px;
+  border-bottom:1px solid var(--line);
+  color:var(--ink);
+}
+ul.p{margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-soft)}
+ul.p li{margin-bottom:6px}
 .links{display:flex;gap:8px;flex-wrap:wrap}
-.fab{position:fixed;z-index:600;left:16px;top:16px;display:none;background:var(--snow);border:1px solid #fff;border-radius:12px;padding:8px 14px;font:inherit;box-shadow:0 6px 20px rgba(20,35,58,.25);cursor:pointer}
+
+.fab{
+  position:fixed;z-index:600;left:20px;top:20px;display:none;
+  background:var(--ink);color:#fff;border:1px solid var(--ink);
+  border-radius:6px;padding:9px 16px;font-size:13px;font-weight:500;
+  box-shadow:0 8px 24px rgba(28,27,25,.25);cursor:pointer;
+}
 .panel.hide~.fab{display:block}
-.pin{width:26px;height:26px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--c);border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.4);display:grid;place-items:center}
-.pin i{transform:rotate(45deg);font:700 12px/1 "Noto Sans TC";color:#fff;font-style:normal}
-.pin.h{background:var(--lamp)}
-.pin.ex{background:#7e22ce}
-.leaflet-control-layers{border-radius:10px!important;border:0!important;box-shadow:0 4px 16px rgba(0,0,0,.25)!important}
-.leaflet-popup-content{font:14px/1.5 "Noto Sans TC",sans-serif;margin:10px 14px}
+
+/* 地圖圖釘 */
+.pin{width:26px;height:26px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--c);border:2px solid #fff;box-shadow:0 3px 8px rgba(0,0,0,.35);display:grid;place-items:center}
+.pin i{transform:rotate(45deg);font-family:var(--font-sans);font-weight:700;font-size:11.5px;line-height:1;color:#fff;font-style:normal}
+.pin.h{background:var(--gold)}
+.pin.ex{background:var(--terracotta)}
+.leaflet-control-layers{border-radius:8px!important;border:1px solid var(--line)!important;box-shadow:0 4px 16px rgba(28,27,25,.12)!important;font-family:var(--font-sans)!important}
+.leaflet-popup-content{font-family:var(--font-sans);font-size:13.5px;line-height:1.55;margin:10px 14px;color:var(--ink)}
 
 /* ---- 預覽列印覆蓋層樣式 ---- */
-.print-overlay{position:fixed;inset:0;z-index:900;background:#eef2f7;overflow-y:auto;display:none;padding:68px 16px 40px}
+.print-overlay{position:fixed;inset:0;z-index:900;background:#e8e3da;overflow-y:auto;display:none;padding:68px 16px 40px}
 .print-overlay.open{display:block}
-.print-bar{position:fixed;top:0;left:0;right:0;z-index:910;background:#14233a;color:#fff;padding:10px 20px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;box-shadow:0 2px 12px rgba(0,0,0,.25)}
-.print-bar-title{font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px}
+.print-bar{position:fixed;top:0;left:0;right:0;z-index:910;background:var(--ink);color:#fff;padding:10px 22px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.print-bar-title{font-weight:500;font-size:13.5px;display:flex;align-items:center;gap:8px;letter-spacing:.03em}
 .print-bar-actions{display:flex;gap:8px;flex-wrap:wrap}
-.print-sheet{max-width:820px;margin:0 auto;background:#fff;border-radius:12px;padding:32px 38px;box-shadow:0 8px 30px rgba(20,35,58,.12);color:var(--ink)}
+.print-sheet{max-width:820px;margin:0 auto;background:#fff;border-radius:6px;padding:36px 42px;box-shadow:0 12px 36px rgba(28,27,25,.12);color:var(--ink)}
 .ps-head{border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
-.ps-head h2{font:900 24px/1.25 "Noto Serif TC",serif;margin:0}
-.ps-meta{font-size:13px;color:var(--mute);margin-top:4px}
-.ps-summary{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
-.ps-box{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#fafcff}
-.ps-box h4{margin:0 0 8px;font-size:14px;color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:4px}
-.ps-box ul{margin:0;padding-left:18px;font-size:13px}
+.ps-head h2{font-family:var(--font-serif);font-weight:700;font-size:24px;line-height:1.25;margin:0;letter-spacing:.04em}
+.ps-meta{font-size:12.5px;color:var(--mute);margin-top:4px}
+.ps-summary{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+.ps-box{border:1px solid var(--line);border-radius:6px;padding:12px 14px;background:var(--paper)}
+.ps-box h4{font-family:var(--font-serif);margin:0 0 8px;font-size:14px;color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:4px}
+.ps-box ul{margin:0;padding-left:18px;font-size:12.5px;color:var(--ink-soft)}
 .ps-box li{margin-bottom:4px}
 .ps-day{margin-bottom:26px;break-inside:avoid}
-.ps-day-hdr{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:8px;background:#f1f5f9;border-left:5px solid var(--c);margin-bottom:10px}
-.ps-day-hdr h3{margin:0;font:900 16px/1.3 "Noto Serif TC",serif}
-.ps-wx{font-size:12.5px;color:#1e40af;background:#eff6ff;border:1px solid #dbeafe;border-radius:7px;padding:6px 10px;margin-bottom:8px}
-.ps-hotel{font-size:13px;background:#fffbeb;border:1px solid #fde68a;border-radius:7px;padding:7px 11px;margin-bottom:8px}
-.ps-food{font-size:12.5px;background:#fefce8;border:1px solid #fef08a;border-radius:7px;padding:6px 10px;margin-bottom:10px;color:#713f12}
-.ps-table{width:100%;border-collapse:collapse;font-size:13.5px}
+.ps-day-hdr{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:5px;background:var(--sand);border-left:4px solid var(--c,var(--gold));margin-bottom:10px}
+.ps-day-hdr h3{font-family:var(--font-serif);margin:0;font-weight:700;font-size:16px;line-height:1.3;border:0;padding:0}
+.ps-wx{font-size:12.5px;color:var(--ink-soft);background:var(--paper);border:1px solid var(--line);border-radius:5px;padding:6px 10px;margin-bottom:8px}
+.ps-hotel{font-size:12.5px;background:var(--gold-soft);border:1px solid #e2d4be;border-radius:5px;padding:7px 11px;margin-bottom:8px}
+.ps-food{font-size:12.5px;background:#fbf8f1;border:1px solid #ead9b7;border-radius:5px;padding:6px 10px;margin-bottom:10px;color:#5c4524}
+.ps-table{width:100%;border-collapse:collapse;font-size:13px}
 .ps-table th,.ps-table td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
-.ps-table th{background:#f8fafc;font-weight:700;color:var(--mute);font-size:12px}
-.ps-table td.col-time{width:115px;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--mute);font-weight:500}
+.ps-table th{background:var(--sand);font-weight:700;color:var(--ink-soft);font-size:12px}
+.ps-table td.col-time{width:118px;font-family:var(--font-en);font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--gold);font-weight:700}
 .ps-table td.col-tag{width:96px;text-align:center}
-.ps-note{font-size:12px;color:var(--pay);margin-top:3px}
-.ps-opt{font-size:12px;color:#166534;margin-top:3px}
+.ps-note{font-size:12px;color:var(--terracotta);margin-top:3px}
+.ps-opt{font-size:12px;color:var(--sage);margin-top:3px}
 
 @media (max-width:760px){
  #map{bottom:auto;height:40vh}
- .panel{left:0;right:0;top:calc(40vh - 14px);bottom:0;width:auto;border-radius:18px 18px 0 0}
+ .panel{left:0;right:0;top:calc(40vh - 14px);bottom:0;width:auto;border-radius:16px 16px 0 0}
  .panel.hide{transform:translateY(calc(100% - 52px))}
  .fab{display:none!important}
  h1{font-size:18px;padding-right:125px}
@@ -190,8 +414,9 @@ ul.p li{margin-bottom:4px}
 <div id="map" role="application" aria-label="行程地圖"></div>
 <main class="panel" id="panel">
   <header>
+    <span class="eyebrow">Tohoku Winter Expedition · 2027</span>
     <h1>❄️ 東北雪國 JR PASS 7天6夜</h1>
-    <div class="meta"><span>📅 2027/01/09 – 01/15</span><span>🎫 JR 東日本周遊券 5 日券（Day 1–5）</span></div>
+    <div class="meta"><span>2027.01.09 – 01.15</span><span>JR 東日本周遊券 5 日券（Day 1–5）</span></div>
     <div class="hdr-tools" id="hdr-tools">
       <button class="btn" id="btn-print-preview" title="開啟預覽列印手冊">🖨️ 預覽列印</button>
     </div>
@@ -199,7 +424,7 @@ ul.p li{margin-bottom:4px}
   <nav class="tabs" id="tabs" role="tablist"></nav>
   <section class="body" id="body"></section>
 </main>
-<button class="fab" id="fab">☰ 顯示行程</button>
+<button class="fab" id="fab">☰ 展開行程手冊</button>
 
 <!-- 預覽列印手冊覆蓋層 -->
 <div class="print-overlay" id="print-overlay" role="dialog" aria-modal="true" aria-label="行程預覽列印">
@@ -207,7 +432,7 @@ ul.p li{margin-bottom:4px}
     <div class="print-bar-title">🖨️ 預覽列印模式（建議列印方向：直向 A4）</div>
     <div class="print-bar-actions">
       <button class="btn" id="btn-print-scope">📑 切換：完整 7 日手冊</button>
-      <button class="btn main" style="background:#2f7fd1;border-color:#2f7fd1" id="btn-do-print">🖨️ 立即列印 / 另存 PDF</button>
+      <button class="btn main" style="background:var(--gold);border-color:var(--gold)" id="btn-do-print">🖨️ 立即列印 / 另存 PDF</button>
       <button class="btn" id="btn-close-print">✕ 關閉預覽</button>
     </div>
   </div>
@@ -220,7 +445,8 @@ function mkStop(time, icon, title, desc='', type='', ll=null, q='', warn='', tag
  return {time, icon, title, desc, type, ll, q, warn, tagCost, opt, cost: +cost || 0};
 }
 
-const COLORS=['#2f7fd1','#0f9f9a','#7c5cd6','#d6405f','#e8912d','#2e9d57','#5f6f86'];
+// 沉穩和風大地色系（取代高飽和亮色）
+const COLORS=['#3b5978','#2f6b68','#5b537a','#9e4747','#9a7b4f','#3a6b52','#5c5852'];
 
 const HOTELS=[
 {id:'h0',s:'Dormy Inn 秋田',n:'中通溫泉 小町之湯 多美迎秋田 Dormy Inn Akita',ll:[39.7189,140.1250],inn:'1/09',out:'1/10',nt:1,defaultCost:18000,
@@ -424,7 +650,7 @@ const dirUrl=p=>{
  const o=p[0],d=p[p.length-1],w=p.slice(1,-1).slice(0,8).map(x=>x.join(',')).join('|');
  return `https://www.google.com/maps/dir/?api=1&travelmode=transit&origin=${o}&destination=${d}${w?'&waypoints='+w:''}`;
 };
-const pad=()=>innerWidth<=760?{paddingTopLeft:[24,24],paddingBottomRight:[24,24]}:{paddingTopLeft:[530,40],paddingBottomRight:[60,40]};
+const pad=()=>innerWidth<=760?{paddingTopLeft:[24,24],paddingBottomRight:[24,24]}:{paddingTopLeft:[540,40],paddingBottomRight:[60,40]};
 function fit(pts){if(pts&&pts.length)map.fitBounds(L.latLngBounds(pts),{...pad(),maxZoom:12})}
 
 // ---- 狀態儲存 ------------------------------------------------------
@@ -528,7 +754,7 @@ function drawTabs(){
  tabs.innerHTML=`<button class="tab" role="tab" data-i="all" aria-selected="${cur==='all'}">總覽</button>`+
  DAYS.map((x,i)=>{
   const cnt=(extra[i]||[]).length;
-  return `<button class="tab" role="tab" data-i="${i}" style="--c:${COLORS[i]}" aria-selected="${cur===i}">D${i+1}<small>${x.s}${cnt?` +${cnt}`:''}</small></button>`;
+  return `<button class="tab" role="tab" data-i="${i}" style="--c:${COLORS[i]}" aria-selected="${cur===i}">Day ${i+1}<small>${x.s}${cnt?` +${cnt}`:''}</small></button>`;
  }).join('');
 }
 
@@ -537,12 +763,12 @@ function renderBudgetOverview(){
  return `<div class="budget-card" id="budget-overview">
   <div class="budget-top">
    <div>
-    <div style="font-size:12px;font-weight:700;color:#166534">💴 7天6夜預估總預算（2人同行・不含機票）</div>
+    <div style="font-size:12px;font-weight:500;color:var(--mute)">7天6夜預估總預算（2人同行・不含機票）</div>
     <div class="budget-total" id="b-grand-jpy">${fmtY(B.total)}</div>
    </div>
    <div style="text-align:right">
     <span class="badge jr" id="b-grand-twd">約 ${fmtTWD(B.total)}</span>
-    <div style="font-size:11px;color:var(--mute);margin-top:2px">每日明細金額可直接修改</div>
+    <div style="font-size:11px;color:var(--mute);margin-top:3px">每日明細金額可直接修改</div>
    </div>
   </div>
   <div class="budget-grid">
@@ -551,7 +777,7 @@ function renderBudgetOverview(){
    <div class="b-cell"><small>🍜 每日餐飲交通購物</small><b id="b-daily-jpy">${fmtY(B.dailySum)}</b></div>
   </div>
   <details class="budget-details">
-   <summary>⚙️ 展開調整住宿／JR Pass 金額與匯率（點擊編輯）</summary>
+   <summary>⚙️ 展開調整住宿／JR Pass 金額與匯率</summary>
    <div class="budget-edit-list">
     <div class="b-edit-row"><label>JR EAST PASS 5日券（¥35,000 × 2人）</label><input type="number" step="500" data-mb="pass" value="${metaBudget.pass}"></div>
     <div class="b-edit-row"><label>1/09 Dormy Inn 秋田（1晚）</label><input type="number" step="500" data-mb="h0" value="${metaBudget.h0}"></div>
@@ -589,30 +815,30 @@ function renderFoodChecklist(filterDay=null){
 function overview(){
  layer.clearLayers();const all=[];
  DAYS.forEach((x,i)=>{
-  L.polyline(x.path,{color:COLORS[i],weight:4,opacity:.85,dashArray:i>4?'2 8':null}).addTo(layer).bindTooltip(`D${i+1} ${x.t}`);
+  L.polyline(x.path,{color:COLORS[i],weight:4,opacity:.85,dashArray:i>4?'2 8':null}).addTo(layer).bindTooltip(`Day ${i+1} ${x.t}`);
   x.path.forEach(p=>all.push(p));
   L.marker(x.path[Math.min(1,x.path.length-1)],{icon:pin(i+1,COLORS[i])}).addTo(layer).bindPopup(`<b>Day ${i+1}｜${x.d}</b><br>${x.t}<br><small>🌡️ ${WEATHER_META[i].avg}｜💴 ${fmtY(getDayTotal(i))}</small>`).on('click',()=>go(i));
  });
  body.innerHTML=`${renderBudgetOverview()}
- <h3 style="margin-top:6px">📅 每日路線與花費總覽（點選進入明細）</h3>`+
+ <h3 style="margin-top:4px">每日路線與花費總覽</h3>`+
  DAYS.map((x,i)=>{
   const cnt=(extra[i]||[]).length;
   const dCost=getDayTotal(i);
-  return `<button class="card" style="--c:${COLORS[i]}" data-i="${i}"><div class="dot">${i+1}</div><div><b>${x.d}｜${x.t} ${cnt?`<span class="badge custom">+${cnt} 臨時行程</span>`:''}</b><span>${x.jr==='自費'?'自費交通':'JR Pass '+x.jr} · 💴 ${fmtY(dCost)} · 🌡️ ${WEATHER_META[i].avg}</span></div></button>`;
+  return `<button class="card" style="--c:${COLORS[i]}" data-i="${i}"><div class="dot">0${i+1}</div><div><b>${x.d}｜${x.t} ${cnt?`<span class="badge custom">+${cnt} 臨時行程</span>`:''}</b><span>${x.jr==='自費'?'自費交通':'JR Pass '+x.jr} · 💴 ${fmtY(dCost)} · 🌡️ ${WEATHER_META[i].avg}</span></div></button>`;
  }).join('')+
- `<h3>🎁 7天沿途伴手禮＆必吃美食總表</h3>${renderFoodChecklist(null)}`+
- `<h3>🏨 住宿一覽</h3>${HOTELS.map(H=>{const k=DAYS.findIndex(d=>d.h===HOTELS.indexOf(H));return `<button class="card" style="--c:${COLORS[k]}" data-i="${k}"><div class="dot">🏨</div><div><b>${H.s}</b><span>${H.inn} 入住 ➔ ${H.out} 退房（${H.nt} 晚）· 💴 ${fmtY(metaBudget[H.id])}</span></div></button>`}).join('')}
- <h3>🎫 行程優化與票券重點（2026–2027 新制）</h3><ul class="p">
+ `<h3>7天沿途伴手禮＆必吃美食總表</h3>${renderFoodChecklist(null)}`+
+ `<h3>住宿預訂一覽</h3>${HOTELS.map(H=>{const k=DAYS.findIndex(d=>d.h===HOTELS.indexOf(H));return `<button class="card" style="--c:${COLORS[k]}" data-i="${k}"><div class="dot">宿</div><div><b>${H.s}</b><span>${H.inn} 入住 ➔ ${H.out} 退房（${H.nt} 晚）· 💴 ${fmtY(metaBudget[H.id])}</span></div></button>`}).join('')}
+ <h3>行程優化與票券重點（2026–2027 新制）</h3><ul class="p">
   <li><b>JR EAST PASS 5 日券（Day 1–5）</b>：涵蓋羽田單軌、東北／秋田／山形新幹線、仙山線，以及 Day 5 東京站往返<b>海濱幕張站（三井 Outlet 幕張）</b>之 JR 京葉線，全程免額外購票。</li>
   <li><b>雙重點順遊動線</b>：Day 4 利用山形連泊免搬行李，早上衝<b>藏王樹冰</b>、傍晚直奔<b>銀山溫泉瓦斯燈夜景</b>；Day 5 白天悠閒逛山形市區，下午回東京後晚間順逛幕張 Outlet 至 20:00。</li>
   <li><b>暴雪改道預案</b>：Day 3 仙台➔山形之「JR 仙山線」若遇大雪停駛，可免費改搭東北新幹線至<b>福島站</b>轉乘山形新幹線「翼號」。</li>
  </ul>
- <h3>🧤 東北雪國防寒與應變清單</h3><ul class="p">
+ <h3>東北雪國防寒與應變清單</h3><ul class="p">
   <li><b>鞋具</b>：防水防滑雪靴＋隨身簡易冰爪（銀山溫泉石板路、角館與霞城公園雪地必備）。</li>
   <li><b>衣物</b>：洋蔥式穿法（發熱衣＋刷毛中層＋防風防水羽絨外套），備妥毛帽、圍巾與觸控手套。</li>
   <li><b>隨身</b>：行動電源（低溫耗電極快）、暖暖包、保濕護唇膏、足夠日圓現金（山區巴士與老店多僅收現金）。</li>
  </ul>
- <h3>🔗 即時資訊與實用連結</h3><div class="links"><button class="btn main" onclick="openPrintPreview('all')">🖨️ 預覽列印完整 7 日手冊</button><a class="btn" target="_blank" rel="noopener" href="https://www.eki-net.com/">JR Eki-Net 劃位</a><a class="btn" target="_blank" rel="noopener" href="https://traininfo.jreast.co.jp/train_info/tohoku.aspx">JR 東北即時運行情報</a><a class="btn" target="_blank" rel="noopener" href="https://tenki.jp/forecast/2/">日本氣象協會東北天氣</a><a class="btn" target="_blank" rel="noopener" href="https://zaoropeway.co.jp/livecam/">藏王山頂 LiveCam</a><a class="btn" target="_blank" rel="noopener" href="https://www.ginzanonsen.jp/">銀山溫泉官網</a></div>`;
+ <h3>即時資訊與實用連結</h3><div class="links"><button class="btn main" onclick="openPrintPreview('all')">🖨️ 預覽列印完整 7 日手冊</button><a class="btn" target="_blank" rel="noopener" href="https://www.eki-net.com/">JR Eki-Net 劃位</a><a class="btn" target="_blank" rel="noopener" href="https://traininfo.jreast.co.jp/train_info/tohoku.aspx">JR 東北即時運行情報</a><a class="btn" target="_blank" rel="noopener" href="https://tenki.jp/forecast/2/">日本氣象協會東北天氣</a><a class="btn" target="_blank" rel="noopener" href="https://zaoropeway.co.jp/livecam/">藏王山頂 LiveCam</a><a class="btn" target="_blank" rel="noopener" href="https://www.ginzanonsen.jp/">銀山溫泉官網</a></div>`;
  fit(all);
 }
 
@@ -647,7 +873,7 @@ function day(i){
  const merged=getMergedStops(i);
  const pts=[...x.path];
  merged.forEach(item=>{if(item.isExtra&&item.stop.ll)pts.push(item.stop.ll)});
- L.polyline(x.path,{color:c,weight:5,opacity:.9}).addTo(layer);
+ L.polyline(x.path,{color:c,weight:4.5,opacity:.9}).addTo(layer);
 
  let n=0;const mk={};
  merged.forEach((item,k)=>{
@@ -659,15 +885,15 @@ function day(i){
   }
  });
  const H=x.h!==undefined?HOTELS[x.h]:null;
- if(H){L.marker(H.ll,{icon:pin('🏨',c,'h')}).addTo(layer).bindPopup(`<b>🏨 ${H.n}</b>`);pts.push(H.ll)}
+ if(H){L.marker(H.ll,{icon:pin('宿',c,'h')}).addTo(layer).bindPopup(`<b>🏨 ${H.n}</b>`);pts.push(H.ll)}
 
  const daySum=getDayTotal(i);
  let nn=0;
  body.innerHTML=`<div class="dhead">
-  <h2>Day ${i+1}｜${x.d}<br><span style="font-weight:500;font-size:15px">${x.t}</span></h2>
+  <h2>Day 0${i+1}｜${x.d}<span class="sub">${x.t}</span></h2>
   <div style="text-align:right">
    ${x.jr==='自費'?'<span class="badge pay">自費交通</span>':`<span class="badge jr">JR Pass ${x.jr}</span>`}
-   <div style="margin-top:4px"><span class="badge" style="background:#dcfce7;color:#14532d" id="day-sum-badge">💴 本日小計 ${fmtY(daySum)}</span></div>
+   <div style="margin-top:4px"><span class="badge jr" id="day-sum-badge">💴 小計 ${fmtY(daySum)}</span></div>
   </div>
  </div>
  <div class="wx" id="wx-${i}">⏳ 正在載入 ${WEATHER_META[i].city} 即時氣候預報...</div>
@@ -681,7 +907,7 @@ function day(i){
   const has=!!s.ll;if(has)nn++;
   return `<li class="st${done[key]?' done':''}${item.isExtra?' is-extra':''}" style="--c:${c}">
    <div class="time">${s.time}</div>
-   <div class="tt"><span>${s.icon} ${has?`<span class="badge" style="background:${item.isExtra?'#7e22ce':c};color:#fff">${item.isExtra?'★':nn}</span> `:''}${s.title}</span> ${tag(s.type)} ${s.tagCost?`<span class="badge pay">${s.tagCost}</span>`:''}</div>
+   <div class="tt"><span>${s.icon} ${has?`<span class="badge" style="background:${item.isExtra?'var(--terracotta)':c};color:#fff;border:0">${item.isExtra?'★':nn}</span> `:''}${s.title}</span> ${tag(s.type)} ${s.tagCost?`<span class="badge pay">${s.tagCost}</span>`:''}</div>
    ${s.desc?`<div class="desc">${s.desc}</div>`:''}
    ${s.warn?`<div class="warn">${s.warn}</div>`:''}
    ${s.opt&&!item.isExtra?`<div class="opt">💡 <b>優化建議：</b>${s.opt}</div>`:''}
@@ -741,9 +967,9 @@ function buildPrintSheet(scope){
  let html=`<div class="ps-head">
   <div>
    <h2>❄️ 東北雪國 JR PASS 7天6夜行程手冊</h2>
-   <div class="ps-meta">📅 2027/01/09（六）– 01/15（五）｜🎫 JR 東日本周遊券 5 日券（Day 1–5）｜列印日期：${nowStr}</div>
+   <div class="ps-meta">2027.01.09（六）– 01.15（五）｜JR 東日本周遊券 5 日券（Day 1–5）｜列印日期：${nowStr}</div>
   </div>
-  <span class="badge">${isAll?'完整 7 日總覽與明細':`單日精簡版（Day ${scope+1}）`}</span>
+  <span class="badge">${isAll?'完整 7 日總覽與明細':`單日精簡版（Day 0${scope+1}）`}</span>
  </div>`;
 
  if(isAll){
@@ -775,9 +1001,9 @@ function buildPrintSheet(scope){
 
   html+=`<section class="ps-day">
    <div class="ps-day-hdr" style="--c:${c}">
-    <h3>Day ${i+1}｜${x.d} ${x.t}</h3>
+    <h3>Day 0${i+1}｜${x.d} ${x.t}</h3>
     <div>
-     <span class="badge" style="background:#dcfce7;color:#14532d;margin-right:4px">本日小計 ${fmtY(dTotal)}</span>
+     <span class="badge jr" style="margin-right:4px">本日小計 ${fmtY(dTotal)}</span>
      ${x.jr==='自費'?'<span class="badge pay">自費交通</span>':`<span class="badge jr">JR Pass ${x.jr}</span>`}
     </div>
    </div>
@@ -795,14 +1021,14 @@ function buildPrintSheet(scope){
        <td class="col-time">${isDone?'☑':'☐'} ${s.time}</td>
        <td>
         <b>${s.icon} ${s.title}</b>
-        ${s.desc?`<div style="color:#34445c;margin-top:2px">${s.desc}</div>`:''}
+        ${s.desc?`<div style="color:var(--ink-soft);margin-top:2px">${s.desc}</div>`:''}
         ${s.warn?`<div class="ps-note">${s.warn}</div>`:''}
         ${s.opt&&!item.isExtra?`<div class="ps-opt">💡 ${s.opt}</div>`:''}
        </td>
        <td class="col-tag">
         ${tag(s.type)}
-        ${s.cost>0?`<div style="font-size:12px;font-weight:700;color:#14532d;margin-top:3px">${fmtY(s.cost)}</div>`:''}
-        ${s.tagCost?`<div style="font-size:11px;color:var(--pay);margin-top:2px">${s.tagCost}</div>`:''}
+        ${s.cost>0?`<div style="font-size:12px;font-weight:700;color:var(--sage);margin-top:3px">${fmtY(s.cost)}</div>`:''}
+        ${s.tagCost?`<div style="font-size:11px;color:var(--terracotta);margin-top:2px">${s.tagCost}</div>`:''}
        </td>
       </tr>`;
      }).join('')}
@@ -888,7 +1114,7 @@ body.addEventListener('change',e=>{
    }
   }
   const badge=document.getElementById('day-sum-badge');
-  if(badge)badge.textContent=`💴 本日小計 ${fmtY(getDayTotal(dIdx))}`;
+  if(badge)badge.textContent=`💴 小計 ${fmtY(getDayTotal(dIdx))}`;
  }
  if(e.target.dataset.mb){
   const k=e.target.dataset.mb;
