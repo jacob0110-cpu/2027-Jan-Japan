@@ -165,6 +165,29 @@ h1{
 .badge.custom{background:var(--gold-soft);color:var(--gold);border-color:#e2d4be}
 .badge.food{background:#fbf5e8;color:#855c24;border-color:#ead9b7}
 
+/* 行前必做預約提醒卡片 */
+.prep-card{
+  background:var(--terracotta-soft);
+  border:1px solid #ebd0c8;
+  border-left:3.5px solid var(--terracotta);
+  border-radius:8px;
+  padding:12px 14px;
+  margin:0 0 14px;
+  font-size:13px;
+}
+.prep-card h4{
+  font-family:var(--font-serif);
+  margin:0 0 8px;
+  font-size:14.5px;
+  color:#6e2919;
+  display:flex;align-items:center;gap:6px;
+}
+.prep-list{display:flex;flex-direction:column;gap:6px}
+.prep-item{display:flex;align-items:flex-start;gap:8px;background:rgba(255,255,255,.82);border:1px solid #f0dcd6;border-radius:6px;padding:6px 9px}
+.prep-item input[type=checkbox]{margin-top:3px;accent-color:var(--terracotta);width:15px;height:15px;cursor:pointer;flex:none}
+.prep-item.checked span{text-decoration:line-through;color:var(--mute)}
+.prep-item span{font-size:12.5px;color:var(--ink);line-height:1.55}
+
 /* 即時氣候卡片 */
 .wx{
   background:var(--card);
@@ -191,7 +214,7 @@ h1{
   border-top:3px solid var(--ink);
   border-radius:8px;
   padding:14px 16px;
-  margin:0 0 18px;
+  margin:0 0 16px;
   font-size:13.5px;
 }
 .budget-top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
@@ -368,11 +391,15 @@ ul.p li{margin-bottom:6px}
 .ps-head{border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
 .ps-head h2{font-family:var(--font-serif);font-weight:700;font-size:24px;line-height:1.25;margin:0;letter-spacing:.04em}
 .ps-meta{font-size:12.5px;color:var(--mute);margin-top:4px}
-.ps-summary{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+.ps-summary{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
 .ps-box{border:1px solid var(--line);border-radius:6px;padding:12px 14px;background:var(--paper)}
 .ps-box h4{font-family:var(--font-serif);margin:0 0 8px;font-size:14px;color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:4px}
 .ps-box ul{margin:0;padding-left:18px;font-size:12.5px;color:var(--ink-soft)}
 .ps-box li{margin-bottom:4px}
+.ps-prep{border:1px solid #ebd0c8;background:var(--terracotta-soft);border-radius:6px;padding:10px 14px;margin-bottom:22px;font-size:12.5px;color:#5e2214}
+.ps-prep h4{font-family:var(--font-serif);margin:0 0 6px;font-size:13.5px;color:var(--terracotta)}
+.ps-prep ul{margin:0;padding-left:18px}
+.ps-prep li{margin-bottom:3px}
 .ps-day{margin-bottom:26px;break-inside:avoid}
 .ps-day-hdr{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:5px;background:var(--sand);border-left:4px solid var(--c,var(--gold));margin-bottom:10px}
 .ps-day-hdr h3{font-family:var(--font-serif);margin:0;font-weight:700;font-size:16px;line-height:1.3;border:0;padding:0}
@@ -445,8 +472,14 @@ function mkStop(time, icon, title, desc='', type='', ll=null, q='', warn='', tag
  return {time, icon, title, desc, type, ll, q, warn, tagCost, opt, cost: +cost || 0};
 }
 
-// 沉穩和風大地色系（取代高飽和亮色）
 const COLORS=['#3b5978','#2f6b68','#5b537a','#9e4747','#9a7b4f','#3a6b52','#5c5852'];
+
+const PREP_TASKS=[
+ {id:'p1',text:'<b>2026/12/02 起（乘車日 1 個月又 7 天前）</b>：登入 JR 東日本官網使用「事前受理」登記 Day 1–5 共 7 趟新幹線指定席（含 Day 2 秋田⇄角館⇄盛岡短程小町號）。'},
+ {id:'p2',text:'<b>2026/12/09 起（出發前 1 個月）</b>：JR 東日本官網線上刷卡購買 JR EAST PASS 5 日券（2 人同訂單購買，領票點選羽田 T3 自助售票機）。'},
+ {id:'p3',text:'<b>出發前 1 個月（2026/12 上旬）</b>：透過官網或 Tabelog 預約 Day 1 晚餐「秋田比内や」與 Day 3 晚餐「米澤牛 登起波」，避開 1 月旺季客滿。'},
+ {id:'p4',text:'<b>出發前 48 小時</b>：完成長榮 BR192 線上報到、Visit Japan Web 填寫，並確認 1/12 藏王 LiveCam 與銀山溫泉巴士時刻。'}
+];
 
 const HOTELS=[
 {id:'h0',s:'Dormy Inn 秋田',n:'中通溫泉 小町之湯 多美迎秋田 Dormy Inn Akita',ll:[39.7189,140.1250],inn:'1/09',out:'1/10',nt:1,defaultCost:18000,
@@ -459,18 +492,18 @@ const HOTELS=[
  room:'中等大床房・禁菸（1 張大床）・含 2 份早餐・2 位成人',addr:'2-9 Saiwaicho, Yamagata 990-0038',tel:'+81-23-6277255',
  pay:'易遊網預訂（可於總覽預算表調整金額）',via:'易遊網 ezTravel',note:'連續 2 晚免換飯店'},
 {id:'h3',s:'東橫INN 馬喰町',n:'東橫INN 東京日本橋馬喰町',ll:[35.6924,139.7842],inn:'1/13',out:'1/15',nt:2,defaultCost:22000,
- addr:'東京都中央區日本橋馬喰町 1-4-16',via:'東橫INN 官網',note:'直達羽田/成田線便利'}
+ addr:'東京都中央區日本橋馬喰町 1-4-16',via:'東橫INN 官網',note:'Day 5 抵東京可先免費寄放行李'}
 ];
 
 const FOOD_SOUVENIRS=[
- {id:'f01',day:0,type:'美食',name:'比內地雞烤雞串＆切蒲葵鍋（秋田比内や）',where:'秋田站 Topico 3F / 川反通居酒屋',price:'約 ¥3,500–5,000/人',url:'https://akitahinaiya.co.jp/',urlLabel:'秋田比内や官網'},
+ {id:'f01',day:0,type:'美食',name:'比內地雞烤雞串＆切蒲葵鍋（秋田比内や・建議先訂位）',where:'秋田站 Topico 3F / 川反通居酒屋',price:'約 ¥3,500–5,000/人',url:'https://akitahinaiya.co.jp/',urlLabel:'秋田比内や官網'},
  {id:'f02',day:0,type:'伴手禮',name:'佐藤養助 稻庭烏龍麵（手工乾麵禮盒）',where:'秋田站 Topico 2F 伴手禮區',price:'約 ¥1,080–2,160',url:'https://www.sato-yoske.co.jp/',urlLabel:'佐藤養助官網'},
  {id:'f03',day:0,type:'伴手禮',name:'秋田銘菓 金萬（白豆沙蜂蜜蛋糕）＆秋田地酒',where:'秋田站 Topico 銘品館',price:'約 ¥800–2,500',url:'https://kinman.co.jp/',urlLabel:'金萬官網'},
  {id:'f11',day:1,type:'美食',name:'お食事処 桜の里 比內地雞究極親子丼',where:'角館武家屋敷通',price:'約 ¥1,600–2,000/人',url:'https://www.sakuranosato.net/',urlLabel:'桜の里官網'},
  {id:'f12',day:1,type:'美食',name:'盛樓閣 盛岡冷麵（推薦點「辛味別」分開加辣）',where:'盛岡站正對面 Gen Plaza 2F',price:'約 ¥1,500–3,800/人',url:'https://www.gen-plaza.com/',urlLabel:'盛樓閣官網'},
  {id:'f13',day:1,type:'伴手禮',name:'南部せんべい乃 巖手屋 南部煎餅（花生／巧克力）',where:'盛岡站 Fesan 1F おでんせ館',price:'約 ¥650–1,500',url:'https://www.iwateya.co.jp/',urlLabel:'巖手屋官網'},
  {id:'f21',day:2,type:'美食',name:'仙台厚切炭烤牛舌定食（たんや善治郎／利久／伊達）',where:'仙台站 3F 牛たん通り',price:'約 ¥2,500–3,500/人',url:'https://www.livit.jregroup.ne.jp/gyutan-sushistreet/',urlLabel:'仙台牛たん通り'},
- {id:'f22',day:2,type:'美食',name:'米澤牛 登起波（壽喜燒／牛排）＋山形芋煮',where:'山形站周邊 / 米澤牛專門店',price:'約 ¥5,000–9,000/人',url:'https://www.yonezawabeef.co.jp/chinese02.html',urlLabel:'登起波中文官網'},
+ {id:'f22',day:2,type:'美食',name:'米澤牛 登起波（壽喜燒／牛排・建議先訂位）＋山形芋煮',where:'山形站周邊 / 米澤牛專門店',price:'約 ¥5,000–9,000/人',url:'https://www.yonezawabeef.co.jp/chinese02.html',urlLabel:'登起波中文官網'},
  {id:'f23',day:2,type:'伴手禮',name:'菓匠三全 萩之月（萩の月）卡士達蛋糕＆毛豆麻糬',where:'仙台站 2F／3F 伴手禮街',price:'約 ¥1,200–2,000',url:'https://www.sanzen.co.jp/product/haginotsuki/index.html',urlLabel:'萩之月官網'},
  {id:'f31',day:3,type:'美食',name:'銀山溫泉「野川とうふや」現煮湯豆腐＆炸豆腐',where:'銀山溫泉街（鄰近免費和樂足湯）',price:'約 ¥250–600',url:'https://twobunnytravel.tw/nogawa-tofuya/',urlLabel:'野川豆腐屋資訊'},
  {id:'f32',day:3,type:'美食',name:'赤湯ラーメン 龍上海（山形赤湯辣味噌拉麵）',where:'山形市區／站前周邊',price:'約 ¥950–1,200/碗',url:'https://ryushanhai.com/',urlLabel:'龍上海官網'},
@@ -479,7 +512,9 @@ const FOOD_SOUVENIRS=[
  {id:'f42',day:4,type:'伴手禮',name:'乃し梅本舗 佐藤屋 梅子羊羹＆玉響巧克力羊羹',where:'山形站 S-PAL 2F 銘品館',price:'約 ¥900–1,600',url:'https://satoya-matsubei.com/',urlLabel:'佐藤屋官網'},
  {id:'f43',day:4,type:'購物',name:'三井 OUTLET PARK 幕張（日系服飾＆藥妝免稅）',where:'JR 海濱幕張站南口步行 1 分鐘',price:'依個人購物預算',url:'https://mitsui-shopping-park.com/mop/makuhari/tw/',urlLabel:'幕張Outlet繁中官網'},
  {id:'f51',day:5,type:'美食',name:'淺草 大黑家天麩羅（明治20年創業胡麻油海老天丼）',where:'淺草雷門傳法院通周邊',price:'約 ¥2,200–4,000/人',url:'http://www.tempura.co.jp/',urlLabel:'大黑家官網'},
- {id:'f52',day:5,type:'伴手禮',name:'御菓子司 龜十（東京三大銅鑼燒・黑糖/白豆沙）',where:'淺草雷門斜對面',price:'約 ¥430/個',url:'https://asakusa-shoren.jp/zh-hant/stores/1626/',urlLabel:'龜十店舖資訊'},
+ {id:'f52',day:5,type:'美食',name:'銀座晚餐：迴轉壽司 根室花丸（東急 Plaza 銀座 10F）',where:'銀座站 C2/C3 出口直結',price:'約 ¥3,000–4,500/人',url:'https://www.sushi-hanamaru.com/store/details/s13.html',urlLabel:'根室花丸銀座店'},
+ {id:'f53',day:5,type:'美食',name:'銀座晚餐備選：梅丘壽司の美登利 銀座店 / 銀座燒肉',where:'銀座コリドー街（Corridor 街）',price:'約 ¥3,500–6,000/人',url:'https://www.sushinomidori.co.jp/shops/ginza/',urlLabel:'美登利銀座店'},
+ {id:'f54',day:5,type:'伴手禮',name:'御菓子司 龜十（東京三大銅鑼燒・黑糖/白豆沙）',where:'淺草雷門斜對面',price:'約 ¥430/個',url:'https://asakusa-shoren.jp/zh-hant/stores/1626/',urlLabel:'龜十店舖資訊'},
  {id:'f61',day:6,type:'伴手禮',name:'NEWYORK PERFECT CHEESE 起司奶油脆餅',where:'羽田機場 T3 江戶小路／免稅店',price:'約 ¥1,080–2,160',url:'https://newyork-perfect-cheese.com/zh-tw',urlLabel:'NY起司餅官網'}
 ];
 
@@ -495,8 +530,8 @@ const WEATHER_META=[
 
 const FLEX_OPTIONS=[
  [
-  {cat:'❄️ 雪天／室內備案',time:'17:30–18:30',icon:'🛍️',title:'秋田站 Topico & ALS 商場避寒',desc:'新幹線若遇雪延誤或天冷不想走遠，可直接在站共構商場採買稻庭烏龍麵與清酒。',type:'custom',ll:[39.7172,140.1298],q:'秋田駅 トピコ',cost:2000},
-  {cat:'🍶 宵夜加碼',time:'20:15–21:15',icon:'🏮',title:'秋田市民市場／站前清酒試飲機',desc:'品嚐秋田地酒（新政、雪之茅舍等），小酌暖身後步行回 Dormy Inn。',type:'custom',ll:[39.7156,140.1265],q:'秋田駅前 地酒',cost:1500}
+  {cat:'🚄 班機延誤備案',time:'14:20–18:05',icon:'🔄',title:'秋田新幹線 こまち 27 號（東京 ➔ 秋田）',desc:'若入境或轉乘稍有延誤，改搭 14:20 發車的こまち 27 號直達秋田（約 18:05 抵）。',type:'jr',ll:[39.7170,140.1290],q:'秋田駅',cost:0},
+  {cat:'❄️ 雪天／室內備案',time:'17:30–18:30',icon:'🛍️',title:'秋田站 Topico & ALS 商場避寒',desc:'抵達後天冷不想走遠，可直接在站共構商場採買稻庭烏龍麵與清酒。',type:'custom',ll:[39.7172,140.1298],q:'秋田駅 トピコ',cost:2000}
  ],
  [
   {cat:'🖼️ 雪天／室內備案',time:'09:30–10:30',icon:'🎨',title:'秋田縣立美術館（安藤忠雄設計）',desc:'若千秋公園風雪過大，改至對面美術館室內賞藤田嗣治《秋田之行事》巨幅壁畫。',type:'custom',ll:[39.7176,140.1219],q:'秋田県立美術館',cost:1400},
@@ -508,16 +543,16 @@ const FLEX_OPTIONS=[
   {cat:'🚄 暴雪改道備案',time:'13:15–15:00',icon:'🔄',title:'仙山線停駛備案：經福島轉山形新幹線',desc:'遇大雪仙山線停駛時，改搭東北新幹線至福島站轉乘翼號（Tsubasa）直達山形，全程適用 JR Pass。',type:'jr',ll:[37.7540,140.4590],q:'福島駅',cost:0}
  ],
  [
-  {cat:'☀️ 藏王晴朗加碼',time:'10:30–11:00',icon:'🗿',title:'藏王地藏尊雪中參拜',desc:'走出地藏山頂站即可見半埋在深雪中的巨型地藏菩薩，雪季僅露出頭部與肩膀。',type:'custom',ll:[38.1605,140.4432],q:'蔵王地蔵尊',cost:0},
+  {cat:'🚄 銀山新幹線備案',time:'14:43–15:15',icon:'⚡',title:'山形新幹線 つばさ 137 號（山形 ➔ 大石田）',desc:'若中午在山形用餐較晚，可改搭 14:43 發車的翼號 137 號（15:15 抵大石田，無縫接 15:30 銀山巴士）。',type:'jr',ll:[38.5976,140.3667],q:'大石田駅',cost:0},
   {cat:'🌫️ 藏王白牆備案',time:'09:30–11:30',icon:'🏛️',title:'霞城中央 24 樓免費展望台＋山寺遠眺',desc:'若一早 LiveCam 顯示藏王山頂全白零能見度，省下纜車費改走市區高空展望台，下午照常去銀山。',type:'custom',ll:[38.2495,140.3260],q:'霞城セントラル',cost:0},
-  {cat:'♨️ 銀山暖身加碼',time:'16:00–16:40',icon:'🛁',title:'銀山溫泉「白銀湯」公共浴場泡湯',desc:'在等待天黑點燈前先泡湯驅寒（入浴料 ¥500/人，毛巾需自備或現場購買）。',type:'pay',ll:[38.5716,140.5352],q:'しろがね湯 銀山温泉',cost:1000}
+  {cat:'♨️ 銀山暖身加碼',time:'16:10–16:45',icon:'🛁',title:'銀山溫泉「白銀湯」公共浴場泡湯',desc:'在等待天黑點燈前先泡湯驅寒（入浴料 ¥500/人，毛巾需自備或現場購買）。',type:'pay',ll:[38.5716,140.5352],q:'しろがね湯 銀山温泉',cost:1000}
  ],
  [
-  {cat:'🛍️ 幕張加碼',time:'18:30–19:30',icon:'🍣',title:'海濱幕張站前 Plena / Mitsui 晚餐',desc:'逛完 Outlet 後在站前商場吃迴轉壽司或拉麵再搭京葉線返回市區。',type:'custom',ll:[35.6488,140.0422],q:'プレナ幕張',cost:3500},
-  {cat:'☔ 延誤備案（放棄 Outlet）',time:'17:30–19:30',icon:'🍜',title:'東京站一番街拉麵街（六厘舍沾麵）',desc:'若山形新幹線遇大雪延誤抵京，取消前往幕張，直接於東京站一番街吃晚餐與買伴手禮。',type:'custom',ll:[35.6812,139.7681],q:'東京ラーメンストリート',cost:2400}
+  {cat:'🛍️ 幕張加碼',time:'19:45–20:30',icon:'🍣',title:'海濱幕張站前 Plena / Mitsui 晚餐',desc:'逛完 Outlet 後在站前商場吃迴轉壽司或拉麵再搭京葉線返回馬喰町飯店。',type:'custom',ll:[35.6488,140.0422],q:'プレナ幕張',cost:3500},
+  {cat:'☔ 延誤備案（放棄 Outlet）',time:'17:30–19:30',icon:'🍜',title:'東京站一番街拉麵街（六厘舍沾麵）',desc:'若山形新幹線遇大雪延誤抵京，放好行李後改逛東京站一番街吃晚餐與買伴手禮。',type:'custom',ll:[35.6812,139.7681],q:'東京ラーメンストリート',cost:2400}
  ],
  [
-  {cat:'🌇 黃昏加碼',time:'16:30–18:00',icon:'🌃',title:'SHIBUYA SKY 夕陽與東京夜景',desc:'從晴空塔轉往澀谷時可順遊（需提前兩週官網預約日落時段門票，約 ¥2,500/人）。',type:'pay',ll:[35.6584,139.7022],q:'SHIBUYA SKY',cost:5000},
+  {cat:'🥩 銀座燒肉備選',time:'18:30–20:00',icon:'🔥',title:'銀座燒肉 USHIGORO 銀座店 / 敘敘苑',desc:'若想吃頂級黑毛和牛燒肉慶祝旅程尾聲，可於銀座商圈享用晚餐（建議提前線上訂位）。',type:'custom',ll:[35.6728,139.7654],q:'焼肉うしごろ 銀座店',cost:14000},
   {cat:'☔ 雨雪／避寒備案',time:'14:00–17:30',icon:'🐠',title:'墨田水族館（晴空塔城 5–6F）',desc:'全室內恆溫空間，適合走累了放慢步調看企鵝與水母（約 ¥2,500/人）。',type:'pay',ll:[35.7102,139.8096],q:'すみだ水族館',cost:5000}
  ],
  [
@@ -529,19 +564,19 @@ const DAYS=[
 {d:'1/09 (六)',s:'秋田',t:'台北 ➔ 羽田 ➔ 東京 ➔ 秋田',jr:'Day 1',h:0,
  path:[[35.5494,139.7798],[35.6812,139.7671],[39.7170,140.1290]],
  st:[
-  mkStop('07:15–11:00','✈️','長榮 BR192 台北松山 ➔ 羽田','TSA T1 ➔ HND T3。','', [35.5494,139.7798], '','', '', '建議出發前 48 小時完成線上報到與 Visit Japan Web 填寫。', 0),
-  mkStop('11:00–12:00','🛃','入境、兌換並啟用 JR PASS','於羽田 T3 JR 東日本旅行服務中心兌換周遊券，並一次劃好 Day 1–5 新幹線指定席。','', null, '','', '', '2026年3月起整合為新版 JR EAST PASS（5日券 ¥35,000），可直接在自動售票機掃護照領票。', 0),
-  mkStop('12:06–12:45','🚆','東京單軌電車 ➔ 濱松町 ➔ 山手線 ➔ 東京站','單軌電車與 JR 山手線皆含在 Pass 內，東京站轉乘建議預留 25 分鐘以上。','jr', [35.6812,139.7671], '','', '', '可在東京站 Gransta 購買鐵路便當帶上新幹線享用（預估便當約 ¥3,000/2人）。', 3000),
-  mkStop('約 13:20–17:10','🚄','秋田新幹線 小町號 東京 ➔ 秋田','東京站直達秋田，約 3 小時 45 分，全車指定席。','jr', [39.7170,140.1290], '','⚠️ 實際發車與抵達時間請以 JR 東日本冬季時刻表為準；冬季 16:30 即天黑，抵達後以休息與在地晚餐為主。','', '', 0),
-  mkStop('18:00–20:00','🍲','晚餐：比內地雞、切蒲葵鍋','秋田站周邊（秋田比内や）或川反通居酒屋。','', null, '秋田 比内地鶏 居酒屋','', '預估 ¥8,000/2人', '', 8000),
+  mkStop('07:15–11:00','✈️','長榮 BR192 台北松山 ➔ 羽田','TSA T1 ➔ HND T3。','', [35.5494,139.7798], '','', '', '出發前 48 小時完成線上報到與 Visit Japan Web 填寫。', 0),
+  mkStop('11:00–12:00','🛃','入境、護照讀取指定席售票機自助領票','改用羽田 T3「護照讀取指定席售票機」自助掃描護照領取 JR Pass 與已劃好之指定席車票（僅需 3–5 分鐘，免排人工櫃檯）。','', null, '羽田空港第3ターミナル駅','', '', '2026/12/09 起先於官網購票並完成事前劃位，現場直接機台取票最穩妥。', 0),
+  mkStop('12:06–12:45','🚆','東京單軌電車 ➔ 濱松町 ➔ 山手線 ➔ 東京站','單軌電車與 JR 山手線皆含在 Pass 內。','jr', [35.6812,139.7671], '','', '', '可在東京站 Gransta 購買鐵路便當帶上新幹線享用（預估便當約 ¥3,000/2人）。', 3000),
+  mkStop('約 13:20–17:10','🚄','秋田新幹線 小町號 東京 ➔ 秋田','東京站直達秋田，全車指定席。若入境或轉乘延誤，備案改搭 14:20 發車之「こまち 27 號」（約 18:05 抵秋田）。','jr', [39.7170,140.1290], '','⚠️ 冬季 16:30 即天黑，抵達後直接入住飯店並享用已預約之在地晚餐。','', '', 0),
+  mkStop('18:00–20:00','🍲','晚餐：比內地雞、切蒲葵鍋（秋田比内や）','秋田站 Topico 3F 或川反通居酒屋（建議 2026/12 上旬提前訂位）。','', null, '秋田比内や 秋田駅前店','', '預估 ¥8,000/2人', '', 8000),
   mkStop('21:30–23:00','♨️','飯店溫泉與夜鳴拉麵','小町之湯天然溫泉，21:30–23:00 提供免費夜鳴醬油拉麵。','', null, '','', '', '', 0)
  ]},
 {d:'1/10 (日)',s:'角館·盛岡',t:'秋田 ➔ 角館 ➔ 盛岡',jr:'Day 2',h:1,
  path:[[39.7198,140.1103],[39.7170,140.1290],[39.5988,140.5613],[39.7013,141.1366],[39.7006,141.1514]],
  st:[
   mkStop('08:30–10:30','🏯','千秋公園（久保田城跡）雪景','從飯店步行約 10 分鐘，雪中護城河與御隅櫓景色清幽。','', [39.7198,140.1103], '','', '', '', 0),
-  mkStop('約 11:00–11:50','🚄','秋田 ➔ 角館（小町號）','全車指定席需先劃位；大件行李可寄放角館站前觀光案內所（藏）或車站置物櫃（約 ¥800）。','jr', [39.5988,140.5613], '','', '', '若遇大型行李箱滿櫃，角館站旁觀光案內所提供人工寄物服務。', 800),
-  mkStop('12:00–14:30','🏯','角館武家屋敷散策與午餐','雪中黑牆古宅區（青柳家、石黑家）；午餐推薦櫻之里比內地雞親子丼與稻庭烏龍麵。','', [39.5967,140.5636], '','', '門票＋午餐約 ¥5,000/2人', '', 5000),
+  mkStop('約 11:00–11:50','🚄','秋田 ➔ 角館（小町號）','全車指定席（已於行前事前受理劃位）；大件行李寄放角館站前觀光案內所（藏）或車站置物櫃（約 ¥800）。','jr', [39.5988,140.5613], '','', '', '若遇大型行李箱滿櫃，角館站旁觀光案內所提供人工寄物服務。', 800),
+  mkStop('12:00–14:30','🏯','角館武家屋敷散策與午餐','雪中黑牆古宅區（青柳家、石黑家）；午餐推薦「桜の里」比內地雞親子丼與稻庭烏龍麵。','', [39.5967,140.5636], '','', '門票＋午餐約 ¥5,000/2人', '', 5000),
   mkStop('約 15:00–15:55','🚄','角館 ➔ 盛岡（小町號）','穿越奧羽山脈雪景抵達盛岡。','jr', [39.7013,141.1366], '','⚠️ 田澤湖環湖巴士冬季班次極少，主行程已精簡；若天氣極佳想改去田澤湖，可從上方「臨時增加行程」切換。','', '', 0),
   mkStop('16:30–18:00','🏯','盛岡城跡公園、岩手銀行赤磚館','雪景與紅磚建築夜間點燈。','', [39.7006,141.1514], '','', '', '', 0),
   mkStop('晚餐','🍜','盛樓閣冷麵 或 東家碗子蕎麥麵','盛岡三大麵名店，冷麵搭配烤肉是當地經典吃法。','', null, '盛樓閣 盛岡','', '預估 ¥5,500/2人', '', 5500)
@@ -551,10 +586,10 @@ const DAYS=[
  st:[
   mkStop('08:30–09:45','⛩️','盛岡晨景散步','櫻山神社烏帽子岩、紺屋町番屋傳統街區。','', [39.7022,141.1496], '','', '', '', 0),
   mkStop('約 10:00–10:50','🚄','東北新幹線 盛岡 ➔ 仙台','隼號（Hayabusa）約 40 分鐘直達，全車指定席。','jr', [38.2601,140.8824], '','', '', '行李可先寄放仙台站投幣式置物櫃（約 ¥800），輕鬆吃午餐。', 800),
-  mkStop('11:00–13:00','🥩','仙台站午餐：厚切牛舌','站內 3 樓「牛たん通り」（善治郎、利久、伊達牛舌）。','', null, '仙台站 牛たん通り','', '預估 ¥6,000/2人', '', 6000),
+  mkStop('11:00–13:00','🥩','仙台站午餐：厚切牛舌','站內 3 樓「牛たん通り」（たんや善治郎、利久、伊達牛舌）。','', null, '仙台站 牛たん通り','', '預估 ¥6,000/2人', '', 6000),
   mkStop('約 13:15–14:40','🚆','JR 仙山線 仙台 ➔ 山形','快速列車約 1 小時 15 分，沿途欣賞山寺與峽谷雪景（自由席）。','jr', [38.2486,140.3281], '','⚠️ 仙山線行經山區，冬季易受大雪延誤或停駛；若停駛請立即啟動備案：改搭東北新幹線至福島站，轉山形新幹線「翼號」直達山形。','', '', 0),
-  mkStop('15:00–17:00','🛍️','飯店入住、山形站前商場與 S-PAL 採買','辦理連泊入住手續，逛站共構商場採買山形縣產水果點心與清酒，早點休息養精蓄銳。','', [38.2493,140.3297], '','', '', '文翔館與霞城公園調整至 1/13 上午陽光充足時段順遊。', 2000),
-  mkStop('晚餐','🥩','米澤牛 登起波 或 黃木','山形站前直結商場即可品嚐米澤牛壽喜燒／牛排，推薦加點山形鄉土料理「芋煮」。','', null, '米澤牛 山形站','', '預估 ¥14,000/2人', '', 14000)
+  mkStop('15:00–17:00','🛍️','飯店入住、山形站前商場與 S-PAL 採買','辦理連泊入住手續，逛站共構商場採買山形縣產水果點心與清酒，早點休息養精蓄銳。','', [38.2493,140.3297], '','', '', '文翔館與霞城公園調整至 1/13 上午延長時段順遊。', 2000),
+  mkStop('晚餐','🥩','米澤牛 登起波 或 黃木（建議先訂位）','品嚐米澤牛壽喜燒／牛排，推薦加點山形鄉土料理「芋煮」。','', null, '米澤牛 登起波 山形','', '預估 ¥14,000/2人', '', 14000)
  ]},
 {d:'1/12 (二)',s:'藏王·銀山',t:'山形 ➔ 藏王樹冰 ➔ 銀山溫泉夜景 ➔ 山形',jr:'Day 4',h:2,
  path:[[38.2486,140.3281],[38.1610,140.4418],[38.2486,140.3281],[38.5976,140.3667],[38.5720,140.5340],[38.5976,140.3667],[38.2486,140.3281]],
@@ -562,32 +597,33 @@ const DAYS=[
   mkStop('08:20–09:05','🚌','山形站前 ➔ 藏王溫泉（山交巴士）','山形站東口 1 號站牌上車，建議 08:00 前排隊搭首班車（可購巴士＋纜車套票）。連泊免拖行李。','pay', [38.2486,140.3281], '','', '單程 ¥1,000/人', '', 2000),
   mkStop('09:30–11:30','❄️','藏王纜車 賞「雪怪」樹冰','搭乘兩段纜車登上地藏山頂站（海拔 1,661m），上午排隊人潮較少、能見度通常較穩定。','pay', [38.1610,140.4418], '藏王纜車 蔵王ロープウェイ','⚠️ 07:30 起床先看「藏王 LiveCam」，若山頂全白零能見度或停駛，可改用上方市區備案。','來回 ¥4,400/人', '', 8800),
   mkStop('11:45–12:30','🚌','藏王溫泉 ➔ 山形站','搭山交巴士下山返回山形市區。','pay', null, '','', '單程 ¥1,000/人', '', 2000),
-  mkStop('12:30–13:50','🥢','山形站午餐與休息','品嚐山形板蕎麥麵或米澤牛便當，並確認下午前往大石田的 JR 班次。','', null, '山形站 蕎麥麵','', '預估 ¥3,000/2人', '', 3000),
-  mkStop('約 14:00–14:40','🚄','山形 ➔ 大石田','搭乘山形新幹線「翼號」或奧羽本線北上至大石田站。','jr', [38.5976,140.3667], '','', '', '', 0),
-  mkStop('15:30–16:05','🚌','大石田站 ➔ 銀山溫泉（花笠路線巴士）','單程 ¥1,000/人（僅收現金，請備妥零錢），直達銀山溫泉入口。','pay', [38.5720,140.5340], '','⚠️ 2026–2027 冬季銀山溫泉實施交通管制（自駕須預約接駁），搭火車轉路線巴士雖可直達，出發前仍請再核對銀山溫泉官網最新公告。','單程 ¥1,000/人', '', 2000),
-  mkStop('16:05–18:05','🏮','銀山溫泉 大正浪漫街景與藍調瓦斯燈夜景','1 月中旬約 16:35 日落，可完整欣賞黃昏轉深藍、黃色瓦斯燈亮起的夢幻雪景！可逛野川豆腐屋、Haikara 咖哩麵包。','', null, '','','小吃約 ¥1,500/2人','石板路積雪結冰極滑，務必套上簡易防滑冰爪；18:00 前須回到巴士站排隊。', 1500),
-  mkStop('18:21–19:35','🚆','銀山溫泉 ➔ 大石田 ➔ 山形','搭乘 18:21 末班巴士回大石田（約 18:56 抵，¥1,000/人），轉搭 JR 返回山形站（連泊免換飯店）。','jr', [38.2486,140.3281], '','⚠️ 18:21 為往大石田末班巴士，切勿錯過；山區夜間無計程車隨叫隨到。','巴士 ¥1,000/人', '', 2000),
+  mkStop('12:30–13:35','🥢','山形站午餐與休息','品嚐山形板蕎麥麵或米澤牛便當，預留充裕時間前往月台搭 13:45 普通車。','', null, '山形站 蕎麥麵','', '預估 ¥3,000/2人', '', 3000),
+  mkStop('13:45–14:32','🚆','山形 ➔ 大石田（推薦搭 JR 奧羽本線普通車）','免劃位直達大石田，比下一班新幹線提前近 1 小時抵達，可從容排隊搶搭 15:30 銀山巴士。（備案：14:43–15:15 つばさ 137 號）','jr', [38.5976,140.3667], '','', '', '14:00 整點無翼號班次，改搭 13:45 普通車接駁巴士最穩妥。', 0),
+  mkStop('15:30–16:05','🚌','大石田站 ➔ 銀山溫泉（花笠路線巴士）','2026–2027 冬季交通管制僅限自駕與計程車，「火車＋花笠路線巴士」免預約、現場排隊上車，單程 ¥1,000 僅收現金（請備妥零錢）。','pay', [38.5720,140.5340], '','','單程 ¥1,000/人', '', 2000),
+  mkStop('16:05–18:00','🏮','銀山溫泉 大正浪漫街景與藍調瓦斯燈夜景','1 月中旬約 16:35 日落，可完整欣賞黃昏轉深藍、黃色瓦斯燈亮起的夢幻雪景！可逛野川豆腐屋、Haikara 咖哩麵包。','', null, '','','小吃約 ¥1,500/2人','石板路積雪結冰極滑，務必套上簡易防滑冰爪；18:00 前務必回到巴士站排末班車。', 1500),
+  mkStop('18:21–19:35','🚄','銀山溫泉 ➔ 大石田 ➔ 山形（接 18:58 つばさ 158 號）','搭乘 18:21 末班巴士回大石田（約 18:56 抵，¥1,000/人），無縫銜接 18:58 發車之山形新幹線「つばさ 158 號」返回山形站。','jr', [38.2486,140.3281], '','⚠️ 18:21 為往大石田末班巴士，切勿錯過；山區夜間無計程車隨叫隨到。','巴士 ¥1,000/人', '', 2000),
   mkStop('晚餐','🍜','龍上海（山形店）或站前居酒屋','山形超人氣赤湯辣味噌拉麵，湯頭濃郁驅寒。','', null, '龍上海 山形','', '預估 ¥2,500/2人', '', 2500)
  ]},
-{d:'1/13 (三)',s:'山形·幕張',t:'山形半日遊 ➔ 東京 ➔ 三井 Outlet 幕張',jr:'Day 5',h:3,
- path:[[38.2486,140.3281],[38.2540,140.3380],[38.2558,140.3275],[35.6812,139.7671],[35.6484,140.0418],[35.6924,139.7842]],
+{d:'1/13 (三)',s:'山形·幕張',t:'山形半日遊 ➔ 東京寄行李 ➔ 三井 Outlet 幕張',jr:'Day 5',h:3,
+ path:[[38.2486,140.3281],[38.2540,140.3380],[38.2558,140.3275],[35.6812,139.7671],[35.6924,139.7842],[35.6484,140.0418],[35.6924,139.7842]],
  st:[
   mkStop('08:30–09:00','🧳','退房、大型行李寄放','行李寄放山形大和魯內櫃檯或山形站置物櫃，中午搭車前再取。','', null, '','', '', '', 0),
-  mkStop('09:00–10:30','🏛️','文翔館（山形縣舊縣廳）','大正初期英國文藝復興式洋風建築，免費參觀，雪中紅磚與鐘樓極具氣勢。','', [38.2540,140.3380], '','', '', '', 0),
-  mkStop('10:40–11:50','🏯','霞城公園（山形城跡）雪景散策','欣賞日本百名城之一的巨石城牆與護城河雪景，步行返回山形站。','', [38.2558,140.3275], '','', '', '', 0),
-  mkStop('12:00–13:00','🍱','取回行李、購買新幹線便當','在山形站採買「牛肉どまん中」米澤牛便當帶上車當午餐。','', null, '山形駅 牛肉どまん中','', '預估 ¥3,200/2人', '', 3200),
-  mkStop('約 13:10–16:00','🚄','山形新幹線 翼號 山形 ➔ 東京','全車指定席直達東京站（約 2 小時 50 分）。今天是 JR Pass 5 日券最後一天，全程免費！','jr', [35.6812,139.7671], '','⚠️ 抵達東京站後可將大件行李暫存東京站置物櫃（約 ¥1,000），或先搭總武線 2 站到馬喰町飯店寄放（僅需約 15 分鐘）。','', '', 1000),
-  mkStop('16:40–20:00','🛍️','三井 OUTLET PARK 幕張（Mitsui Outlet Park Makuhari）','從東京站搭 JR 京葉線快速約 30 分鐘至「海濱幕張站」，出站步行 1 分鐘即達。營業至 20:00，主打日系服飾、運動休閒與藥妝，持 JR Pass 交通全免！','jr', [35.6484,140.0418], '三井アウトレットパーク 幕張','','逛街前先至服務中心出示護照領取外國旅客優惠券（部分店舖享額外折扣＋免稅）。','購物預算可自填', '', 15000),
-  mkStop('20:15–21:00','🚆','海濱幕張 ➔ 東京 ➔ 東橫INN 馬喰町','搭 JR 京葉線回東京站轉 JR 總武線快速至馬喰町站辦理入住（刷 JR Pass 最後一趟）。','jr', [35.6924,139.7842], '','', '', '', 0)
+  mkStop('09:00–10:45','🏛️','文翔館（山形縣舊縣廳）','大正初期英國文藝復興式洋風建築，免費參觀，雪中紅磚與鐘樓極具氣勢。','', [38.2540,140.3380], '','', '', '', 0),
+  mkStop('11:00–12:20','🏯','霞城公園（山形城跡）雪景散策','欣賞日本百名城之一的巨石城牆與護城河雪景，步行返回山形站。','', [38.2558,140.3275], '','', '', '', 0),
+  mkStop('12:20–13:50','🍱','山形站午餐＆購買新幹線便當','時間充裕，可在站內餐廳享用山形蕎麥麵／米澤牛，並採買「牛肉どまん中」便當與伴手禮。','', null, '山形駅 牛肉どまん中','', '預估 ¥4,000/2人', '', 4000),
+  mkStop('14:09–16:48','🚄','山形新幹線 つばさ 144 號 山形 ➔ 東京','延後 1 小時搭 14:09 直達班次，全車指定席直達東京站（約 2 小時 39 分）。今天是 JR Pass 5 日券最後一天，全程免費！','jr', [35.6812,139.7671], '','', '', 0),
+  mkStop('16:55–17:15','🏨','東京站 ➔ 馬喰町東橫 INN 免費寄放行李','抵東京站後先搭 JR 總武線快速（2 站僅 4 分鐘）到馬喰町站，至東橫 INN 免費寄放大型行李（省下 ¥1,000 置物櫃費，晚上逛完直接回飯店免再進東京站迷宮）。','jr', [35.6924,139.7842], '東橫INN 東京日本橋馬喰町','', '', '省下置物櫃費用且回程動線最順暢。', 0),
+  mkStop('18:00–20:00','🛍️','三井 OUTLET PARK 幕張（Mitsui Outlet Park Makuhari）','從馬喰町搭總武線回東京站轉 JR 京葉線快速至「海濱幕張站」，出站步行 1 分鐘即達。營業至 20:00，持 JR Pass 交通全免！','jr', [35.6484,140.0418], '三井アウトレットパーク 幕張','','逛街前先至服務中心出示護照領取外國旅客優惠券（部分店舖享額外折扣＋免稅）。','購物預算可自填', '', 15000),
+  mkStop('20:15–21:00','🚆','海濱幕張 ➔ 東京 ➔ 東橫INN 馬喰町','搭 JR 京葉線回東京站轉 JR 總武線快速回馬喰町站直接領取行李入住（刷 JR Pass 最後一趟）。','jr', [35.6924,139.7842], '','', '', '', 0)
  ]},
-{d:'1/14 (四)',s:'東京',t:'東京市區自由行',jr:'自費',h:3,
- path:[[35.6924,139.7842],[35.7148,139.7967],[35.7101,139.8107],[35.6717,139.7640],[35.6595,139.7005]],
+{d:'1/14 (四)',s:'東京',t:'東京市區自由行（淺草・晴空塔・銀座）',jr:'自費',h:3,
+ path:[[35.6924,139.7842],[35.7148,139.7967],[35.7101,139.8107],[35.6717,139.7640],[35.6924,139.7842]],
  st:[
   mkStop('09:00–12:00','⛩️','淺草寺、雷門、仲見世通','從馬喰町搭都營淺草線約 6 分鐘直達淺草，早起人潮較少好拍照。','', [35.7148,139.7967], '','', '', '建議刷 Suica / PASMO 感應進出站，不必買一日券（單程 ¥180/人）。', 1500),
   mkStop('12:00–13:30','🍤','午餐：淺草大黑家 或 淺草今半','百年天婦羅蓋飯或黑毛和牛壽喜燒午間套餐。','', null, '淺草大黑家 天丼','', '預估 ¥6,000/2人', '', 6000),
-  mkStop('14:00–17:00','🏙️','東京晴空塔（Tokyo Skytree）','可從淺草沿隅田川步道步行約 20 分鐘前往，或搭東武線 1 站即達（展望台門票另計）。','', [35.7101,139.8107], '','', '展望台＋購物約 ¥6,000', '', 6000),
-  mkStop('18:00–19:30','🛍️','銀座商圈散步','搭東京 Metro 銀座線直達，逛 Uniqlo 銀座旗艦店與百貨。','', [35.6717,139.7640], '','', '地鐵＋購物約 ¥5,000', '', 5000),
-  mkStop('19:30–20:30','🍣','澀谷晚餐與夜景','迴轉壽司（美登利／根室花丸）或燒肉，之後搭銀座線轉總武線回馬喰町。','', [35.6595,139.7005], '','', '晚餐＋交通約 ¥7,000', '', 7000)
+  mkStop('14:00–17:30','🏙️','東京晴空塔（Tokyo Skytree）','可從淺草沿隅田川步道步行約 20 分鐘前往，或搭東武線 1 站即達（展望台門票另計）。','', [35.7101,139.8107], '','', '展望台＋購物約 ¥6,000', '', 6000),
+  mkStop('18:00–19:30','🛍️','銀座商圈散步','搭都營淺草線直達「東銀座站」或轉乘銀座線，逛 Uniqlo 銀座旗艦店、銀座三越與 LOFT。','', [35.6717,139.7640], '','', '地鐵＋購物約 ¥5,000', '', 5000),
+  mkStop('19:30–21:00','🍣','銀座晚餐：根室花丸迴轉壽司 / 美登利壽司','取消晚上趕赴澀谷，直接留在銀座享用晚餐（推薦東急 Plaza 銀座 10F「根室花丸」或銀座走廊街「梅丘壽司の美登利」），餐後搭淺草線直達回馬喰町。','', [35.6720,139.7632], '回転寿司 根室花まる 銀座店','', '晚餐＋交通約 ¥7,500','根室花丸建議 18:00 逛街前先抽號碼牌（支援手機掃碼看叫號進度）。', 7500)
  ]},
 {d:'1/15 (五)',s:'返家',t:'東京 ➔ 台北松山',jr:'自費',h:3,
  path:[[35.6924,139.7842],[35.6554,139.7570],[35.5494,139.7798]],
@@ -654,17 +690,19 @@ const pad=()=>innerWidth<=760?{paddingTopLeft:[24,24],paddingBottomRight:[24,24]
 function fit(pts){if(pts&&pts.length)map.fitBounds(L.latLngBounds(pts),{...pad(),maxZoom:12})}
 
 // ---- 狀態儲存 ------------------------------------------------------
-let cur='all',done={},extra={},costs={},bought={},metaBudget={pass:70000,rate:0.215,h0:18000,h1:16200,h2:24000,h3:22000};
+let cur='all',done={},extra={},costs={},bought={},prepDone={},metaBudget={pass:70000,rate:0.215,h0:18000,h1:16200,h2:24000,h3:22000};
 try{done=JSON.parse(localStorage.getItem('tohoku27_done')||'{}')}catch(e){}
 try{extra=JSON.parse(localStorage.getItem('tohoku27_extra')||'{}')}catch(e){}
 try{costs=JSON.parse(localStorage.getItem('tohoku27_costs')||'{}')}catch(e){}
 try{bought=JSON.parse(localStorage.getItem('tohoku27_bought')||'{}')}catch(e){}
+try{prepDone=JSON.parse(localStorage.getItem('tohoku27_prep')||'{}')}catch(e){}
 try{metaBudget={...metaBudget,...JSON.parse(localStorage.getItem('tohoku27_mbudget')||'{}')}}catch(e){}
 
 const saveDone=()=>{try{localStorage.setItem('tohoku27_done',JSON.stringify(done))}catch(e){}};
 const saveExtra=()=>{try{localStorage.setItem('tohoku27_extra',JSON.stringify(extra))}catch(e){}};
 const saveCosts=()=>{try{localStorage.setItem('tohoku27_costs',JSON.stringify(costs))}catch(e){}};
 const saveBought=()=>{try{localStorage.setItem('tohoku27_bought',JSON.stringify(bought))}catch(e){}};
+const savePrep=()=>{try{localStorage.setItem('tohoku27_prep',JSON.stringify(prepDone))}catch(e){}};
 const saveMetaBudget=()=>{try{localStorage.setItem('tohoku27_mbudget',JSON.stringify(metaBudget))}catch(e){}};
 
 const fmtY=n=>'¥'+Math.round(n||0).toLocaleString('en-US');
@@ -758,6 +796,18 @@ function drawTabs(){
  }).join('');
 }
 
+function renderPrepCard(){
+ return `<div class="prep-card">
+  <h4>📌 行前必做預約時間軸（2026/12 起）</h4>
+  <div class="prep-list">
+   ${PREP_TASKS.map(p=>`<label class="prep-item${prepDone[p.id]?' checked':''}">
+    <input type="checkbox" data-prep="${p.id}" ${prepDone[p.id]?'checked':''}>
+    <span>${p.text}</span>
+   </label>`).join('')}
+  </div>
+ </div>`;
+}
+
 function renderBudgetOverview(){
  const B=getGrandBudget();
  return `<div class="budget-card" id="budget-overview">
@@ -819,7 +869,8 @@ function overview(){
   x.path.forEach(p=>all.push(p));
   L.marker(x.path[Math.min(1,x.path.length-1)],{icon:pin(i+1,COLORS[i])}).addTo(layer).bindPopup(`<b>Day ${i+1}｜${x.d}</b><br>${x.t}<br><small>🌡️ ${WEATHER_META[i].avg}｜💴 ${fmtY(getDayTotal(i))}</small>`).on('click',()=>go(i));
  });
- body.innerHTML=`${renderBudgetOverview()}
+ body.innerHTML=`${renderPrepCard()}
+ ${renderBudgetOverview()}
  <h3 style="margin-top:4px">每日路線與花費總覽</h3>`+
  DAYS.map((x,i)=>{
   const cnt=(extra[i]||[]).length;
@@ -829,14 +880,14 @@ function overview(){
  `<h3>7天沿途伴手禮＆必吃美食總表</h3>${renderFoodChecklist(null)}`+
  `<h3>住宿預訂一覽</h3>${HOTELS.map(H=>{const k=DAYS.findIndex(d=>d.h===HOTELS.indexOf(H));return `<button class="card" style="--c:${COLORS[k]}" data-i="${k}"><div class="dot">宿</div><div><b>${H.s}</b><span>${H.inn} 入住 ➔ ${H.out} 退房（${H.nt} 晚）· 💴 ${fmtY(metaBudget[H.id])}</span></div></button>`}).join('')}
  <h3>行程優化與票券重點（2026–2027 新制）</h3><ul class="p">
-  <li><b>JR EAST PASS 5 日券（Day 1–5）</b>：涵蓋羽田單軌、東北／秋田／山形新幹線、仙山線，以及 Day 5 東京站往返<b>海濱幕張站（三井 Outlet 幕張）</b>之 JR 京葉線，全程免額外購票。</li>
-  <li><b>雙重點順遊動線</b>：Day 4 利用山形連泊免搬行李，早上衝<b>藏王樹冰</b>、傍晚直奔<b>銀山溫泉瓦斯燈夜景</b>；Day 5 白天悠閒逛山形市區，下午回東京後晚間順逛幕張 Outlet 至 20:00。</li>
+  <li><b>JR EAST PASS 5 日券（Day 1–5）</b>：涵蓋羽田單軌、東北／秋田／山形新幹線、奧羽本線、仙山線，以及 Day 5 東京站往返<b>海濱幕張站（三井 Outlet 幕張）</b>之 JR 京葉線，全程免額外購票。</li>
+  <li><b>班次與行李動線優化</b>：Day 4 改搭 13:45 普通車往大石田穩排 15:30 銀山巴士；Day 5 改搭 14:09 つばさ 144 號回東京，並先赴馬喰町飯店免費寄放行李再逛幕張 Outlet（省下 ¥1,000 置物櫃費）。</li>
   <li><b>暴雪改道預案</b>：Day 3 仙台➔山形之「JR 仙山線」若遇大雪停駛，可免費改搭東北新幹線至<b>福島站</b>轉乘山形新幹線「翼號」。</li>
  </ul>
  <h3>東北雪國防寒與應變清單</h3><ul class="p">
   <li><b>鞋具</b>：防水防滑雪靴＋隨身簡易冰爪（銀山溫泉石板路、角館與霞城公園雪地必備）。</li>
   <li><b>衣物</b>：洋蔥式穿法（發熱衣＋刷毛中層＋防風防水羽絨外套），備妥毛帽、圍巾與觸控手套。</li>
-  <li><b>隨身</b>：行動電源（低溫耗電極快）、暖暖包、保濕護唇膏、足夠日圓現金（山區巴士與老店多僅收現金）。</li>
+  <li><b>隨身</b>：行動電源（低溫耗電極快）、暖暖包、保濕護唇膏、足夠日圓現金（銀山巴士與山區老店僅收現金）。</li>
  </ul>
  <h3>即時資訊與實用連結</h3><div class="links"><button class="btn main" onclick="openPrintPreview('all')">🖨️ 預覽列印完整 7 日手冊</button><a class="btn" target="_blank" rel="noopener" href="https://www.eki-net.com/">JR Eki-Net 劃位</a><a class="btn" target="_blank" rel="noopener" href="https://traininfo.jreast.co.jp/train_info/tohoku.aspx">JR 東北即時運行情報</a><a class="btn" target="_blank" rel="noopener" href="https://tenki.jp/forecast/2/">日本氣象協會東北天氣</a><a class="btn" target="_blank" rel="noopener" href="https://zaoropeway.co.jp/livecam/">藏王山頂 LiveCam</a><a class="btn" target="_blank" rel="noopener" href="https://www.ginzanonsen.jp/">銀山溫泉官網</a></div>`;
  fit(all);
@@ -989,6 +1040,12 @@ function buildPrintSheet(scope){
      ${HOTELS.map(H=>`<li><b>${H.s}</b>（${H.inn}–${H.out}，${H.nt}晚）· ${fmtY(metaBudget[H.id])}<br><span style="color:var(--mute)">${H.addr||''}</span></li>`).join('')}
     </ul>
    </div>
+  </div>
+  <div class="ps-prep">
+   <h4>📌 行前必做預約時間軸（2026/12 起）</h4>
+   <ul>
+    ${PREP_TASKS.map(p=>`<li>${prepDone[p.id]?'☑':'☐'} ${p.text}</li>`).join('')}
+   </ul>
   </div>`;
  }
 
@@ -1086,6 +1143,13 @@ body.addEventListener('click',e=>{
 });
 
 body.addEventListener('change',e=>{
+ if(e.target.dataset.prep){
+  const pid=e.target.dataset.prep;
+  prepDone[pid]=e.target.checked;
+  savePrep();
+  const label=e.target.closest('.prep-item');
+  if(label)label.classList.toggle('checked',e.target.checked);
+ }
  if(e.target.dataset.food){
   const fid=e.target.dataset.food;
   bought[fid]=e.target.checked;
